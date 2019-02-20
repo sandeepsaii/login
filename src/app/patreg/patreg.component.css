@@ -1,0 +1,37 @@
+/* .ml label{
+	font-weight:650;
+}
+.cl{
+	color: brown;
+}
+.clp{
+	background-color:#f2f4f7
+}
+.mi.open:before {
+  content: '- ';
+}
+.mi.closed:before {
+  content: '+ ';
+} */
+/* header {
+	width: 100%;
+	position: relative;
+	top: 0px;
+
+} */
+.do{
+	overflow-y: auto;
+
+	width: 100%;
+	display: block;
+}
+.card {
+	margin-bottom:-12px;
+}
+#accordion::-webkit-scrollbar {
+	width: 6px;
+	background-color: #f9f7f900;
+}
+#accordion::-webkit-scrollbar-thumb {
+	background-color: #18121275;
+}

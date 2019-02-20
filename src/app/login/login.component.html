@@ -1,0 +1,314 @@
+
+
+
+
+<!-- <mat-card>
+  <mat-card-header>
+      <mat-card-title>Example Login Form</mat-card-title>
+  </mat-card-header>
+      <mat-card-content>-->
+      <!-- This is where you need to add your login form -->
+      <!-- <form> -->
+    
+        <!-- <mat-form-field>
+          <input  matInput  placeholder="your email" [(ngModel)]="email"  type="email" name="email"  required>
+          </mat-form-field>
+          <mat-form-field>
+          <input  matInput  placeholder="your password" [(ngModel)]="password"  type="password"  name="password"  required>
+          </mat-form-field>
+    </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button  mat-raised-button (click)="login()"  color="primary">Login</button>
+    </mat-card-actions>
+</mat-card> --> 
+<!-- <mat-card class="example-card">
+   <mat-card-header>
+     <mat-card-title>Login</mat-card-title>
+   </mat-card-header>
+   <mat-card-content>
+     <form class="example-form">
+       <table class="example-full-width" cellspacing="0">
+         <tr>
+           <td>
+             <mat-form-field class="example-full-width">
+             <input matInput placeholder="Username" [(ngModel)]="username" name="username" required>
+             </mat-form-field>
+           </td>
+         </tr>
+         <tr>
+         <td><mat-form-field class="example-full-width">
+           <input matInput placeholder="Password" [(ngModel)]="password"type="password" name="password" required>
+         </mat-form-field></td>
+       </tr></table>
+     </form>
+     <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+   </mat-card-content>
+   <mat-card-actions>
+     <button mat-raised-button (click)="login()" color="primary">Login</button>
+   </mat-card-actions>
+ </mat-card> -->
+
+
+ 
+<form class="text-center border-light p-5" style="width:40%;margin-top:7%;background-color: #e9ecef91;border-radius: 0px 30px 0px 30px;" *ngIf="newUser=== false">
+
+  <p class="h4 mb-4" style="margin-top:5%">Sign in</p>
+
+
+  <input type="email" name="email" id="defaultLoginFormEmail" class="form-control mb-4" 
+  placeholder="Enter your email" pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/" required >
+
+ 
+  <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" required>
+
+  <div class="d-flex justify-content-around">
+    <div>
+       
+      <input type="checkbox" name="checkbox">
+     Remember me
+    </div>
+    <div>
+     
+      <a href="#">Forgot password?</a>
+    </div>
+  </div>
+
+
+  <button mdbBtn color="info" block="true" class="my-4" type="submit">Sign in</button>
+
+
+  <p>Not a member?
+    <a (click)="toggleSignPage()" style="cursor: pointer;
+    color: blue;
+    text-decoration: underline;">Register</a>
+  </p>
+</form>
+
+
+
+
+    
+
+
+  <mdb-card-body class="mx-4 mt-4" *ngIf="newUser === true">
+
+      
+      <!-- Register form -->
+    <form  [formGroup]="registerForm"  (ngSubmit)="register()" class="noSpan" style="max-height:570px;margin-bottom:50px;">
+   <h5 style="margin-top:4%;font-style: lightpink"> &nbsp;&nbsp; Provider Registration</h5>
+    <div formGroupName="user" >
+      <div class="row">
+      <div class="md-form md-3 md-3" style="margin-left:25px;margin-right: 25px;margin-top:5px;">
+          <label for="OrganisationID">Organisation Id</label>
+          <input type="text" id="OrganisationID" class="form-control" formControlName="OrganisationID" mdbInputDirective>
+          
+        </div>
+
+        <div class="md-form md-3 md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="OrganisationName">Organisation Name</label>
+          <input type="text" id="OrganisationName" class="form-control" 
+          formControlName="OrganisationName" mdbInputDirective>
+          
+        </div>
+        <div class="md-form md-3 md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="OrganisationCode">Organisation Code</label>
+          <input type="text" id="OrganisationCode" class="form-control" 
+          formControlName="OrganisationCode" mdbInputDirective>
+          
+        </div>
+        <div class="md-form md-3 md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="OrganisationType">Organisation Type</label>
+          <input type="text" id="OrganisationType" class="form-control"
+           formControlName="OrganisationType" mdbInputDirective>
+         
+        </div>
+      </div>
+      <div class="row">
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="OrganisationCounty">Organisation County</label>
+          <input type="text" id="OrganisationCounty" class="form-control" formControlName="OrganisationCounty" mdbInputDirective>
+          
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="OrganisationCountry">Organisation Country</label>
+          <input type="text" id="OrganisationCountry" class="form-control" formControlName="OrganisationCountry" mdbInputDirective>
+         
+        </div>
+      <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+          <label for="ParentOrganisationID">Parent Organisation Id</label>
+          <input type="text" id="ParentOrganisationID" class="form-control" formControlName="ParentOrganisationID" mdbInputDirective>
+         
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="ContactPerson">Contact Person</label>
+          <input type="text" id="ContactPerson" class="form-control" formControlName="ContactPerson" mdbInputDirective>
+         
+        </div>
+      </div>
+      <div class="row">
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="AddressLine1">Address Line 1</label>
+          <input type="text" id="AddressLine1" class="form-control" formControlName="AddressLine1" mdbInputDirective>
+          
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="AddressLine2">Address Line 2</label>
+          <input type="text" id="AddressLine2" class="form-control" formControlName="AddressLine2" mdbInputDirective>
+         
+        </div>
+      <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+          <label for="CityName">City Name</label>
+          <input type="text" id="CityName" class="form-control" formControlName="CityName" mdbInputDirective>
+          
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="StateCode">State Code</label>
+          <input type="text" id="StateCode" class="form-control" formControlName="StateCode" mdbInputDirective>
+          
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="ZipCode">Zip Code</label>
+          <input type="text" id="ZipCode" class="form-control" formControlName="ZipCode" mdbInputDirective>
+          
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="ContactPhone">Contact Phone</label>
+          <input type="text" id="ContactPhone" class="form-control" formControlName="ContactPhone" mdbInputDirective>
+          
+        </div>
+      <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+          <label for="EmailId">Email Id</label>
+          <input type="text" id="EmailID" class="form-control" formControlName="EmailID" mdbInputDirective>
+          
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="Fax">Fax</label>
+          <input type="text" id="Fax" class="form-control" formControlName="Fax" mdbInputDirective>
+          
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="WebsiteURL">Website URL</label>
+          <input type="text" id="WebsiteURL" class="form-control" formControlName="WebsiteURL" mdbInputDirective>
+
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="TIN">TIN</label>
+          <input type="text" id="TIN" class="form-control" formControlName="TIN" mdbInputDirective>
+          
+        </div>
+      <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+          <label for="CCN">CCN</label>
+          <input type="text" id="CCN" class="form-control" formControlName="CCN" mdbInputDirective>
+          
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="SSN">SSN</label>
+          <input type="text" id="SSN" class="form-control" formControlName="SSN" mdbInputDirective>
+          
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="NPI">NPI</label>
+          <input type="text" id="NPI" class="form-control" formControlName="NPI" mdbInputDirective>
+          
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="EIN">EIN</label>
+          <input type="text" id="EIN" class="form-control" formControlName="EIN" mdbInputDirective>
+         
+        </div>
+      <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+          <label for="IsInternal">Is Internal</label>
+          <input type="text" id="IsInternal" class="form-control" formControlName="IsInternal" mdbInputDirective>
+         
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="IsActive">Is Active</label>
+          <input type="text" id="IsActive" class="form-control" formControlName="IsActive" mdbInputDirective>
+          
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="ProviderUPINNumber">Provider UPIN Number</label>
+        
+          <input type="text" id="ProviderUPINNumber" class="form-control" formControlName="ProviderUPINNumber" mdbInputDirective>
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="LocationNumber">Location Number</label>
+          <input type="text" id="LocationNumber" class="form-control" formControlName="LocationNumber" mdbInputDirective>
+          
+        </div>
+      <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+          <label for="NCPDPNumber">NCPDP Number</label>
+          <input type="text" id="NCPDPNumber" class="form-control" formControlName="NCPDPNumber" mdbInputDirective>
+          
+        </div>
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="OtherIdentifier">Other Identifier</label>
+          <input type="text" id="OtherIdentifier" class="form-control" formControlName="OtherIdentifier" mdbInputDirective>
+          
+        </div>
+      </div>
+
+<div class="row">
+  <div class="md-form col-4" style="margin-left:25px;margin-right: 25px">
+      <label for="ProviderCommercialNumber"> Provider Commercial Number</label>
+          <input type="text" id="ProviderCommercialNumber" class="form-control" formControlName="ProviderCommercialNumber" mdbInputDirective style="margin-left: -15px">
+         
+        </div>
+  
+        <div class="md-form md-3" style="margin-left:25px;margin-right: 25px">
+            <label for="StateLicenseNumber">State License Number</label>
+          <input type="text" id="StateLicenseNumber" class="form-control" formControlName="StateLicenseNumber" mdbInputDirective>
+        
+        </div>
+</div> 
+</div>
+<div class="col-md-2">
+    <button type="Submit" class="btn btn-primary" style="width:200px;margin-top:20px;"
+     mdbBtn color="success" block="true" [routerLink]="['']">Submit</button>
+  </div>
+</form>
+<!-- Register form -->
+    </mdb-card-body>
+    
+ 
+  
+
+
+  <!-- Social login
+  <p>or sign in with:</p>
+
+  <a type="button" class="light-blue-text mx-2">
+    <i class="fab fa-facebook-f"></i> 
+    <mdb-icon fab icon="facebook"></mdb-icon>
+  </a>
+  <a type="button" class="light-blue-text mx-2">
+     <i class="fab fa-twitter"></i> 
+    <mdb-icon fab icon="twitter"></mdb-icon>
+  </a>
+  <a type="button" class="light-blue-text mx-2">
+    <i class="fab fa-linkedin-in"></i> 
+    <mdb-icon fab icon="linkedin"></mdb-icon>
+  </a>
+  <a type="button" class="light-blue-text mx-2">
+    <i class="fab fa-github"></i> 
+    <mdb-icon fab icon="heart"></mdb-icon>
+  </a>-->
+
+
+
+
+
+ 

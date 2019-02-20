@@ -1,0 +1,2959 @@
+<html><head><script type="text/javascript">
+function checkLength(eleName,eleVal,len)
+{
+    eleName=eleName.replace('form_','');
+    var m='';
+    if(eleVal.length>len)
+        m += 'Invalid length for '+eleName.toUpperCase()+'. The length should not exceed the following number of characters : '+len+"\n";
+    return m;
+}
+
+function checkSpecialCharacter(eleName,eleVal)
+{
+    var regE = /[^a-zA-Z'\s,.\-]/;
+    var m='';
+    eleName=eleName.replace('form_','');
+    if(regE.test(eleVal)==true)
+        m += 'Invalid character in '+eleName.toUpperCase()+"\n";
+    return m;
+}
+
+function checkFacilityName(eleName,eleVal)
+{
+    var regE = /[^a-zA-Z0-9 '().,#:\/\-@_%]/;
+    var m='';
+    eleName=eleName.replace('form_','');
+    if(regE.test(eleVal)==true)
+        m += 'Invalid character in '+eleName.toUpperCase()+"\n";
+    return m;
+}
+
+function checkPhone(eleName,eleVal)
+{
+    var regE = /[^0-9']/;
+    var m='';
+    eleVal_temp=eleVal.replace(/[^0-9]/ig,'');
+    eleVal=eleVal.replace(/[-)(\s]/ig,''); 
+    eleName=eleName.replace('form_','');
+    eleName=eleName.replace('_',' ');
+    if(regE.test(eleVal)==true)
+        m += 'Invalid non-numeric character in '+eleName.toUpperCase()+"\n";
+    else if(eleVal_temp.length>10)
+        m += eleName.toUpperCase()+' should contain only 10 digits'+"\n";
+    else if(eleVal_temp.length<10)
+        m += eleName.toUpperCase()+' should contain 10 digits'+"\n";
+    return m;
+}
+
+function checkTaxNpiDea(eleName,eleVal)
+{
+    var regE = /[^0-9]/;
+    var m='';
+    eleName=eleName.replace('_',' ');
+    if(regE.test(eleVal)==true)
+        m += 'Invalid character in '+eleName.toUpperCase()+"\n";
+    return m;
+}
+
+function checkFederalEin(eleName,eleVal)
+{
+    var regE = /[^a-zA-Z0-9 '().,#:\/\-@_%]/;
+    var m='';
+    eleName=eleName.replace('_',' ');
+    if(regE.test(eleVal)==true)
+        m += 'Invalid character in '+eleName.toUpperCase()+"\n";
+    return m;
+}
+
+function checkStateLicenseNumber(eleName,eleVal)
+{
+    var regE = /[^a-zA-Z0-9 '.,()#:\/\-@_%\r\n]/;
+    var m='';
+    eleName=eleName.replace('_',' ');
+    if(regE.test(eleVal)==true)
+        m += 'Invalid character in '+eleName.toUpperCase()+"\n";
+    return m;
+}
+
+function checkUsername(eleName,eleVal)
+{
+    var regE = /[^a-zA-Z0-9 '().,#:\/\-@_%]/;
+    var m='';
+    eleName=eleName.replace('form_','');
+    if(regE.test(eleVal)==true)
+        m += 'Invalid character in '+eleName.toUpperCase()+"\n";
+    return m;
+}
+
+function checkAlphaNumeric(eleName,eleVal)
+{
+    var regE = /[^a-zA-Z0-9\s]/;
+    var m='';
+    eleName=eleName.replace('form_','');
+    eleName=eleName.replace('_',' ');
+    if(regE.test(eleVal)==true)
+        m += 'Invalid character in '+eleName.toUpperCase()+"\n";
+    return m;
+}
+
+function checkAlphaNumericExtended(eleName,eleVal)
+{
+    var regE = /[^a-zA-Z0-9 '().,#:\/\-@_%]/;
+    var m='';
+    eleName=eleName.replace('form_','');
+    eleName=eleName.replace('_',' ');
+    if(regE.test(eleVal)==true)
+        m += 'Invalid character in '+eleName.toUpperCase()+"\n";
+    return m;
+}
+</script>
+
+
+
+<link rel="stylesheet" href="/acianaehr/public/assets/bootstrap-3-3-4/dist/css/bootstrap.min.css?v=41" type="text/css">
+<link rel="stylesheet" href="/acianaehr/interface/themes/style_light.css?v=41?v=41" type="text/css">
+<link rel="stylesheet" href="/acianaehr/public/assets/font-awesome-4-6-3/css/font-awesome.min.css?v=41" type="text/css">
+<link rel="stylesheet" href="/acianaehr/public/assets/jquery-datetimepicker-2-5-4/build/jquery.datetimepicker.min.css?v=41" type="text/css">
+
+<script type="text/javascript" src="/acianaehr/public/assets/jquery-min-3-1-1/index.js?v=41"></script>
+<script type="text/javascript" src="/acianaehr/public/assets/bootstrap-3-3-4/dist/js/bootstrap.min.js?v=41"></script>
+<script type="text/javascript" src="/acianaehr/public/assets/jquery-ui-1-12-1/jquery-ui.min.js?v=41"></script>
+<script type="text/javascript" src="/acianaehr/public/assets/jquery-datetimepicker-2-5-4/build/jquery.datetimepicker.full.min.js?v=41"></script>
+<script type="text/javascript" src="/acianaehr/library/js/common.js?v=41"></script>
+<script type="text/javascript" src="/acianaehr/library/textformat.js?v=41"></script>
+<script type="text/javascript" src="/acianaehr/library/dialog.js?v=41"></script>
+
+<title>Search or Add Patient</title>
+
+<style>
+body {
+ padding: 5pt 5pt 5pt 5pt;
+}
+
+div.section {
+ border: solid;
+ border-width: 1px;
+ border-color: #0000ff;
+ margin: 0 0 0 10pt;
+ padding: 5pt;
+}
+
+.form-control {
+    width: auto;
+    display: inline;
+    height: auto;
+}
+</style>
+
+<script type="text/javascript">
+
+// JavaScript support for date types when the A or B edit option is used.
+// Called to recompute displayed age dynamically when the corresponding date is
+// changed. Must generate the same age formats as the oeFormatAge() function.
+//
+function updateAgeString(fieldid, asof, format, description) {
+  var datefld = document.getElementById('form_' + fieldid);
+  var f = datefld.form;
+  var age = '';
+  var date1 = new Date(datefld.value);
+  var date2 = asof ? new Date(asof) : new Date();
+  if (format == 3) {
+    // Gestational age.
+    var msecs = date2.getTime() - date1.getTime();
+    var days  = Math.round(msecs / (24 * 60 * 60 * 1000));
+    var weeks = Math.floor(days / 7);
+    days = days % 7;
+    if (description == '') description = 'Gest age';
+    age = description + ' ' +
+      weeks + (weeks == 1 ? ' week' : ' weeks') + ' ' +
+      days  + (days  == 1 ? ' day' : ' days');
+  }
+  else {
+    // Years or months.
+    var dayDiff   = date2.getDate()     - date1.getDate();
+    var monthDiff = date2.getMonth()    - date1.getMonth();
+    var yearDiff  = date2.getFullYear() - date1.getFullYear();
+    var ageInMonths = yearDiff * 12 + monthDiff;
+    if (dayDiff < 0) --ageInMonths;
+    if (format == 1 || (format == 0 && ageInMonths >= 24)) {
+      age = yearDiff;
+      if (monthDiff < 0 || (monthDiff == 0 && dayDiff < 0)) --age;
+      age = '' + age;
+    }
+    else {
+      age = '' + ageInMonths;
+      if (format == 0) {
+        age = age + ' ' + (ageInMonths == 1 ? 'month' : 'months'); 
+      }
+    }
+    if (description == '') description = 'Age';
+    if (age != '') age = description + ' ' + age;
+  }
+  document.getElementById('span_' + fieldid).innerHTML = age;
+}
+
+// Function to show or hide form fields (and their labels) depending on "skip conditions"
+// defined in the layout.
+//
+var cskerror = false; // to avoid repeating error messages
+function checkSkipConditions() {
+  var myerror = cskerror;
+  var prevandor = '';
+  var prevcond = false;
+  for (var i = 0; i < skipArray.length; ++i) {
+    var target   = skipArray[i].target;
+    var id       = skipArray[i].id;
+    var itemid   = skipArray[i].itemid;
+    var operator = skipArray[i].operator;
+    var value    = skipArray[i].value;
+    var is_radio = false;
+    var action   = skipArray[i].action;
+    var tofind = id;
+
+    if (itemid) tofind += '[' + itemid + ']';
+    // Some different source IDs are possible depending on the data type.
+    var srcelem = document.getElementById('check_' + tofind);
+    var radio_id='form_' + tofind + '[' + value + ']';
+    if(typeof document.getElementById(radio_id)!=="undefined"){
+        srcelem = document.getElementById(radio_id);
+        if(srcelem != null){
+            is_radio = true;
+        }
+    }
+    if (srcelem == null) srcelem = document.getElementById('radio_' + tofind);
+    if (srcelem == null) srcelem = document.getElementById('form_' + tofind) ;
+    if (srcelem == null) srcelem = document.getElementById('text_' + tofind);
+
+    if (srcelem == null) {
+      if (!cskerror) alert('Cannot find a skip source field for "' + tofind + '"');
+      myerror = true;
+      continue;
+    }
+
+    var condition = false;
+    var is_multiple = false;
+    var elem_val;
+    if ( is_radio){
+        for (var k = 0; k < document.getElementsByName('form_' + tofind).length; k++){
+            if (document.getElementsByName('form_' + tofind)[k].checked){
+                elem_val= document.getElementsByName('form_' + tofind)[k].value;
+            }
+        }
+    }else if( typeof srcelem.options!=="undefined" && srcelem.type == 'select-one' ){
+        elem_val=srcelem.options[srcelem.selectedIndex].value;
+        
+    }else if( srcelem.type == 'select-multiple' ) {
+        elem_val = new Array();
+        is_multiple = true;
+        for (var k = 0; k < srcelem.length; k++) {
+            if (srcelem.options[k].selected) {
+                if( elem_val.indexOf(srcelem.options[k].value)<0) {
+                    elem_val.push(srcelem.options[k].value);
+                }
+            }
+        }
+    } else {
+        elem_val=srcelem.value;
+
+        if(elem_val == null) {
+            elem_val = srcelem.getAttribute("data-value");
+            if( elem_val !== null && elem_val.indexOf("|") !== -1 ) {
+                elem_val = elem_val.split("|");
+                is_multiple = true;
+            }
+        } 
+        if(elem_val == null) elem_val = srcelem.innerText;
+    }
+    //this is a feature fix for the multiple select list option
+    //collect all the multiselect control values:
+    if( is_multiple ) {
+        switch(operator) {
+            case 'eq':
+                condition = (-1 !== elem_val.indexOf(value));break;
+            case 'ne':
+                condition = (-1 == elem_val.indexOf(value)); break;
+            case 'se':
+                condition = srcelem.checked  ; break; // doesn't make sense?
+            case 'ns': 
+                condition = !srcelem.checked;  break;
+        }
+                
+    } else {
+        if (operator == 'eq') condition = elem_val == value; else
+        if (operator == 'ne') condition = elem_val != value; else
+        if (operator == 'se') condition = srcelem.checked  ; else
+        if (operator == 'ns') condition = !srcelem.checked;
+    }
+    
+    // Logic to accumulate multiple conditions for the same target.
+    // alert('target = ' + target + ' prevandor = ' + prevandor + ' prevcond = ' + prevcond); // debugging
+    if (prevandor == 'and') condition = condition && prevcond; else
+    if (prevandor == 'or' ) condition = condition || prevcond;
+    prevandor = skipArray[i].andor;
+    prevcond = condition;
+    var j = i + 1;
+    if (j < skipArray.length && skipArray[j].target == target) continue;
+
+    // At this point condition indicates the target should be hidden or have its value set.
+
+    if (action == 'skip') {
+      var trgelem1 = document.getElementById('label_id_' + target);
+      var trgelem2 = document.getElementById('value_id_text_' + target);
+      if (trgelem2 == null) {
+        trgelem2 = document.getElementById('value_id_' + target);
+      }
+
+      if (trgelem1 == null && trgelem2 == null) {
+          var trgelem1 = document.getElementById('label_' + target);
+          var trgelem2 = document.getElementById('text_' + target);
+          if(trgelem2 == null){
+              trgelem2 = document.getElementById('form_' + target);
+          }
+          if (trgelem1 == null && trgelem2 == null) {
+              if (!cskerror) alert('Cannot find a skip target field for "' + target + '"');
+              myerror = true;
+              continue;
+          }
+      }
+
+      // Find the target row and count its cells, accounting for colspans.
+      var trgrow = trgelem1 ? trgelem1.parentNode : trgelem2.parentNode;
+      var rowcells = 0;
+      for (var itmp = 0; itmp < trgrow.cells.length; ++itmp) {
+        rowcells += trgrow.cells[itmp].colSpan;
+      }
+
+      // If the item occupies a whole row then undisplay its row, otherwise hide its cells.
+      var colspan = 0;
+      if (trgelem1) colspan += trgelem1.colSpan;
+      if (trgelem2) colspan += trgelem2.colSpan;
+      if (colspan < rowcells) {
+        if (trgelem1) trgelem1.style.visibility = condition ? 'hidden' : 'visible';
+        if (trgelem2) trgelem2.style.visibility = condition ? 'hidden' : 'visible';
+      }
+      else {
+        trgrow.style.display = condition ? 'none' : '';
+      }
+    }
+    else if (condition) { // action starts with "value="
+      var trgelem = document.getElementById('form_' + target);
+      if (trgelem == null) {
+        if (!cskerror) alert('Cannot find a value target field "' + trgelem + '"');
+        myerror = true;
+        continue;
+      }
+      var action_value = action.substring(6);
+      if (trgelem.type == 'checkbox') {
+        trgelem.checked = !(action_value == '0' || action_value == '');
+      }
+      else {
+        trgelem.value = action_value;
+      }
+    }
+  }
+  // If any errors, all show in the first pass and none in subsequent passes.
+  cskerror = cskerror || myerror;
+}
+
+///////////////////////////////////////////////////////////////////////
+// Image canvas support starts here.
+///////////////////////////////////////////////////////////////////////
+
+var lbfCanvases = {}; // contains the LC instance for each canvas.
+
+// Initialize the drawing widget.
+// canid is the id of the div that will contain the canvas, and the image
+// element used for initialization should have an id of canid + '_img'.
+//
+function lbfCanvasSetup(canid, canWidth, canHeight) {
+  LC.localize({
+    "stroke"    : "stroke",
+    "fill"      : "fill",
+    "bg"        : "bg",
+    "Clear"     : "Clear",
+    // The following are tooltip translations, however they do not work due to
+    // a bug in LiterallyCanvas 0.4.13.  We'll leave them here pending a fix.
+    "Eraser"    : "Eraser",
+    "Pencil"    : "Pencil",
+    "Line"      : "Line",
+    "Rectangle" : "Rectangle",
+    "Ellipse"   : "Ellipse",
+    "Text"      : "Text",
+    "Polygon"   : "Polygon",
+    "Pan"       : "Pan",
+    "Eyedropper": "Eyedropper",
+    "Undo"      : "Undo",
+    "Redo"      : "Redo",
+    "Zoom out"  : "Zoom out",
+    "Zoom in"   : "Zoom in",
+  });
+  var tmpImage = document.getElementById(canid + '_img');
+  var shape = LC.createShape('Image', {x: 0, y: 0, image: tmpImage});
+  var lc = LC.init(document.getElementById(canid), {
+    imageSize: {width: canWidth, height: canHeight},
+    strokeWidths: [1, 2, 3, 5, 8, 12],
+    defaultStrokeWidth: 2,
+    backgroundShapes: [shape],
+    imageURLPrefix: '/acianaehr/public/assets/literallycanvas-0-4-13/img'
+  });
+  if (canHeight > 261) {
+    // TBD: Do something to make the widget bigger?
+    // Look for some help with this in the next LC release.
+  }
+  // lc.saveShape(shape);       // alternative to the above backgroundShapes
+  lbfCanvases[canid] = lc;
+}
+
+// This returns a standard "Data URL" string representing the image data.
+// It will typically be a few kilobytes. Here's a truncated example:
+// data:image/png;base64,iVBORw0K ...
+//
+function lbfCanvasGetData(canid) {
+  return lbfCanvases[canid].getImage().toDataURL();
+}
+
+</script>
+
+<script language="JavaScript"><!--
+//Visolve - sync the radio buttons - Start
+if((top.window.parent) && (parent.window)){
+        var wname = top.window.parent.left_nav;
+        fname = (parent.window.name)?parent.window.name:window.name;
+        wname.syncRadios();
+}//Visolve - sync the radio buttons - End
+
+var mypcc = '1';
+
+// This may be changed to true by the AJAX search script.
+var force_submit = false;
+
+//code used from http://tech.irt.org/articles/js037/
+function replace(string,text,by) {
+ // Replaces text with by in string
+ var strLength = string.length, txtLength = text.length;
+ if ((strLength == 0) || (txtLength == 0)) return string;
+
+ var i = string.indexOf(text);
+ if ((!i) && (text != string.substring(0,txtLength))) return string;
+ if (i == -1) return string;
+
+ var newstr = string.substring(0,i) + by;
+
+ if (i+txtLength < strLength)
+  newstr += replace(string.substring(i+txtLength,strLength),text,by);
+
+ return newstr;
+}
+
+function auto_populate_employer_address1(){
+ var f = document.demographics_form;
+ if (f.form_i1subscriber_relationship.options[f.form_i1subscriber_relationship.selectedIndex].value == "self") {
+  f.i1subscriber_fname.value=f.form_fname.value;
+  f.i1subscriber_mname.value=f.form_mname.value;
+  f.i1subscriber_lname.value=f.form_lname.value;
+  f.i1subscriber_street.value=f.form_street.value;
+  f.i1subscriber_city.value=f.form_city.value;
+  f.form_i1subscriber_state.value=f.form_state.value;
+  f.i1subscriber_postal_code.value=f.form_postal_code.value;
+  if (f.form_country_code)
+    f.form_i1subscriber_country.value=f.form_country_code.value;
+  f.i1subscriber_phone.value=f.form_phone_home.value;
+  f.i1subscriber_DOB.value=f.form_DOB.value;
+  f.i1subscriber_ss.value=f.form_ss.value;
+  f.form_i1subscriber_sex.value = f.form_sex.value;
+  f.i1subscriber_employer.value=f.form_em_name.value;
+  f.i1subscriber_employer_street.value=f.form_em_street.value;
+  f.i1subscriber_employer_city.value=f.form_em_city.value;
+  f.form_i1subscriber_employer_state.value=f.form_em_state.value;
+  f.i1subscriber_employer_postal_code.value=f.form_em_postal_code.value;
+  if (f.form_em_country)
+    f.form_i1subscriber_employer_country.value=f.form_em_country.value;
+ }
+}
+
+function auto_populate_employer_address2(){
+ var f = document.demographics_form;
+ if (f.form_i2subscriber_relationship.options[f.form_i2subscriber_relationship.selectedIndex].value == "self") {
+  f.i2subscriber_fname.value=f.form_fname.value;
+  f.i2subscriber_mname.value=f.form_mname.value;
+  f.i2subscriber_lname.value=f.form_lname.value;
+  f.i2subscriber_street.value=f.form_street.value;
+  f.i2subscriber_city.value=f.form_city.value;
+  f.form_i2subscriber_state.value=f.form_state.value;
+  f.i2subscriber_postal_code.value=f.form_postal_code.value;
+  if (f.form_country_code)
+    f.form_i2subscriber_country.value=f.form_country_code.value;
+  f.i2subscriber_phone.value=f.form_phone_home.value;
+  f.i2subscriber_DOB.value=f.form_DOB.value;
+  f.i2subscriber_ss.value=f.form_ss.value;
+  f.form_i2subscriber_sex.value = f.form_sex.value;
+  f.i2subscriber_employer.value=f.form_em_name.value;
+  f.i2subscriber_employer_street.value=f.form_em_street.value;
+  f.i2subscriber_employer_city.value=f.form_em_city.value;
+  f.form_i2subscriber_employer_state.value=f.form_em_state.value;
+  f.i2subscriber_employer_postal_code.value=f.form_em_postal_code.value;
+  if (f.form_em_country)
+    f.form_i2subscriber_employer_country.value=f.form_em_country.value;
+ }
+}
+
+function auto_populate_employer_address3(){
+ var f = document.demographics_form;
+ if (f.form_i3subscriber_relationship.options[f.form_i3subscriber_relationship.selectedIndex].value == "self") {
+  f.i3subscriber_fname.value=f.form_fname.value;
+  f.i3subscriber_mname.value=f.form_mname.value;
+  f.i3subscriber_lname.value=f.form_lname.value;
+  f.i3subscriber_street.value=f.form_street.value;
+  f.i3subscriber_city.value=f.form_city.value;
+  f.form_i3subscriber_state.value=f.form_state.value;
+  f.i3subscriber_postal_code.value=f.form_postal_code.value;
+  if (f.form_country_code)
+    f.form_i3subscriber_country.value=f.form_country_code.value;
+  f.i3subscriber_phone.value=f.form_phone_home.value;
+  f.i3subscriber_DOB.value=f.form_DOB.value;
+  f.i3subscriber_ss.value=f.form_ss.value;
+  f.form_i3subscriber_sex.value = f.form_sex.value;
+  f.i3subscriber_employer.value=f.form_em_name.value;
+  f.i3subscriber_employer_street.value=f.form_em_street.value;
+  f.i3subscriber_employer_city.value=f.form_em_city.value;
+  f.form_i3subscriber_employer_state.value=f.form_em_state.value;
+  f.i3subscriber_employer_postal_code.value=f.form_em_postal_code.value;
+  if (f.form_em_country)
+    f.form_i3subscriber_employer_country.value=f.form_em_country.value;
+ }
+}
+
+
+function upperFirst(string,text) {
+ return replace(string,text,text.charAt(0).toUpperCase() + text.substring(1,text.length));
+}
+
+// The ins_search.php window calls this to set the selected insurance.
+function set_insurance(ins_id, ins_name) {
+ var thesel = document.forms[0]['i' + insurance_index + 'provider'];
+ var theopts = thesel.options; // the array of Option objects
+ var i = 0;
+ for (; i < theopts.length; ++i) {
+  if (theopts[i].value == ins_id) {
+   theopts[i].selected = true;
+   return;
+  }
+ }
+ // no matching option was found so create one, append it to the
+ // end of the list, and select it.
+ theopts[i] = new Option(ins_name, ins_id, false, true);
+}
+
+// Indicates which insurance slot is being updated.
+var insurance_index = 0;
+
+// The OnClick handler for searching/adding the insurance company.
+function ins_search(ins) {
+ insurance_index = ins;
+ return false;
+}
+
+function checkNum () {
+ var re= new RegExp();
+ re = /^\d*\.?\d*$/;
+ str=document.forms[0].monthly_income.value;
+ if(re.exec(str))
+ {
+ }else{
+  alert("Please enter a dollar amount using only numbers and a decimal point.");
+ }
+}
+
+// This capitalizes the first letter of each word in the passed input
+// element.  It also strips out extraneous spaces.
+function capitalizeMe(elem) {
+ var a = elem.value.split(' ');
+ var s = '';
+ for(var i = 0; i < a.length; ++i) {
+  if (a[i].length > 0) {
+   if (s.length > 0) s += ' ';
+   s += a[i].charAt(0).toUpperCase() + a[i].substring(1);
+  }
+ }
+ elem.value = s;
+}
+
+// Onkeyup handler for policy number.  Allows only A-Z and 0-9.
+function policykeyup(e) {
+ var v = e.value.toUpperCase();
+ var filteredString="";
+ for (var i = 0; i < v.length; ++i) {
+  var c = v.charAt(i);
+  if ((c >= '0' && c <= '9') ||
+     (c >= 'A' && c <= 'Z') ||
+     (c == '*') ||
+     (c == '-') ||
+     (c == '_') ||
+     (c == '(') ||
+     (c == ')') ||
+     (c == '#'))
+     {
+         filteredString+=c;
+     }
+ }
+ e.value = filteredString;
+ return;
+}
+
+function divclick(cb, divid) {
+ var divstyle = document.getElementById(divid).style;
+ if (cb.checked) {
+  divstyle.display = 'block';
+ } else {
+  divstyle.display = 'none';
+ }
+ return true;
+}
+
+// Compute the length of a string without leading and trailing spaces.
+function trimlen(s) {
+ var i = 0;
+ var j = s.length - 1;
+ for (; i <= j && s.charAt(i) == ' '; ++i);
+ for (; i <= j && s.charAt(j) == ' '; --j);
+ if (i > j) return 0;
+ return j + 1 - i;
+}
+
+function validate(f) {
+  var errMsgs = new Array();
+     if (f.form_fname && !f.form_fname.disabled) {
+ if (trimlen(f.form_fname.value) == 0) {
+  		if (f.form_fname.focus) f.form_fname.focus();
+  		$('#form_fname').parents('div.tab').each( function(){ var tabHeader = $('#header_' + $(this).attr('id') ); tabHeader.css('color','red'); } );   		$('#form_fname').attr('style','background:red'); 
+  		errMsgs[errMsgs.length] = 'First Name'; 
+ } else {  		$('#form_fname').attr('style','');   		$('#form_fname').parents('div.tab').each( function(){ var tabHeader = $('#header_' + $(this).attr('id') ); tabHeader.css('color','');  } );  } 
+ }
+ if (f.form_lname && !f.form_lname.disabled) {
+ if (trimlen(f.form_lname.value) == 0) {
+  		if (f.form_lname.focus) f.form_lname.focus();
+  		$('#form_lname').parents('div.tab').each( function(){ var tabHeader = $('#header_' + $(this).attr('id') ); tabHeader.css('color','red'); } );   		$('#form_lname').attr('style','background:red'); 
+  		errMsgs[errMsgs.length] = 'Last Name'; 
+ } else {  		$('#form_lname').attr('style','');   		$('#form_lname').parents('div.tab').each( function(){ var tabHeader = $('#header_' + $(this).attr('id') ); tabHeader.css('color','');  } );  } 
+ }
+ if (f.form_DOB && !f.form_DOB.disabled) {
+ if (trimlen(f.form_DOB.value) == 0) {
+  		if (f.form_DOB.focus) f.form_DOB.focus();
+  		$('#form_DOB').parents('div.tab').each( function(){ var tabHeader = $('#header_' + $(this).attr('id') ); tabHeader.css('color','red'); } );   		$('#form_DOB').attr('style','background:red'); 
+  		errMsgs[errMsgs.length] = 'DOB'; 
+ } else {  		$('#form_DOB').attr('style','');   		$('#form_DOB').parents('div.tab').each( function(){ var tabHeader = $('#header_' + $(this).attr('id') ); tabHeader.css('color','');  } );  } 
+ }
+ if (f.form_sex && !f.form_sex.disabled) {
+  if (f.form_sex.selectedIndex <= 0) {
+   alert("Please choose a value for:\nSex");
+   if (f.form_sex.focus) f.form_sex.focus();
+   return false;
+  }
+ }
+      var msg = "";
+  msg += "The following fields are required:\n\n";
+  for ( var i = 0; i < errMsgs.length; i++ ) {
+         msg += errMsgs[i] + "\n";
+  }
+  msg += "\nPlease fill them in before continuing.";
+
+
+//Misc  Deceased Date Validation for Future Date
+var dateVal = document.getElementById("form_deceased_date").value;
+var currentDate;
+var d = new Date();
+month = '' + (d.getMonth() + 1),
+day = '' + d.getDate(),
+year = d.getFullYear();
+if (month.length < 2) month = '0' + month;
+if (day.length < 2) day = '0' + day;
+currentDate = year+'-'+month+'-'+day;
+if(errMsgs.length > 0 || dateVal > currentDate)
+{
+if(errMsgs.length > 0)
+    alert(msg);
+if(dateVal > currentDate)
+    alert ('Deceased Date should not be greater than Today');
+    return false;
+}
+ return true;
+}
+
+function toggleSearch(elem) {
+ var f = document.forms[0];
+ // Toggle background color.
+ if (elem.style.backgroundColor == '')
+  elem.style.backgroundColor = '#ff9919';
+ else
+  elem.style.backgroundColor = '';
+ if (force_submit) {
+  force_submit = false;
+  f.create.value = 'Create New Patient';
+ }
+ return true;
+}
+
+// If a <select> list is dropped down, this is its name.
+var open_sel_name = '';
+
+function selClick(elem) {
+ if (open_sel_name == elem.name) {
+  open_sel_name = '';
+ }
+ else {
+  open_sel_name = elem.name;
+  toggleSearch(elem);
+ }
+ return true;
+}
+
+function selBlur(elem) {
+ if (open_sel_name == elem.name) {
+  open_sel_name = '';
+ }
+ return true;
+}
+
+// This invokes the patient search dialog.
+function searchme() {
+ var f = document.forms[0];
+ var url = '../main/finder/patient_select.php?popup=1';
+
+ if (f.form_title.style.backgroundColor != '' && f.form_title.selectedIndex > 0) {
+  url += '&title=' + encodeURIComponent(f.form_title.options[f.form_title.selectedIndex].value);
+ }
+ if (f.form_fname.style.backgroundColor != '' && trimlen(f.form_fname.value) > 0) {
+  url += '&fname=' + encodeURIComponent(f.form_fname.value);
+ }
+ if (f.form_mname.style.backgroundColor != '' && trimlen(f.form_mname.value) > 0) {
+  url += '&mname=' + encodeURIComponent(f.form_mname.value);
+ }
+ if (f.form_lname.style.backgroundColor != '' && trimlen(f.form_lname.value) > 0) {
+  url += '&lname=' + encodeURIComponent(f.form_lname.value);
+ }
+ if (f.form_pubpid.style.backgroundColor != '' && trimlen(f.form_pubpid.value) > 0) {
+  url += '&pubpid=' + encodeURIComponent(f.form_pubpid.value);
+ }
+ if (f.form_DOB.style.backgroundColor != '' && trimlen(f.form_DOB.value) > 0) {
+  url += '&DOB=' + encodeURIComponent(f.form_DOB.value);
+ }
+ if (f.form_sex.style.backgroundColor != '' && f.form_sex.selectedIndex > 0) {
+  url += '&sex=' + encodeURIComponent(f.form_sex.options[f.form_sex.selectedIndex].value);
+ }
+ if (f.form_ss.style.backgroundColor != '' && trimlen(f.form_ss.value) > 0) {
+  url += '&ss=' + encodeURIComponent(f.form_ss.value);
+ }
+ if (f.form_drivers_license.style.backgroundColor != '' && trimlen(f.form_drivers_license.value) > 0) {
+  url += '&drivers_license=' + encodeURIComponent(f.form_drivers_license.value);
+ }
+ if (f.form_status.style.backgroundColor != '' && f.form_status.selectedIndex > 0) {
+  url += '&status=' + encodeURIComponent(f.form_status.options[f.form_status.selectedIndex].value);
+ }
+ if (f.form_genericname1.style.backgroundColor != '' && trimlen(f.form_genericname1.value) > 0) {
+  url += '&genericname1=' + encodeURIComponent(f.form_genericname1.value);
+ }
+ if (f.form_genericval1.style.backgroundColor != '' && trimlen(f.form_genericval1.value) > 0) {
+  url += '&genericval1=' + encodeURIComponent(f.form_genericval1.value);
+ }
+ if (f.form_genericname2.style.backgroundColor != '' && trimlen(f.form_genericname2.value) > 0) {
+  url += '&genericname2=' + encodeURIComponent(f.form_genericname2.value);
+ }
+ if (f.form_genericval2.style.backgroundColor != '' && trimlen(f.form_genericval2.value) > 0) {
+  url += '&genericval2=' + encodeURIComponent(f.form_genericval2.value);
+ }
+ if (f.form_billing_note.style.backgroundColor != '' && trimlen(f.form_billing_note.value) > 0) {
+  url += '&billing_note=' + encodeURIComponent(f.form_billing_note.value);
+ }
+ if (f.form_street.style.backgroundColor != '' && trimlen(f.form_street.value) > 0) {
+  url += '&street=' + encodeURIComponent(f.form_street.value);
+ }
+ if (f.form_city.style.backgroundColor != '' && trimlen(f.form_city.value) > 0) {
+  url += '&city=' + encodeURIComponent(f.form_city.value);
+ }
+ if (f.form_state.style.backgroundColor != '' && f.form_state.selectedIndex > 0) {
+  url += '&state=' + encodeURIComponent(f.form_state.options[f.form_state.selectedIndex].value);
+ }
+ if (f.form_postal_code.style.backgroundColor != '' && trimlen(f.form_postal_code.value) > 0) {
+  url += '&postal_code=' + encodeURIComponent(f.form_postal_code.value);
+ }
+ if (f.form_county.style.backgroundColor != '' && f.form_county.selectedIndex > 0) {
+  url += '&county=' + encodeURIComponent(f.form_county.options[f.form_county.selectedIndex].value);
+ }
+ if (f.form_country_code.style.backgroundColor != '' && f.form_country_code.selectedIndex > 0) {
+  url += '&country_code=' + encodeURIComponent(f.form_country_code.options[f.form_country_code.selectedIndex].value);
+ }
+ if (f.form_mothersname.style.backgroundColor != '' && trimlen(f.form_mothersname.value) > 0) {
+  url += '&mothersname=' + encodeURIComponent(f.form_mothersname.value);
+ }
+ if (f.form_contact_relationship.style.backgroundColor != '' && trimlen(f.form_contact_relationship.value) > 0) {
+  url += '&contact_relationship=' + encodeURIComponent(f.form_contact_relationship.value);
+ }
+ if (f.form_phone_contact.style.backgroundColor != '' && trimlen(f.form_phone_contact.value) > 0) {
+  url += '&phone_contact=' + encodeURIComponent(f.form_phone_contact.value);
+ }
+ if (f.form_phone_home.style.backgroundColor != '' && trimlen(f.form_phone_home.value) > 0) {
+  url += '&phone_home=' + encodeURIComponent(f.form_phone_home.value);
+ }
+ if (f.form_phone_biz.style.backgroundColor != '' && trimlen(f.form_phone_biz.value) > 0) {
+  url += '&phone_biz=' + encodeURIComponent(f.form_phone_biz.value);
+ }
+ if (f.form_phone_cell.style.backgroundColor != '' && trimlen(f.form_phone_cell.value) > 0) {
+  url += '&phone_cell=' + encodeURIComponent(f.form_phone_cell.value);
+ }
+ if (f.form_email.style.backgroundColor != '' && trimlen(f.form_email.value) > 0) {
+  url += '&email=' + encodeURIComponent(f.form_email.value);
+ }
+ if (f.form_email_direct.style.backgroundColor != '' && trimlen(f.form_email_direct.value) > 0) {
+  url += '&email_direct=' + encodeURIComponent(f.form_email_direct.value);
+ }
+ if (f.form_providerID.style.backgroundColor != '' && f.form_providerID.selectedIndex > 0) {
+  url += '&providerID=' + encodeURIComponent(f.form_providerID.options[f.form_providerID.selectedIndex].value);
+ }
+ if (f.form_ref_providerID.style.backgroundColor != '' && f.form_ref_providerID.selectedIndex > 0) {
+  url += '&ref_providerID=' + encodeURIComponent(f.form_ref_providerID.options[f.form_ref_providerID.selectedIndex].value);
+ }
+ if (f.form_pharmacy_id.style.backgroundColor != '' && f.form_pharmacy_id.selectedIndex > 0) {
+  url += '&pharmacy_id=' + encodeURIComponent(f.form_pharmacy_id.options[f.form_pharmacy_id.selectedIndex].value);
+ }
+ if (f.form_hipaa_notice.style.backgroundColor != '' && f.form_hipaa_notice.selectedIndex > 0) {
+  url += '&hipaa_notice=' + encodeURIComponent(f.form_hipaa_notice.options[f.form_hipaa_notice.selectedIndex].value);
+ }
+ if (f.form_hipaa_voice.style.backgroundColor != '' && f.form_hipaa_voice.selectedIndex > 0) {
+  url += '&hipaa_voice=' + encodeURIComponent(f.form_hipaa_voice.options[f.form_hipaa_voice.selectedIndex].value);
+ }
+ if (f.form_hipaa_message.style.backgroundColor != '' && trimlen(f.form_hipaa_message.value) > 0) {
+  url += '&hipaa_message=' + encodeURIComponent(f.form_hipaa_message.value);
+ }
+ if (f.form_hipaa_mail.style.backgroundColor != '' && f.form_hipaa_mail.selectedIndex > 0) {
+  url += '&hipaa_mail=' + encodeURIComponent(f.form_hipaa_mail.options[f.form_hipaa_mail.selectedIndex].value);
+ }
+ if (f.form_hipaa_allowsms.style.backgroundColor != '' && f.form_hipaa_allowsms.selectedIndex > 0) {
+  url += '&hipaa_allowsms=' + encodeURIComponent(f.form_hipaa_allowsms.options[f.form_hipaa_allowsms.selectedIndex].value);
+ }
+ if (f.form_hipaa_allowemail.style.backgroundColor != '' && f.form_hipaa_allowemail.selectedIndex > 0) {
+  url += '&hipaa_allowemail=' + encodeURIComponent(f.form_hipaa_allowemail.options[f.form_hipaa_allowemail.selectedIndex].value);
+ }
+ if (f.form_allow_imm_reg_use.style.backgroundColor != '' && f.form_allow_imm_reg_use.selectedIndex > 0) {
+  url += '&allow_imm_reg_use=' + encodeURIComponent(f.form_allow_imm_reg_use.options[f.form_allow_imm_reg_use.selectedIndex].value);
+ }
+ if (f.form_allow_imm_info_share.style.backgroundColor != '' && f.form_allow_imm_info_share.selectedIndex > 0) {
+  url += '&allow_imm_info_share=' + encodeURIComponent(f.form_allow_imm_info_share.options[f.form_allow_imm_info_share.selectedIndex].value);
+ }
+ if (f.form_allow_health_info_ex.style.backgroundColor != '' && f.form_allow_health_info_ex.selectedIndex > 0) {
+  url += '&allow_health_info_ex=' + encodeURIComponent(f.form_allow_health_info_ex.options[f.form_allow_health_info_ex.selectedIndex].value);
+ }
+ if (f.form_allow_patient_portal.style.backgroundColor != '' && f.form_allow_patient_portal.selectedIndex > 0) {
+  url += '&allow_patient_portal=' + encodeURIComponent(f.form_allow_patient_portal.options[f.form_allow_patient_portal.selectedIndex].value);
+ }
+ if (f.form_care_team.style.backgroundColor != '' && f.form_care_team.selectedIndex > 0) {
+  url += '&care_team=' + encodeURIComponent(f.form_care_team.options[f.form_care_team.selectedIndex].value);
+ }
+ if (f.form_cmsportal_login.style.backgroundColor != '' && trimlen(f.form_cmsportal_login.value) > 0) {
+  url += '&cmsportal_login=' + encodeURIComponent(f.form_cmsportal_login.value);
+ }
+ if (f.form_imm_reg_status.style.backgroundColor != '' && f.form_imm_reg_status.selectedIndex > 0) {
+  url += '&imm_reg_status=' + encodeURIComponent(f.form_imm_reg_status.options[f.form_imm_reg_status.selectedIndex].value);
+ }
+ if (f.form_imm_reg_stat_effdate.style.backgroundColor != '' && trimlen(f.form_imm_reg_stat_effdate.value) > 0) {
+  url += '&imm_reg_stat_effdate=' + encodeURIComponent(f.form_imm_reg_stat_effdate.value);
+ }
+ if (f.form_publicity_code.style.backgroundColor != '' && f.form_publicity_code.selectedIndex > 0) {
+  url += '&publicity_code=' + encodeURIComponent(f.form_publicity_code.options[f.form_publicity_code.selectedIndex].value);
+ }
+ if (f.form_publ_code_eff_date.style.backgroundColor != '' && trimlen(f.form_publ_code_eff_date.value) > 0) {
+  url += '&publ_code_eff_date=' + encodeURIComponent(f.form_publ_code_eff_date.value);
+ }
+ if (f.form_protect_indicator.style.backgroundColor != '' && f.form_protect_indicator.selectedIndex > 0) {
+  url += '&protect_indicator=' + encodeURIComponent(f.form_protect_indicator.options[f.form_protect_indicator.selectedIndex].value);
+ }
+ if (f.form_prot_indi_effdate.style.backgroundColor != '' && trimlen(f.form_prot_indi_effdate.value) > 0) {
+  url += '&prot_indi_effdate=' + encodeURIComponent(f.form_prot_indi_effdate.value);
+ }
+ if (f.form_industry.style.backgroundColor != '' && f.form_industry.selectedIndex > 0) {
+  url += '&industry=' + encodeURIComponent(f.form_industry.options[f.form_industry.selectedIndex].value);
+ }
+ if (f.form_occupation.style.backgroundColor != '' && trimlen(f.form_occupation.value) > 0) {
+  url += '&occupation=' + encodeURIComponent(f.form_occupation.value);
+ }
+ if (f.form_language.style.backgroundColor != '' && f.form_language.selectedIndex > 0) {
+  url += '&language=' + encodeURIComponent(f.form_language.options[f.form_language.selectedIndex].value);
+ }
+ if (f.form_family_size.style.backgroundColor != '' && trimlen(f.form_family_size.value) > 0) {
+  url += '&family_size=' + encodeURIComponent(f.form_family_size.value);
+ }
+ if (f.form_financial_review.style.backgroundColor != '' && trimlen(f.form_financial_review.value) > 0) {
+  url += '&financial_review=' + encodeURIComponent(f.form_financial_review.value);
+ }
+ if (f.form_monthly_income.style.backgroundColor != '' && trimlen(f.form_monthly_income.value) > 0) {
+  url += '&monthly_income=' + encodeURIComponent(f.form_monthly_income.value);
+ }
+ if (f.form_homeless.style.backgroundColor != '' && trimlen(f.form_homeless.value) > 0) {
+  url += '&homeless=' + encodeURIComponent(f.form_homeless.value);
+ }
+ if (f.form_interpretter.style.backgroundColor != '' && trimlen(f.form_interpretter.value) > 0) {
+  url += '&interpretter=' + encodeURIComponent(f.form_interpretter.value);
+ }
+ if (f.form_migrantseasonal.style.backgroundColor != '' && trimlen(f.form_migrantseasonal.value) > 0) {
+  url += '&migrantseasonal=' + encodeURIComponent(f.form_migrantseasonal.value);
+ }
+ if (f.form_referral_source.style.backgroundColor != '' && f.form_referral_source.selectedIndex > 0) {
+  url += '&referral_source=' + encodeURIComponent(f.form_referral_source.options[f.form_referral_source.selectedIndex].value);
+ }
+ if (f.form_vfc.style.backgroundColor != '' && f.form_vfc.selectedIndex > 0) {
+  url += '&vfc=' + encodeURIComponent(f.form_vfc.options[f.form_vfc.selectedIndex].value);
+ }
+ if (f.form_religion.style.backgroundColor != '' && f.form_religion.selectedIndex > 0) {
+  url += '&religion=' + encodeURIComponent(f.form_religion.options[f.form_religion.selectedIndex].value);
+ }
+ if (f.form_deceased_date.style.backgroundColor != '' && trimlen(f.form_deceased_date.value) > 0) {
+  url += '&deceased_date=' + encodeURIComponent(f.form_deceased_date.value);
+ }
+ if (f.form_deceased_reason.style.backgroundColor != '' && trimlen(f.form_deceased_reason.value) > 0) {
+  url += '&deceased_reason=' + encodeURIComponent(f.form_deceased_reason.value);
+ }
+ if (f.form_guardiansname.style.backgroundColor != '' && trimlen(f.form_guardiansname.value) > 0) {
+  url += '&guardiansname=' + encodeURIComponent(f.form_guardiansname.value);
+ }
+ if (f.form_guardianrelationship.style.backgroundColor != '' && f.form_guardianrelationship.selectedIndex > 0) {
+  url += '&guardianrelationship=' + encodeURIComponent(f.form_guardianrelationship.options[f.form_guardianrelationship.selectedIndex].value);
+ }
+ if (f.form_guardiansex.style.backgroundColor != '' && f.form_guardiansex.selectedIndex > 0) {
+  url += '&guardiansex=' + encodeURIComponent(f.form_guardiansex.options[f.form_guardiansex.selectedIndex].value);
+ }
+ if (f.form_guardianaddress.style.backgroundColor != '' && trimlen(f.form_guardianaddress.value) > 0) {
+  url += '&guardianaddress=' + encodeURIComponent(f.form_guardianaddress.value);
+ }
+ if (f.form_guardiancity.style.backgroundColor != '' && trimlen(f.form_guardiancity.value) > 0) {
+  url += '&guardiancity=' + encodeURIComponent(f.form_guardiancity.value);
+ }
+ if (f.form_guardianstate.style.backgroundColor != '' && f.form_guardianstate.selectedIndex > 0) {
+  url += '&guardianstate=' + encodeURIComponent(f.form_guardianstate.options[f.form_guardianstate.selectedIndex].value);
+ }
+ if (f.form_guardianpostalcode.style.backgroundColor != '' && trimlen(f.form_guardianpostalcode.value) > 0) {
+  url += '&guardianpostalcode=' + encodeURIComponent(f.form_guardianpostalcode.value);
+ }
+ if (f.form_guardiancountry.style.backgroundColor != '' && f.form_guardiancountry.selectedIndex > 0) {
+  url += '&guardiancountry=' + encodeURIComponent(f.form_guardiancountry.options[f.form_guardiancountry.selectedIndex].value);
+ }
+ if (f.form_guardianphone.style.backgroundColor != '' && trimlen(f.form_guardianphone.value) > 0) {
+  url += '&guardianphone=' + encodeURIComponent(f.form_guardianphone.value);
+ }
+ if (f.form_guardianworkphone.style.backgroundColor != '' && trimlen(f.form_guardianworkphone.value) > 0) {
+  url += '&guardianworkphone=' + encodeURIComponent(f.form_guardianworkphone.value);
+ }
+ if (f.form_guardianemail.style.backgroundColor != '' && trimlen(f.form_guardianemail.value) > 0) {
+  url += '&guardianemail=' + encodeURIComponent(f.form_guardianemail.value);
+ }
+
+ dlgopen(url, '_blank', 700, 500);
+}
+function srchDone(pid){
+    top.restoreSession();
+    document.location.href = "./../../patient_file/summary/demographics.php?set_pid=" + pid;
+}
+//-->
+
+</script>
+</head>
+
+<body class="body_top">
+
+<script> var constraints = {"form_fname":{"presence":true},"form_lname":{"presence":true},"form_DOB":{"presence":true},"form_sex":{"presence":true}}; </script>
+
+<form action="new_comprehensive_save.php" name="demographics_form" id="DEM" method="post" onsubmit="return submitme(1,event,&quot;DEM&quot;,constraints)">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h2>Search or Add Patient</h2>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-search" id="search" value="Search">
+                            Search                        </button>
+                                        <button type="button" class="btn btn-default btn-save" name="create" id="create" value="Create New Patient">
+                        Create New Patient                    </button>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+<table width="100%" cellpadding="0" cellspacing="8">
+ <tbody><tr>
+  <td align="left" valign="top">
+<span class="bold"><input type="checkbox" name="form_cb_1" id="form_cb_1" value="1" onclick="return divclick(this,&quot;div_1&quot;);" checked=""><b>Who</b></span>
+<div id="div_1" class="section" style="display:block;">
+ <table border="0" cellpadding="0">
+  <tbody><tr><td colspan="1" id="label_title" class="bold"><b>Name:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_title"><select name="form_title" id="form_title" class="form-control" onchange="checkSkipConditions();" title="Title"><option value="">Unassigned</option><option value="Mr.">Mr.</option>
+<option value="Mrs.">Mrs.</option>
+<option value="Ms.">Ms.</option>
+<option value="Dr.">Dr.</option>
+</select><b>&nbsp;</b><input type="text" class="form-control" name="form_fname" id="form_fname" size="10" maxlength="63" title="First Name" value="" onchange="checkSkipConditions();capitalizeMe(this);"><b>&nbsp;</b><input type="text" class="form-control" name="form_mname" id="form_mname" size="2" maxlength="63" title="Middle Name" value="" onchange="checkSkipConditions();capitalizeMe(this);"><b>&nbsp;</b><input type="text" class="form-control" name="form_lname" id="form_lname" size="10" maxlength="63" title="Last Name" value="" onchange="checkSkipConditions();capitalizeMe(this);"></td><td colspan="1" id="label_pubpid" class="bold" style="padding-left:10pt"><b>External ID:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_pubpid"><input type="text" class="form-control" name="form_pubpid" id="form_pubpid" size="10" maxlength="15" title="External identifier" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_DOB" class="required"><b>DOB:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_DOB"><input type="text" size="10" class="datepicker form-control" name="form_DOB" id="form_DOB" value="" title="Date of Birth" onchange="checkSkipConditions();"></td><td colspan="1" id="label_sex" class="required" style="padding-left:10pt"><b>Sex:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_sex"><select name="form_sex" id="form_sex" class="form-control" onchange="checkSkipConditions();" title="Sex"><option value="">Unassigned</option><option value="Female">Female</option>
+<option value="Male">Male</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_ss" class="bold"><b>S.S.:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_ss"><input type="text" class="form-control" name="form_ss" id="form_ss" size="11" maxlength="11" title="Social Security Number" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_drivers_license" class="bold" style="padding-left:10pt"><b>License/ID:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_drivers_license"><input type="text" class="form-control" name="form_drivers_license" id="form_drivers_license" size="15" maxlength="63" title="Drivers License or State ID" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_status" class="bold"><b>Marital Status:</b></td><td colspan="3" class="text data" style="padding-left:5pt" id="text_status"><select name="form_status" id="form_status" class="form-control" onchange="checkSkipConditions();" title="Marital Status"><option value="">Unassigned</option><option value="married">Married</option>
+<option value="single">Single</option>
+<option value="divorced">Divorced</option>
+<option value="widowed">Widowed</option>
+<option value="separated">Separated</option>
+<option value="domestic partner">Domestic Partner</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_genericname1" class="bold"><b>User Defined:</b></td><td colspan="3" class="text data" style="padding-left:5pt" id="text_genericname1"><input type="text" class="form-control" name="form_genericname1" id="form_genericname1" size="15" maxlength="63" title="User Defined Field" value="" onchange="checkSkipConditions();"><b>&nbsp;</b><input type="text" class="form-control" name="form_genericval1" id="form_genericval1" size="15" maxlength="63" title="User Defined Field" value="" onchange="checkSkipConditions();"><b>&nbsp;</b><input type="text" class="form-control" name="form_genericname2" id="form_genericname2" size="15" maxlength="63" title="User Defined Field" value="" onchange="checkSkipConditions();"><b>&nbsp;</b><input type="text" class="form-control" name="form_genericval2" id="form_genericval2" size="15" maxlength="63" title="User Defined Field" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_billing_note" class="bold"><b>Billing Note:</b></td><td colspan="3" class="text data" style="padding-left:5pt" id="text_billing_note"><input type="text" class="form-control" name="form_billing_note" id="form_billing_note" size="60" title="Patient Level Billing Note (Collections)" value="" onchange="checkSkipConditions();"></td></tr>
+ </tbody></table>
+</div>
+<br><span class="bold"><input type="checkbox" name="form_cb_2" id="form_cb_2" value="1" onclick="return divclick(this,&quot;div_2&quot;);"><b>Contact</b></span>
+<div id="div_2" class="section" style="display: block;">
+ <table border="0" cellpadding="0">
+  <tbody><tr><td colspan="1" id="label_street" class="bold"><b>Address:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_street"><input type="text" class="form-control" name="form_street" id="form_street" size="25" maxlength="63" title="Street and Number" value="" onchange="checkSkipConditions();capitalizeMe(this);"></td><td colspan="1" id="label_city" class="bold" style="padding-left:10pt"><b>City:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_city"><input type="text" class="form-control" name="form_city" id="form_city" size="15" maxlength="63" title="City Name" value="" onchange="checkSkipConditions();capitalizeMe(this);"></td></tr>
+  <tr><td colspan="1" id="label_state" class="bold"><b>State:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_state"><select name="form_state" id="form_state" class="form-control addtolistclass_state" onchange="checkSkipConditions();" title="State/Locality"><option value="">Unassigned</option><option value="AL">Alabama</option>
+<option value="AK">Alaska</option>
+<option value="AZ">Arizona</option>
+<option value="AR">Arkansas</option>
+<option value="CA">California</option>
+<option value="CO">Colorado</option>
+<option value="CT">Connecticut</option>
+<option value="DE">Delaware</option>
+<option value="DC">District of Columbia</option>
+<option value="FL">Florida</option>
+<option value="GA">Georgia</option>
+<option value="HI">Hawaii</option>
+<option value="ID">Idaho</option>
+<option value="IL">Illinois</option>
+<option value="IN">Indiana</option>
+<option value="IA">Iowa</option>
+<option value="KS">Kansas</option>
+<option value="KY">Kentucky</option>
+<option value="LA">Louisiana</option>
+<option value="ME">Maine</option>
+<option value="MD">Maryland</option>
+<option value="MA">Massachusetts</option>
+<option value="MI">Michigan</option>
+<option value="MN">Minnesota</option>
+<option value="MS">Mississippi</option>
+<option value="MO">Missouri</option>
+<option value="MT">Montana</option>
+<option value="NE">Nebraska</option>
+<option value="NV">Nevada</option>
+<option value="NH">New Hampshire</option>
+<option value="NJ">New Jersey</option>
+<option value="NM">New Mexico</option>
+<option value="NY">New York</option>
+<option value="NC">North Carolina</option>
+<option value="ND">North Dakota</option>
+<option value="OH">Ohio</option>
+<option value="OK">Oklahoma</option>
+<option value="OR">Oregon</option>
+<option value="PA">Pennsylvania</option>
+<option value="PR">Puerto Rico</option>
+<option value="RI">Rhode Island</option>
+<option value="SC">South Carolina</option>
+<option value="SD">South Dakota</option>
+<option value="TN">Tennessee</option>
+<option value="TX">Texas</option>
+<option value="UT">Utah</option>
+<option value="VT">Vermont</option>
+<option value="VA">Virginia</option>
+<option value="WA">Washington</option>
+<option value="WV">West Virginia</option>
+<option value="WI">Wisconsin</option>
+<option value="WY">Wyoming</option>
+</select></td><td colspan="1" id="label_postal_code" class="bold" style="padding-left:10pt"><b>Postal Code:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_postal_code"><input type="text" class="form-control" name="form_postal_code" id="form_postal_code" size="6" maxlength="63" title="Postal Code" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_county" class="bold"><b>County:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_county"><select name="form_county" id="form_county" class="form-control addtolistclass_county" onchange="checkSkipConditions();" title="County"><option value="">Unassigned</option><option value="adair">ADAIR</option>
+<option value="andrew">ANDREW</option>
+<option value="atchison">ATCHISON</option>
+<option value="audrain">AUDRAIN</option>
+<option value="barry">BARRY</option>
+</select></td><td colspan="1" id="label_country_code" class="bold" style="padding-left:10pt"><b>Country:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_country_code"><select name="form_country_code" id="form_country_code" class="form-control addtolistclass_country" onchange="checkSkipConditions();" title="Country"><option value="">Unassigned</option><option value="USA">USA</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_mothersname" class="bold"><b>Mother`s Name:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_mothersname"><input type="text" class="form-control" name="form_mothersname" id="form_mothersname" size="20" maxlength="63" title="" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_contact_relationship" class="bold" style="padding-left:10pt"><b>Emergency Contact:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_contact_relationship"><input type="text" class="form-control" name="form_contact_relationship" id="form_contact_relationship" size="10" maxlength="63" title="Emergency Contact Person" value="" onchange="checkSkipConditions();capitalizeMe(this);"></td></tr>
+  <tr><td colspan="1" id="label_phone_contact" class="bold"><b>Emergency Phone:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_phone_contact"><input type="text" class="form-control" name="form_phone_contact" id="form_phone_contact" size="20" maxlength="63" title="Emergency Contact Phone Number" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_phone_home" class="bold" style="padding-left:10pt"><b>Home Phone:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_phone_home"><input type="text" class="form-control" name="form_phone_home" id="form_phone_home" size="20" maxlength="63" title="Home Phone Number" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_phone_biz" class="bold"><b>Work Phone:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_phone_biz"><input type="text" class="form-control" name="form_phone_biz" id="form_phone_biz" size="20" maxlength="63" title="Work Phone Number" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_phone_cell" class="bold" style="padding-left:10pt"><b>Mobile Phone:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_phone_cell"><input type="text" class="form-control" name="form_phone_cell" id="form_phone_cell" size="20" maxlength="63" title="Cell Phone Number" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_email" class="bold"><b>Contact Email:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_email"><input type="text" class="form-control" name="form_email" id="form_email" size="30" maxlength="95" title="Contact Email Address" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_email_direct" class="bold" style="padding-left:10pt"><b>Trusted Email:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_email_direct"><input type="text" class="form-control" name="form_email_direct" id="form_email_direct" size="30" maxlength="95" title="Trusted Direct Email Address" value="" onchange="checkSkipConditions();"></td></tr>
+ </tbody></table>
+</div>
+<br><span class="bold"><input type="checkbox" name="form_cb_3" id="form_cb_3" value="1" onclick="return divclick(this,&quot;div_3&quot;);"><b>Choices</b></span>
+<div id="div_3" class="section" style="display:none;">
+ <table border="0" cellpadding="0">
+  <tbody><tr><td colspan="1" id="label_providerID" class="bold"><b>Provider:</b></td><td colspan="3" class="text data" style="padding-left:5pt" id="text_providerID"><select name="form_providerID" id="form_providerID" title="Provider" class="form-control" onchange="checkSkipConditions();"><option value="">Unassigned</option><option value="1">Administrator Administrator</option><option value="4">Jaswanth Gorripati</option><option value="6">Sandeep Perugu</option><option value="7">Satya Vantipalli</option><option value="8">Satyanarayana Vantipalli</option><option value="5">Saiomkar Vudutha</option></select></td></tr>
+  <tr><td colspan="1" id="label_ref_providerID" class="bold"><b>Referring Provider:</b></td><td colspan="3" class="text data" style="padding-left:5pt" id="text_ref_providerID"><select name="form_ref_providerID" id="form_ref_providerID" title="Referring Provider" class="form-control" onchange="checkSkipConditions();"><option value="">Unassigned</option><option value="1">Administrator Administrator</option><option value="4">Jaswanth Gorripati</option><option value="6">Sandeep Perugu</option><option value="7">Satya Vantipalli</option><option value="8">Satyanarayana Vantipalli</option><option value="5">Saiomkar Vudutha</option></select></td></tr>
+  <tr><td colspan="1" id="label_pharmacy_id" class="bold"><b>Pharmacy:</b></td><td colspan="3" class="text data" style="padding-left:5pt" id="text_pharmacy_id"><select name="form_pharmacy_id" id="form_pharmacy_id" title="Preferred Pharmacy" class="form-control" onchange="checkSkipConditions();"><option value="0"></option><option value="8">Aciana Pharmaceuticals  646-837-0837 / Bangalore and HYD / BANGALORE</option></select></td></tr>
+  <tr><td colspan="1" id="label_hipaa_notice" class="bold"><b>HIPAA Notice Received:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_hipaa_notice"><select name="form_hipaa_notice" id="form_hipaa_notice" class="form-control" onchange="checkSkipConditions();" title="Did you receive a copy of the HIPAA Notice?"><option value="">Unassigned</option><option value="NO">NO</option>
+<option value="YES">YES</option>
+</select></td><td colspan="1" id="label_hipaa_voice" class="bold" style="padding-left:10pt"><b>Allow Voice Message:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_hipaa_voice"><select name="form_hipaa_voice" id="form_hipaa_voice" class="form-control" onchange="checkSkipConditions();" title="Allow telephone messages?"><option value="">Unassigned</option><option value="NO">NO</option>
+<option value="YES">YES</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_hipaa_message" class="bold"><b>Leave Message With:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_hipaa_message"><input type="text" class="form-control" name="form_hipaa_message" id="form_hipaa_message" size="20" maxlength="63" title="With whom may we leave a message?" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_hipaa_mail" class="bold" style="padding-left:10pt"><b>Allow Mail Message:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_hipaa_mail"><select name="form_hipaa_mail" id="form_hipaa_mail" class="form-control" onchange="checkSkipConditions();" title="Allow email messages?"><option value="">Unassigned</option><option value="NO">NO</option>
+<option value="YES">YES</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_hipaa_allowsms" class="bold"><b>Allow SMS:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_hipaa_allowsms"><select name="form_hipaa_allowsms" id="form_hipaa_allowsms" class="form-control" onchange="checkSkipConditions();" title="Allow SMS (text messages)?"><option value="">Unassigned</option><option value="NO">NO</option>
+<option value="YES">YES</option>
+</select></td><td colspan="1" id="label_hipaa_allowemail" class="bold" style="padding-left:10pt"><b>Allow Email:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_hipaa_allowemail"><select name="form_hipaa_allowemail" id="form_hipaa_allowemail" class="form-control" onchange="checkSkipConditions();" title="Allow Email?"><option value="">Unassigned</option><option value="NO">NO</option>
+<option value="YES">YES</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_allow_imm_reg_use" class="bold"><b>Allow Immunization Registry Use:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_allow_imm_reg_use"><select name="form_allow_imm_reg_use" id="form_allow_imm_reg_use" class="form-control" onchange="checkSkipConditions();" title=""><option value="">Unassigned</option><option value="NO">NO</option>
+<option value="YES">YES</option>
+</select></td><td colspan="1" id="label_allow_imm_info_share" class="bold" style="padding-left:10pt"><b>Allow Immunization Info Sharing:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_allow_imm_info_share"><select name="form_allow_imm_info_share" id="form_allow_imm_info_share" class="form-control" onchange="checkSkipConditions();" title=""><option value="">Unassigned</option><option value="NO">NO</option>
+<option value="YES">YES</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_allow_health_info_ex" class="bold"><b>Allow Health Information Exchange:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_allow_health_info_ex"><select name="form_allow_health_info_ex" id="form_allow_health_info_ex" class="form-control" onchange="checkSkipConditions();" title=""><option value="">Unassigned</option><option value="NO">NO</option>
+<option value="YES">YES</option>
+</select></td><td colspan="1" id="label_allow_patient_portal" class="bold" style="padding-left:10pt"><b>Allow Patient Portal:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_allow_patient_portal"><select name="form_allow_patient_portal" id="form_allow_patient_portal" class="form-control" onchange="checkSkipConditions();" title=""><option value="">Unassigned</option><option value="NO">NO</option>
+<option value="YES">YES</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_care_team" class="bold"><b>Care Team:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_care_team"><select name="form_care_team" id="form_care_team" title="" class="form-control" onchange="checkSkipConditions();"><option value="">Unassigned</option><option value="1">Administrator Administrator</option><option value="4">Jaswanth Gorripati</option><option value="6">Sandeep Perugu</option><option value="7">Satya Vantipalli</option><option value="8">Satyanarayana Vantipalli</option><option value="5">Saiomkar Vudutha</option></select></td><td colspan="1" id="label_cmsportal_login" class="bold" style="padding-left:10pt"><b>CMS Portal Login:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_cmsportal_login"><input type="text" class="form-control" name="form_cmsportal_login" id="form_cmsportal_login" size="30" maxlength="60" title="CMS Portal Login ID" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_imm_reg_status" class="bold"><b>Immunization Registry Status:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_imm_reg_status"><select name="form_imm_reg_status" id="form_imm_reg_status" class="form-control" onchange="checkSkipConditions();" title="Immunization Registry Status"><option value="">Unassigned</option><option value="active">Active</option>
+<option value="inactive_lost_to_follow_up">Inactive - Lost to follow - up</option>
+<option value="inactive_moved_gone_elsewhere">Inactive - Moved or gone elsewhere</option>
+<option value="inactive_permanently_inactive">Inactive - Permanently inactive</option>
+<option value="inactive_unspecified">Inactive - Unspecified</option>
+<option value="unknown">Unknown</option>
+</select></td><td colspan="1" id="label_imm_reg_stat_effdate" class="bold" style="padding-left:10pt"><b>Immunization Registry Status Effective Date:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_imm_reg_stat_effdate"><input type="text" size="10" class="datepicker form-control" name="form_imm_reg_stat_effdate" id="form_imm_reg_stat_effdate" value="" title="Immunization Registry Status Effective Date" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_publicity_code" class="bold"><b>Publicity Code:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_publicity_code"><select name="form_publicity_code" id="form_publicity_code" class="form-control" onchange="checkSkipConditions();" title="Publicity Code"><option value="">Unassigned</option><option value="no_reminder_recall">No reminder/recall</option>
+<option value="reminder_recall_any_method">Reminder/recall - any method</option>
+<option value="reminder_recall_no_calls">Reminder/recall - no calls</option>
+<option value="reminder_only_any_method">Reminder only - any method</option>
+<option value="reminder_only_no_calls">Reminder only - no calls</option>
+<option value="recall_only_any_method">Recall only - any method</option>
+<option value="recall_only_no_calls">Recall only - no calls</option>
+<option value="reminder_recall_to_provider">Reminder/recall - to provider</option>
+<option value="reminder_to_provider">Reminder to provider</option>
+<option value="reminder_to_provider_no_recall">Only reminder to provider, no recall</option>
+<option value="recall_to_provider">Recall to provider</option>
+<option value="recall_to_provider_no_reminder">Only recall to provider, no reminder</option>
+</select></td><td colspan="1" id="label_publ_code_eff_date" class="bold" style="padding-left:10pt"><b>Publicity Code Effective Date:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_publ_code_eff_date"><input type="text" size="10" class="datepicker form-control" name="form_publ_code_eff_date" id="form_publ_code_eff_date" value="" title="Publicity Code Effective Date" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_protect_indicator" class="bold"><b>Protection Indicator:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_protect_indicator"><select name="form_protect_indicator" id="form_protect_indicator" class="form-control" onchange="checkSkipConditions();" title="Protection Indicator"><option value="">Unassigned</option><option value="NO">NO</option>
+<option value="YES">YES</option>
+</select></td><td colspan="1" id="label_prot_indi_effdate" class="bold" style="padding-left:10pt"><b>Protection Indicator Effective Date:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_prot_indi_effdate"><input type="text" size="10" class="datepicker form-control" name="form_prot_indi_effdate" id="form_prot_indi_effdate" value="" title="Protection Indicator Effective Date" onchange="checkSkipConditions();"></td></tr>
+ </tbody></table>
+</div>
+<br><span class="bold"><input type="checkbox" name="form_cb_4" id="form_cb_4" value="1" onclick="return divclick(this,&quot;div_4&quot;);"><b>Employer</b></span>
+<div id="div_4" class="section" style="display:none;">
+ <table border="0" cellpadding="0">
+  <tbody><tr><td colspan="1" id="label_industry" class="bold"><b>Industry:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_industry"><select name="form_industry" id="form_industry" class="form-control addtolistclass_Industry" onchange="checkSkipConditions();" title="Industry"><option value="">Unassigned</option><option value="law_firm">Law Firm</option>
+<option value="engineering_firm">Engineering Firm</option>
+<option value="construction_firm">Construction Firm</option>
+<option value="Aciana Health Systems">Aciana Health Systems</option>
+</select></td><td colspan="1" id="label_occupation" class="bold" style="padding-left:10pt"><b>Occupation:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_occupation"><input type="text" class="form-control" name="form_occupation" id="form_occupation" size="20" maxlength="63" title="Occupation" value="" onchange="checkSkipConditions();capitalizeMe(this);"></td></tr>
+  <tr><td colspan="1" id="label_em_name" class="bold"><b>Employer Name:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_em_name"><input type="text" class="form-control" name="form_em_name" id="form_em_name" size="20" maxlength="63" title="Employer Name" value="" onchange="checkSkipConditions();capitalizeMe(this);"></td><td colspan="1" id="label_em_street" class="bold" style="padding-left:10pt"><b>Employer Address:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_em_street"><input type="text" class="form-control" name="form_em_street" id="form_em_street" size="25" maxlength="63" title="Street and Number" value="" onchange="checkSkipConditions();capitalizeMe(this);"></td></tr>
+  <tr><td colspan="1" id="label_em_city" class="bold"><b>City:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_em_city"><input type="text" class="form-control" name="form_em_city" id="form_em_city" size="15" maxlength="63" title="City Name" value="" onchange="checkSkipConditions();capitalizeMe(this);"></td><td colspan="1" id="label_em_state" class="bold" style="padding-left:10pt"><b>State:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_em_state"><select name="form_em_state" id="form_em_state" class="form-control addtolistclass_state" onchange="checkSkipConditions();" title="State/Locality"><option value="">Unassigned</option><option value="AL">Alabama</option>
+<option value="AK">Alaska</option>
+<option value="AZ">Arizona</option>
+<option value="AR">Arkansas</option>
+<option value="CA">California</option>
+<option value="CO">Colorado</option>
+<option value="CT">Connecticut</option>
+<option value="DE">Delaware</option>
+<option value="DC">District of Columbia</option>
+<option value="FL">Florida</option>
+<option value="GA">Georgia</option>
+<option value="HI">Hawaii</option>
+<option value="ID">Idaho</option>
+<option value="IL">Illinois</option>
+<option value="IN">Indiana</option>
+<option value="IA">Iowa</option>
+<option value="KS">Kansas</option>
+<option value="KY">Kentucky</option>
+<option value="LA">Louisiana</option>
+<option value="ME">Maine</option>
+<option value="MD">Maryland</option>
+<option value="MA">Massachusetts</option>
+<option value="MI">Michigan</option>
+<option value="MN">Minnesota</option>
+<option value="MS">Mississippi</option>
+<option value="MO">Missouri</option>
+<option value="MT">Montana</option>
+<option value="NE">Nebraska</option>
+<option value="NV">Nevada</option>
+<option value="NH">New Hampshire</option>
+<option value="NJ">New Jersey</option>
+<option value="NM">New Mexico</option>
+<option value="NY">New York</option>
+<option value="NC">North Carolina</option>
+<option value="ND">North Dakota</option>
+<option value="OH">Ohio</option>
+<option value="OK">Oklahoma</option>
+<option value="OR">Oregon</option>
+<option value="PA">Pennsylvania</option>
+<option value="PR">Puerto Rico</option>
+<option value="RI">Rhode Island</option>
+<option value="SC">South Carolina</option>
+<option value="SD">South Dakota</option>
+<option value="TN">Tennessee</option>
+<option value="TX">Texas</option>
+<option value="UT">Utah</option>
+<option value="VT">Vermont</option>
+<option value="VA">Virginia</option>
+<option value="WA">Washington</option>
+<option value="WV">West Virginia</option>
+<option value="WI">Wisconsin</option>
+<option value="WY">Wyoming</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_em_postal_code" class="bold"><b>Postal Code:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_em_postal_code"><input type="text" class="form-control" name="form_em_postal_code" id="form_em_postal_code" size="6" maxlength="63" title="Postal Code" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_em_country" class="bold" style="padding-left:10pt"><b>Country:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_em_country"><select name="form_em_country" id="form_em_country" class="form-control addtolistclass_country" onchange="checkSkipConditions();" title="Country"><option value="">Unassigned</option><option value="USA">USA</option>
+</select></td></tr>
+ </tbody></table>
+</div>
+<br><span class="bold"><input type="checkbox" name="form_cb_5" id="form_cb_5" value="1" onclick="return divclick(this,&quot;div_5&quot;);"><b>Stats</b></span>
+<div id="div_5" class="section" style="display:none;">
+ <table border="0" cellpadding="0">
+  <tbody><tr><td colspan="1" id="label_language" class="bold"><b>Language:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_language"><select name="form_language" id="form_language" class="form-control addtolistclass_language" onchange="checkSkipConditions();" title="Preferred Language"><option value="">Unassigned</option><option value="declne_to_specfy">Declined To Specify</option>
+<option value="abkhazian">Abkhazian</option>
+<option value="afar">Afar</option>
+<option value="afrikaans">Afrikaans</option>
+<option value="akan">Akan</option>
+<option value="albanian">Albanian</option>
+<option value="amharic">Amharic</option>
+<option value="arabic">Arabic</option>
+<option value="aragonese">Aragonese</option>
+<option value="armenian">Armenian</option>
+<option value="assamese">Assamese</option>
+<option value="avaric">Avaric</option>
+<option value="avestan">Avestan</option>
+<option value="aymara">Aymara</option>
+<option value="azerbaijani">Azerbaijani</option>
+<option value="bambara">Bambara</option>
+<option value="bashkir">Bashkir</option>
+<option value="basque">Basque</option>
+<option value="belarusian">Belarusian</option>
+<option value="bengali">Bengali</option>
+<option value="bihari_languages">Bihari languages</option>
+<option value="bislama">Bislama</option>
+<option value="bokmal_norwegian_norwegian_bok">Bokmål, Norwegian; Norwegian Bokmål</option>
+<option value="bosnian">Bosnian</option>
+<option value="breton">Breton</option>
+<option value="bulgarian">Bulgarian</option>
+<option value="burmese">Burmese</option>
+<option value="catalan_valencian">Catalan; Valencian</option>
+<option value="central_khmer">Central Khmer</option>
+<option value="chamorro">Chamorro</option>
+<option value="chechen">Chechen</option>
+<option value="chichewa_chewa_nyanja">Chichewa; Chewa; Nyanja</option>
+<option value="chinese">Chinese</option>
+<option value="church_slavic_old_slavonic_chu">Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic</option>
+<option value="chuvash">Chuvash</option>
+<option value="cornish">Cornish</option>
+<option value="corsican">Corsican</option>
+<option value="cree">Cree</option>
+<option value="croatian">Croatian</option>
+<option value="czech">Czech</option>
+<option value="danish">Danish</option>
+<option value="divehi_dhivehi_maldivian">Divehi; Dhivehi; Maldivian</option>
+<option value="dutch_flemish">Dutch; Flemish</option>
+<option value="dzongkha">Dzongkha</option>
+<option value="English">English</option>
+<option value="English">English</option>
+<option value="esperanto">Esperanto</option>
+<option value="estonian">Estonian</option>
+<option value="ewe">Ewe</option>
+<option value="faroese">Faroese</option>
+<option value="fijian">Fijian</option>
+<option value="finnish">Finnish</option>
+<option value="french">French</option>
+<option value="fulah">Fulah</option>
+<option value="gaelic_scottish_gaelic">Gaelic; Scottish Gaelic</option>
+<option value="galician">Galician</option>
+<option value="ganda">Ganda</option>
+<option value="georgian">Georgian</option>
+<option value="german">German</option>
+<option value="greek">Greek, Modern (1453-)</option>
+<option value="guarani">Guarani</option>
+<option value="gujarati">Gujarati</option>
+<option value="haitian_haitian_creole">Haitian; Haitian Creole</option>
+<option value="hausa">Hausa</option>
+<option value="hebrew">Hebrew</option>
+<option value="herero">Herero</option>
+<option value="hindi">Hindi</option>
+<option value="hiri_motu">Hiri Motu</option>
+<option value="hungarian">Hungarian</option>
+<option value="icelandic">Icelandic</option>
+<option value="ido">Ido</option>
+<option value="igbo">Igbo</option>
+<option value="indonesian">Indonesian</option>
+<option value="interlingua_international_auxi">Interlingua (International Auxiliary Language Association)</option>
+<option value="interlingue_occidental">Interlingue; Occidental</option>
+<option value="inuktitut">Inuktitut</option>
+<option value="inupiaq">Inupiaq</option>
+<option value="irish">Irish</option>
+<option value="italian">Italian</option>
+<option value="japanese">Japanese</option>
+<option value="javanese">Javanese</option>
+<option value="kalaallisut_greenlandic">Kalaallisut; Greenlandic</option>
+<option value="kannada">Kannada</option>
+<option value="kanuri">Kanuri</option>
+<option value="kashmiri">Kashmiri</option>
+<option value="kazakh">Kazakh</option>
+<option value="kikuyu_gikuyu">Kikuyu; Gikuyu</option>
+<option value="kinyarwanda">Kinyarwanda</option>
+<option value="kirghiz_kyrgyz">Kirghiz; Kyrgyz</option>
+<option value="komi">Komi</option>
+<option value="kongo">Kongo</option>
+<option value="korean">Korean</option>
+<option value="kuanyama_kwanyama">Kuanyama; Kwanyama</option>
+<option value="kurdish">Kurdish</option>
+<option value="laotian">Lao</option>
+<option value="latin">Latin</option>
+<option value="latvian">Latvian</option>
+<option value="limburgan_limburger_limburgish">Limburgan; Limburger; Limburgish</option>
+<option value="lingala">Lingala</option>
+<option value="lithuanian">Lithuanian</option>
+<option value="luba-katanga">Luba-Katanga</option>
+<option value="luxembourgish_letzeburgesch">Luxembourgish; Letzeburgesch</option>
+<option value="macedonian">Macedonian</option>
+<option value="malagasy">Malagasy</option>
+<option value="malay">Malay</option>
+<option value="malayalam">Malayalam</option>
+<option value="maltese">Maltese</option>
+<option value="manx">Manx</option>
+<option value="maori">Maori</option>
+<option value="marathi">Marathi</option>
+<option value="marshallese">Marshallese</option>
+<option value="mongolian">Mongolian</option>
+<option value="nauru">Nauru</option>
+<option value="navajo_navaho">Navajo; Navaho</option>
+<option value="ndebele_north_north_ndebele">Ndebele, North; North Ndebele</option>
+<option value="ndebele_south_south_ndebele">Ndebele, South; South Ndebele</option>
+<option value="ndonga">Ndonga</option>
+<option value="nepali">Nepali</option>
+<option value="northern_sami">Northern Sami</option>
+<option value="norwegian">Norwegian</option>
+<option value="norwegian_nynorsk_nynorsk_norw">Norwegian Nynorsk; Nynorsk, Norwegian</option>
+<option value="occitan_post_1500">Occitan (post 1500)</option>
+<option value="ojibwa">Ojibwa</option>
+<option value="oriya">Oriya</option>
+<option value="oromo">Oromo</option>
+<option value="ossetian_ossetic">Ossetian; Ossetic</option>
+<option value="pali">Pali</option>
+<option value="persian">Persian</option>
+<option value="polish">Polish</option>
+<option value="portuguese">Portuguese</option>
+<option value="punjabi">Punjabi</option>
+<option value="pushto_pashto">Pushto; Pashto</option>
+<option value="quechua">Quechua</option>
+<option value="romanian_moldavian_moldovan">Romanian; Moldavian; Moldovan</option>
+<option value="romansh">Romansh</option>
+<option value="rundi">Rundi</option>
+<option value="russian">Russian</option>
+<option value="samoan">Samoan</option>
+<option value="sango">Sango</option>
+<option value="sanskrit">Sanskrit</option>
+<option value="sardinian">Sardinian</option>
+<option value="serbian">Serbian</option>
+<option value="shona">Shona</option>
+<option value="sichuan_yi_nuosu">Sichuan Yi; Nuosu</option>
+<option value="sindhi">Sindhi</option>
+<option value="sinhala_sinhalese">Sinhala; Sinhalese</option>
+<option value="slovak">Slovak</option>
+<option value="slovenian">Slovenian</option>
+<option value="somali">Somali</option>
+<option value="sotho_southern">Sotho, Southern</option>
+<option value="Spanish">Spanish</option>
+<option value="sundanese">Sundanese</option>
+<option value="swahili">Swahili</option>
+<option value="swati">Swati</option>
+<option value="swedish">Swedish</option>
+<option value="tagalog">Tagalog</option>
+<option value="tahitian">Tahitian</option>
+<option value="tajik">Tajik</option>
+<option value="tamil">Tamil</option>
+<option value="tatar">Tatar</option>
+<option value="telugu">Telugu</option>
+<option value="thai">Thai</option>
+<option value="tibetan">Tibetan</option>
+<option value="tigrinya">Tigrinya</option>
+<option value="tonga_tonga_islands">Tonga (Tonga Islands)</option>
+<option value="tsonga">Tsonga</option>
+<option value="tswana">Tswana</option>
+<option value="turkish">Turkish</option>
+<option value="turkmen">Turkmen</option>
+<option value="twi">Twi</option>
+<option value="uighur_uyghur">Uighur; Uyghur</option>
+<option value="ukrainian">Ukrainian</option>
+<option value="urdu">Urdu</option>
+<option value="uzbek">Uzbek</option>
+<option value="venda">Venda</option>
+<option value="vietnamese">Vietnamese</option>
+<option value="volapuk">Volapük</option>
+<option value="walloon">Walloon</option>
+<option value="welsh">Welsh</option>
+<option value="western_frisian">Western Frisian</option>
+<option value="wolof">Wolof</option>
+<option value="xhosa">Xhosa</option>
+<option value="yiddish">Yiddish</option>
+<option value="yoruba">Yoruba</option>
+<option value="zhuang_chuang">Zhuang; Chuang</option>
+<option value="zulu">Zulu</option>
+</select></td><td colspan="1" id="label_ethnicity" class="bold" style="padding-left:10pt"><b>Ethnicity:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_ethnicity"><select name="form_ethnicity" id="form_ethnicity" class="form-control" onchange="checkSkipConditions();" title="Ethnicity"><option value="">Unassigned</option><option value="declne_to_specfy">Declined To Specify</option>
+<option value="hisp_or_latin">Hispanic or Latino</option>
+<option value="not_hisp_or_latin">Not Hispanic or Latino</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_race" class="bold"><b>Race:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_race"><select name="form_race" id="form_race" class="form-control" onchange="checkSkipConditions();" title="Race"><option value="">Unassigned</option><option value="declne_to_specfy">Declined To Specify</option>
+<option value="amer_ind_or_alaska_native">American Indian or Alaska Native</option>
+<option value="Asian">Asian</option>
+<option value="black_or_afri_amer">Black or African American</option>
+<option value="native_hawai_or_pac_island">Native Hawaiian or Other Pacific Islander</option>
+<option value="white">White</option>
+</select></td><td colspan="1" id="label_family_size" class="bold" style="padding-left:10pt"><b>Family Size:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_family_size"><input type="text" class="form-control" name="form_family_size" id="form_family_size" size="20" maxlength="63" title="Family Size" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_financial_review" class="bold"><b>Financial Review Date:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_financial_review"><input type="text" class="form-control" name="form_financial_review" id="form_financial_review" size="10" maxlength="20" title="Financial Review Date" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_monthly_income" class="bold" style="padding-left:10pt"><b>Monthly Income:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_monthly_income"><input type="text" class="form-control" name="form_monthly_income" id="form_monthly_income" size="20" maxlength="63" title="Monthly Income" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_homeless" class="bold"><b>Homeless, etc.:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_homeless"><input type="text" class="form-control" name="form_homeless" id="form_homeless" size="20" maxlength="63" title="Homeless or similar?" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_interpretter" class="bold" style="padding-left:10pt"><b>Interpreter:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_interpretter"><input type="text" class="form-control" name="form_interpretter" id="form_interpretter" size="20" maxlength="63" title="Interpreter needed?" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_migrantseasonal" class="bold"><b>Migrant/Seasonal:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_migrantseasonal"><input type="text" class="form-control" name="form_migrantseasonal" id="form_migrantseasonal" size="20" maxlength="63" title="Migrant or seasonal worker?" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_referral_source" class="bold" style="padding-left:10pt"><b>Referral Source:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_referral_source"><select name="form_referral_source" id="form_referral_source" class="form-control addtolistclass_refsource" onchange="checkSkipConditions();" title="How did they hear about us"><option value="">Unassigned</option><option value="Patient">Patient</option>
+<option value="Employee">Employee</option>
+<option value="Walk-In">Walk-In</option>
+<option value="Newspaper">Newspaper</option>
+<option value="Radio">Radio</option>
+<option value="T.V.">T.V.</option>
+<option value="Direct Mail">Direct Mail</option>
+<option value="Coupon">Coupon</option>
+<option value="Referral Card">Referral Card</option>
+<option value="Other">Other</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_vfc" class="bold"><b>VFC:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_vfc"><select name="form_vfc" id="form_vfc" class="form-control" onchange="checkSkipConditions();" title="Eligibility status for Vaccine for Children supplied vaccine"><option value="">Unassigned</option><option value="eligible">Eligible</option>
+<option value="ineligible">Ineligible</option>
+</select></td><td colspan="1" id="label_religion" class="bold" style="padding-left:10pt"><b>Religion:</b></td><td colspan="3" class="text data" style="padding-left:5pt" id="text_religion"><select name="form_religion" id="form_religion" class="form-control" onchange="checkSkipConditions();" title="Patient Religion"><option value="">Unassigned</option><option value="adventist">Adventist</option>
+<option value="african_religions">African Religions</option>
+<option value="afro-caribbean_religions">Afro-Caribbean Religions</option>
+<option value="agnosticism">Agnosticism</option>
+<option value="anglican">Anglican</option>
+<option value="animism">Animism</option>
+<option value="assembly_of_god">Assembly of God</option>
+<option value="atheism">Atheism</option>
+<option value="babi_bahai_faiths">Babi &amp; Baha'I faiths</option>
+<option value="baptist">Baptist</option>
+<option value="bon">Bon</option>
+<option value="brethren">Brethren</option>
+<option value="cao_dai">Cao Dai</option>
+<option value="celticism">Celticism</option>
+<option value="christiannoncatholicnonspecifc">Christian (non-Catholic, non-specific)</option>
+<option value="christian_scientist">Christian Scientist</option>
+<option value="church_of_christ">Church of Christ</option>
+<option value="church_of_god">Church of God</option>
+<option value="confucianism">Confucianism</option>
+<option value="congregational">Congregational</option>
+<option value="cyberculture_religions">Cyberculture Religions</option>
+<option value="disciples_of_christ">Disciples of Christ</option>
+<option value="divination">Divination</option>
+<option value="eastern_orthodox">Eastern Orthodox</option>
+<option value="episcopalian">Episcopalian</option>
+<option value="evangelical_covenant">Evangelical Covenant</option>
+<option value="fourth_way">Fourth Way</option>
+<option value="free_daism">Free Daism</option>
+<option value="friends">Friends</option>
+<option value="full_gospel">Full Gospel</option>
+<option value="gnosis">Gnosis</option>
+<option value="hinduism">Hinduism</option>
+<option value="humanism">Humanism</option>
+<option value="independent">Independent</option>
+<option value="islam">Islam</option>
+<option value="jainism">Jainism</option>
+<option value="jehovahs_witnesses">Jehovah's Witnesses</option>
+<option value="judaism">Judaism</option>
+<option value="latter_day_saints">Latter Day Saints</option>
+<option value="lutheran">Lutheran</option>
+<option value="mahayana">Mahayana</option>
+<option value="meditation">Meditation</option>
+<option value="messianic_judaism">Messianic Judaism</option>
+<option value="methodist">Methodist</option>
+<option value="mitraism">Mitraism</option>
+<option value="native_american">Native American</option>
+<option value="nazarene">Nazarene</option>
+<option value="new_age">New Age</option>
+<option value="non-roman_catholic">non-Roman Catholic</option>
+<option value="occult">Occult</option>
+<option value="orthodox">Orthodox</option>
+<option value="paganism">Paganism</option>
+<option value="pentecostal">Pentecostal</option>
+<option value="presbyterian">Presbyterian</option>
+<option value="process_the">Process, The</option>
+<option value="protestant">Protestant</option>
+<option value="protestant_no_denomination">Protestant, No Denomination</option>
+<option value="reformed">Reformed</option>
+<option value="reformed_presbyterian">Reformed/Presbyterian</option>
+<option value="roman_catholic_church">Roman Catholic Church</option>
+<option value="salvation_army">Salvation Army</option>
+<option value="satanism">Satanism</option>
+<option value="scientology">Scientology</option>
+<option value="shamanism">Shamanism</option>
+<option value="shiite_islam">Shiite (Islam)</option>
+<option value="shinto">Shinto</option>
+<option value="sikism">Sikism</option>
+<option value="spiritualism">Spiritualism</option>
+<option value="sunni_islam">Sunni (Islam)</option>
+<option value="taoism">Taoism</option>
+<option value="theravada">Theravada</option>
+<option value="unitarian_universalist">Unitarian Universalist</option>
+<option value="unitarian-universalism">Unitarian-Universalism</option>
+<option value="united_church_of_christ">United Church of Christ</option>
+<option value="universal_life_church">Universal Life Church</option>
+<option value="vajrayana_tibetan">Vajrayana (Tibetan)</option>
+<option value="veda">Veda</option>
+<option value="voodoo">Voodoo</option>
+<option value="wicca">Wicca</option>
+<option value="yaohushua">Yaohushua</option>
+<option value="zen_buddhism">Zen Buddhism</option>
+<option value="zoroastrianism">Zoroastrianism</option>
+</select></td></tr>
+ </tbody></table>
+</div>
+<br><span class="bold"><input type="checkbox" name="form_cb_6" id="form_cb_6" value="1" onclick="return divclick(this,&quot;div_6&quot;);"><b>Misc</b></span>
+<div id="div_6" class="section" style="display:none;">
+ <table border="0" cellpadding="0">
+  <tbody><tr><td colspan="1" id="label_deceased_date" class="bold"><b>Date Deceased:</b></td><td colspan="3" class="text data" style="padding-left:5pt" id="text_deceased_date"><input type="text" size="10" class="datepicker form-control" name="form_deceased_date" id="form_deceased_date" value="" title="If person is deceased, then enter date of death." onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_deceased_reason" class="bold"><b>Reason Deceased:</b></td><td colspan="3" class="text data" style="padding-left:5pt" id="text_deceased_reason"><input type="text" class="form-control" name="form_deceased_reason" id="form_deceased_reason" size="30" maxlength="255" title="Reason for Death" value="" onchange="checkSkipConditions();"></td></tr>
+ </tbody></table>
+</div>
+<br><span class="bold"><input type="checkbox" name="form_cb_7" id="form_cb_7" value="1" onclick="return divclick(this,&quot;div_7&quot;);"><b>Guardian</b></span>
+<div id="div_7" class="section" style="display:none;">
+ <table border="0" cellpadding="0">
+  <tbody><tr><td colspan="1" id="label_guardiansname" class="bold"><b>Name:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardiansname"><input type="text" class="form-control" name="form_guardiansname" id="form_guardiansname" size="25" maxlength="63" title="Guardian Name" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_guardianrelationship" class="bold" style="padding-left:10pt"><b>Relationship:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardianrelationship"><select name="form_guardianrelationship" id="form_guardianrelationship" class="form-control" onchange="checkSkipConditions();" title="Relationship"><option value="">Unassigned</option><option value="associate">Associate</option>
+<option value="brother">Brother</option>
+<option value="care_giver">Care giver</option>
+<option value="child">Child</option>
+<option value="handicapped_dependent">Handicapped dependent</option>
+<option value="life_partner">Life partner</option>
+<option value="emergency_contact">Emergency contact</option>
+<option value="employee">Employee</option>
+<option value="employer">Employer</option>
+<option value="extended_family">Extended family</option>
+<option value="foster_child">Foster Child</option>
+<option value="friend">Friend</option>
+<option value="father">Father</option>
+<option value="grandchild">Grandchild</option>
+<option value="guardian">Guardian</option>
+<option value="grandparent">Grandparent</option>
+<option value="manager">Manager</option>
+<option value="mother">Mother</option>
+<option value="natural_child">Natural child</option>
+<option value="none">None</option>
+<option value="other_adult">Other adult</option>
+<option value="other">Other</option>
+<option value="owner">Owner</option>
+<option value="parent">Parent</option>
+<option value="stepchild">Stepchild</option>
+<option value="self">Self</option>
+<option value="sibling">Sibling</option>
+<option value="sister">Sister</option>
+<option value="spouse">Spouse</option>
+<option value="trainer">Trainer</option>
+<option value="unknown">Unknown</option>
+<option value="ward_of_court">Ward of court</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_guardiansex" class="bold"><b>Sex:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardiansex"><select name="form_guardiansex" id="form_guardiansex" class="form-control" onchange="checkSkipConditions();" title="Sex"><option value="">Unassigned</option><option value="Female">Female</option>
+<option value="Male">Male</option>
+</select></td><td colspan="1" id="label_guardianaddress" class="bold" style="padding-left:10pt"><b>Address:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardianaddress"><input type="text" class="form-control" name="form_guardianaddress" id="form_guardianaddress" size="25" maxlength="63" title="Address" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_guardiancity" class="bold"><b>City:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardiancity"><input type="text" class="form-control" name="form_guardiancity" id="form_guardiancity" size="15" maxlength="63" title="City" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_guardianstate" class="bold" style="padding-left:10pt"><b>State:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardianstate"><select name="form_guardianstate" id="form_guardianstate" class="form-control addtolistclass_state" onchange="checkSkipConditions();" title="State"><option value="">Unassigned</option><option value="AL">Alabama</option>
+<option value="AK">Alaska</option>
+<option value="AZ">Arizona</option>
+<option value="AR">Arkansas</option>
+<option value="CA">California</option>
+<option value="CO">Colorado</option>
+<option value="CT">Connecticut</option>
+<option value="DE">Delaware</option>
+<option value="DC">District of Columbia</option>
+<option value="FL">Florida</option>
+<option value="GA">Georgia</option>
+<option value="HI">Hawaii</option>
+<option value="ID">Idaho</option>
+<option value="IL">Illinois</option>
+<option value="IN">Indiana</option>
+<option value="IA">Iowa</option>
+<option value="KS">Kansas</option>
+<option value="KY">Kentucky</option>
+<option value="LA">Louisiana</option>
+<option value="ME">Maine</option>
+<option value="MD">Maryland</option>
+<option value="MA">Massachusetts</option>
+<option value="MI">Michigan</option>
+<option value="MN">Minnesota</option>
+<option value="MS">Mississippi</option>
+<option value="MO">Missouri</option>
+<option value="MT">Montana</option>
+<option value="NE">Nebraska</option>
+<option value="NV">Nevada</option>
+<option value="NH">New Hampshire</option>
+<option value="NJ">New Jersey</option>
+<option value="NM">New Mexico</option>
+<option value="NY">New York</option>
+<option value="NC">North Carolina</option>
+<option value="ND">North Dakota</option>
+<option value="OH">Ohio</option>
+<option value="OK">Oklahoma</option>
+<option value="OR">Oregon</option>
+<option value="PA">Pennsylvania</option>
+<option value="PR">Puerto Rico</option>
+<option value="RI">Rhode Island</option>
+<option value="SC">South Carolina</option>
+<option value="SD">South Dakota</option>
+<option value="TN">Tennessee</option>
+<option value="TX">Texas</option>
+<option value="UT">Utah</option>
+<option value="VT">Vermont</option>
+<option value="VA">Virginia</option>
+<option value="WA">Washington</option>
+<option value="WV">West Virginia</option>
+<option value="WI">Wisconsin</option>
+<option value="WY">Wyoming</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_guardianpostalcode" class="bold"><b>Postal Code:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardianpostalcode"><input type="text" class="form-control" name="form_guardianpostalcode" id="form_guardianpostalcode" size="6" maxlength="63" title="Postal Code" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_guardiancountry" class="bold" style="padding-left:10pt"><b>Country:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardiancountry"><select name="form_guardiancountry" id="form_guardiancountry" class="form-control addtolistclass_country" onchange="checkSkipConditions();" title="Country"><option value="">Unassigned</option><option value="USA">USA</option>
+</select></td></tr>
+  <tr><td colspan="1" id="label_guardianphone" class="bold"><b>Phone:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardianphone"><input type="text" class="form-control" name="form_guardianphone" id="form_guardianphone" size="20" maxlength="63" title="Phone" value="" onchange="checkSkipConditions();"></td><td colspan="1" id="label_guardianworkphone" class="bold" style="padding-left:10pt"><b>Work Phone:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardianworkphone"><input type="text" class="form-control" name="form_guardianworkphone" id="form_guardianworkphone" size="20" maxlength="63" title="Work Phone" value="" onchange="checkSkipConditions();"></td></tr>
+  <tr><td colspan="1" id="label_guardianemail" class="bold"><b>Email:</b></td><td colspan="1" class="text data" style="padding-left:5pt" id="text_guardianemail"><input type="text" class="form-control" name="form_guardianemail" id="form_guardianemail" size="20" maxlength="63" title="Guardian Email Address" value="" onchange="checkSkipConditions();"></td><td></td><td></td></tr>
+ </tbody></table>
+</div>
+
+<br><span class="bold"><input type="checkbox" name="form_cb_ins" value="1" onclick="return divclick(this,&quot;div_ins&quot;);"><b>Insurance</b></span>
+<div id="div_ins" class="section" style="display:none;">
+  <table border="0">
+   <tbody><tr>
+    <td valign="top" colspan="2">
+     <span class="required">Primary Insurance Provider:</span>
+     <select name="i1provider" class="form-control">
+    <option value="">Unassigned</option>
+<option value="2">bluecross</option>
+     </select>&nbsp;<a class="medium_modal" href="../practice/ins_search.php" onclick="ins_search(1)">
+  <span> Search/Add Insurer</span></a>
+  </td>
+ </tr>
+ <tr>
+  <td valign="top">
+   <table border="0">
+
+    <tbody><tr>
+     <td>
+      <span class="required">Plan Name: </span>
+     </td>
+     <td>
+      <input type="entry" class="form-control" size="20" name="i1plan_name" value="" onchange="capitalizeMe(this);">&nbsp;&nbsp;
+     </td>
+    </tr>
+
+    <tr>
+     <td>
+      <span class="required">Effective Date: </span>
+     </td>
+     <td>
+      <input type="entry" size="11" class="datepicker form-control" name="i1effective_date" id="i1effective_date" value="" title="yyyy-mm-dd">
+     </td>
+    </tr>
+
+    <tr>
+     <td><span class="required">Policy Number: </span></td>
+     <td><input type="entry" class="form-control" size="16" name="i1policy_number" value="" onkeyup="policykeyup(this)"></td>
+    </tr>
+
+    <tr>
+     <td><span class="required">Group Number: </span></td>
+    <td><input type="entry" class="form-control" size="16" name="i1group_number" value="" onkeyup="policykeyup(this)"></td>
+    </tr>
+
+    <tr>
+     <td class="required">Subscriber Employer (SE)<br><span style="font-weight:normal">
+      (if unemployed enter Student,<br>PT Student, or leave blank): </span></td>
+     <td><input type="entry" class="form-control" size="25" name="i1subscriber_employer" value="" onchange="capitalizeMe(this);"></td>
+    </tr>
+
+    <tr>
+     <td><span class="required">SE Address: </span></td>
+     <td><input type="entry" class="form-control" size="25" name="i1subscriber_employer_street" value="" onchange="capitalizeMe(this);"></td>
+    </tr>
+
+    <tr>
+     <td colspan="2">
+      <table>
+       <tbody><tr>
+        <td><span class="required">SE City: </span></td>
+        <td><input type="entry" class="form-control" size="15" name="i1subscriber_employer_city" value="" onchange="capitalizeMe(this);"></td>
+        <td><span class="required">SE State: </span></td>
+    <td>
+            <select name="form_i1subscriber_employer_state" id="form_i1subscriber_employer_state" class="form-control addtolistclass_state" title=""><option value="">Unassigned</option><option value="AL">Alabama</option>
+<option value="AK">Alaska</option>
+<option value="AZ">Arizona</option>
+<option value="AR">Arkansas</option>
+<option value="CA">California</option>
+<option value="CO">Colorado</option>
+<option value="CT">Connecticut</option>
+<option value="DE">Delaware</option>
+<option value="DC">District of Columbia</option>
+<option value="FL">Florida</option>
+<option value="GA">Georgia</option>
+<option value="HI">Hawaii</option>
+<option value="ID">Idaho</option>
+<option value="IL">Illinois</option>
+<option value="IN">Indiana</option>
+<option value="IA">Iowa</option>
+<option value="KS">Kansas</option>
+<option value="KY">Kentucky</option>
+<option value="LA">Louisiana</option>
+<option value="ME">Maine</option>
+<option value="MD">Maryland</option>
+<option value="MA">Massachusetts</option>
+<option value="MI">Michigan</option>
+<option value="MN">Minnesota</option>
+<option value="MS">Mississippi</option>
+<option value="MO">Missouri</option>
+<option value="MT">Montana</option>
+<option value="NE">Nebraska</option>
+<option value="NV">Nevada</option>
+<option value="NH">New Hampshire</option>
+<option value="NJ">New Jersey</option>
+<option value="NM">New Mexico</option>
+<option value="NY">New York</option>
+<option value="NC">North Carolina</option>
+<option value="ND">North Dakota</option>
+<option value="OH">Ohio</option>
+<option value="OK">Oklahoma</option>
+<option value="OR">Oregon</option>
+<option value="PA">Pennsylvania</option>
+<option value="PR">Puerto Rico</option>
+<option value="RI">Rhode Island</option>
+<option value="SC">South Carolina</option>
+<option value="SD">South Dakota</option>
+<option value="TN">Tennessee</option>
+<option value="TX">Texas</option>
+<option value="UT">Utah</option>
+<option value="VT">Vermont</option>
+<option value="VA">Virginia</option>
+<option value="WA">Washington</option>
+<option value="WV">West Virginia</option>
+<option value="WI">Wisconsin</option>
+<option value="WY">Wyoming</option>
+</select>          </td>
+         </tr>
+         <tr>
+            <td><span class="required">SE Zip Code: </span></td>
+            <td><input type="entry" class="form-control" size="10" name="i1subscriber_employer_postal_code" value=""></td>
+            <td><span class="required">SE Country: </span></td>
+      <td>
+                <select name="form_i1subscriber_employer_country" id="form_i1subscriber_employer_country" class="form-control addtolistclass_country" title=""><option value="">Unassigned</option><option value="USA">USA</option>
+</select>      </td>
+         </tr>
+        </tbody></table>
+       </td>
+      </tr>
+
+     </tbody></table>
+    </td>
+
+    <td valign="top">
+       <span class="required">Subscriber: </span>
+       <input type="entry" class="form-control" size="10" name="i1subscriber_fname" value="" onchange="capitalizeMe(this);">
+       <input type="entry" class="form-control" size="3" name="i1subscriber_mname" value="" onchange="capitalizeMe(this);">
+       <input type="entry" class="form-control" size="10" name="i1subscriber_lname" value="" onchange="capitalizeMe(this);">
+     <br>
+       <span class="required">Relationship: </span>
+        <select name="form_i1subscriber_relationship" id="form_i1subscriber_relationship" class="form-control" title=""><option value=""> </option><option value="self">Self</option>
+<option value="spouse">Spouse</option>
+<option value="child">Child</option>
+<option value="other">Other</option>
+</select>       <a href="javascript:popUp('../../interface/patient_file/summary/browse.php?browsenum=1')" class="text">(Browse)</a><br>
+
+       <span class="bold">D.O.B.: </span>
+       <input type="entry" size="11" class="datepicker form-control" name="i1subscriber_DOB" id="i1subscriber_DOB" value="" title="yyyy-mm-dd">
+
+       <span class="bold">S.S.: </span>
+       <input type="entry" class="form-control" size="11" name="i1subscriber_ss" value="">&nbsp;
+       <span class="bold">Sex: </span>
+        <select name="form_i1subscriber_sex" id="form_i1subscriber_sex" class="form-control" title=""><option value="">Unassigned</option><option value="Female">Female</option>
+<option value="Male">Male</option>
+</select>     <br>
+       <span class="required">Subscriber Address: </span>
+       <input type="entry" class="form-control" size="25" name="i1subscriber_street" value="" onchange="capitalizeMe(this);"><br>
+       <span class="required">City: </span>
+       <input type="entry" class="form-control" size="15" name="i1subscriber_city" value="" onchange="capitalizeMe(this);">
+       <span class="required">State: </span>
+        <select name="form_i1subscriber_state" id="form_i1subscriber_state" class="form-control addtolistclass_state" title=""><option value="">Unassigned</option><option value="AL">Alabama</option>
+<option value="AK">Alaska</option>
+<option value="AZ">Arizona</option>
+<option value="AR">Arkansas</option>
+<option value="CA">California</option>
+<option value="CO">Colorado</option>
+<option value="CT">Connecticut</option>
+<option value="DE">Delaware</option>
+<option value="DC">District of Columbia</option>
+<option value="FL">Florida</option>
+<option value="GA">Georgia</option>
+<option value="HI">Hawaii</option>
+<option value="ID">Idaho</option>
+<option value="IL">Illinois</option>
+<option value="IN">Indiana</option>
+<option value="IA">Iowa</option>
+<option value="KS">Kansas</option>
+<option value="KY">Kentucky</option>
+<option value="LA">Louisiana</option>
+<option value="ME">Maine</option>
+<option value="MD">Maryland</option>
+<option value="MA">Massachusetts</option>
+<option value="MI">Michigan</option>
+<option value="MN">Minnesota</option>
+<option value="MS">Mississippi</option>
+<option value="MO">Missouri</option>
+<option value="MT">Montana</option>
+<option value="NE">Nebraska</option>
+<option value="NV">Nevada</option>
+<option value="NH">New Hampshire</option>
+<option value="NJ">New Jersey</option>
+<option value="NM">New Mexico</option>
+<option value="NY">New York</option>
+<option value="NC">North Carolina</option>
+<option value="ND">North Dakota</option>
+<option value="OH">Ohio</option>
+<option value="OK">Oklahoma</option>
+<option value="OR">Oregon</option>
+<option value="PA">Pennsylvania</option>
+<option value="PR">Puerto Rico</option>
+<option value="RI">Rhode Island</option>
+<option value="SC">South Carolina</option>
+<option value="SD">South Dakota</option>
+<option value="TN">Tennessee</option>
+<option value="TX">Texas</option>
+<option value="UT">Utah</option>
+<option value="VT">Vermont</option>
+<option value="VA">Virginia</option>
+<option value="WA">Washington</option>
+<option value="WV">West Virginia</option>
+<option value="WI">Wisconsin</option>
+<option value="WY">Wyoming</option>
+</select>     <br>
+       <span class="required">Zip Code: </span>
+       <input type="entry" class="form-control" size="10" name="i1subscriber_postal_code" value="">
+       <span class="required">
+        Country: </span>
+        <select name="form_i1subscriber_country" id="form_i1subscriber_country" class="form-control addtolistclass_country" title=""><option value="">Unassigned</option><option value="USA">USA</option>
+</select>     <br>
+       <span class="bold">Subscriber Phone:
+       <input type="text" class="form-control" size="20" name="i1subscriber_phone" value="" onkeyup="phonekeyup(this,mypcc)">
+     </span><br>
+       <span class="bold">CoPay: <input type="text" class="form-control" size="6" name="i1copay" value="">
+     </span><br>
+       <span class="required">Accept Assignment: </span>
+       <select class="form-control" name="i1accept_assignment">
+         <option value="TRUE">YES</option>
+         <option value="FALSE">NO</option>
+       </select>
+    </td>
+   </tr>
+
+  </tbody></table>
+  <hr>
+      <table border="0">
+   <tbody><tr>
+    <td valign="top" colspan="2">
+     <span class="required">Secondary Insurance Provider:</span>
+     <select name="i2provider" class="form-control">
+    <option value="">Unassigned</option>
+<option value="2">bluecross</option>
+     </select>&nbsp;<a class="medium_modal" href="../practice/ins_search.php" onclick="ins_search(2)">
+  <span> Search/Add Insurer</span></a>
+  </td>
+ </tr>
+ <tr>
+  <td valign="top">
+   <table border="0">
+
+    <tbody><tr>
+     <td>
+      <span class="required">Plan Name: </span>
+     </td>
+     <td>
+      <input type="entry" class="form-control" size="20" name="i2plan_name" value="" onchange="capitalizeMe(this);">&nbsp;&nbsp;
+     </td>
+    </tr>
+
+    <tr>
+     <td>
+      <span class="required">Effective Date: </span>
+     </td>
+     <td>
+      <input type="entry" size="11" class="datepicker form-control" name="i2effective_date" id="i2effective_date" value="" title="yyyy-mm-dd">
+     </td>
+    </tr>
+
+    <tr>
+     <td><span class="required">Policy Number: </span></td>
+     <td><input type="entry" class="form-control" size="16" name="i2policy_number" value="" onkeyup="policykeyup(this)"></td>
+    </tr>
+
+    <tr>
+     <td><span class="required">Group Number: </span></td>
+    <td><input type="entry" class="form-control" size="16" name="i2group_number" value="" onkeyup="policykeyup(this)"></td>
+    </tr>
+
+    <tr>
+     <td class="required">Subscriber Employer (SE)<br><span style="font-weight:normal">
+      (if unemployed enter Student,<br>PT Student, or leave blank): </span></td>
+     <td><input type="entry" class="form-control" size="25" name="i2subscriber_employer" value="" onchange="capitalizeMe(this);"></td>
+    </tr>
+
+    <tr>
+     <td><span class="required">SE Address: </span></td>
+     <td><input type="entry" class="form-control" size="25" name="i2subscriber_employer_street" value="" onchange="capitalizeMe(this);"></td>
+    </tr>
+
+    <tr>
+     <td colspan="2">
+      <table>
+       <tbody><tr>
+        <td><span class="required">SE City: </span></td>
+        <td><input type="entry" class="form-control" size="15" name="i2subscriber_employer_city" value="" onchange="capitalizeMe(this);"></td>
+        <td><span class="required">SE State: </span></td>
+    <td>
+            <select name="form_i2subscriber_employer_state" id="form_i2subscriber_employer_state" class="form-control addtolistclass_state" title=""><option value="">Unassigned</option><option value="AL">Alabama</option>
+<option value="AK">Alaska</option>
+<option value="AZ">Arizona</option>
+<option value="AR">Arkansas</option>
+<option value="CA">California</option>
+<option value="CO">Colorado</option>
+<option value="CT">Connecticut</option>
+<option value="DE">Delaware</option>
+<option value="DC">District of Columbia</option>
+<option value="FL">Florida</option>
+<option value="GA">Georgia</option>
+<option value="HI">Hawaii</option>
+<option value="ID">Idaho</option>
+<option value="IL">Illinois</option>
+<option value="IN">Indiana</option>
+<option value="IA">Iowa</option>
+<option value="KS">Kansas</option>
+<option value="KY">Kentucky</option>
+<option value="LA">Louisiana</option>
+<option value="ME">Maine</option>
+<option value="MD">Maryland</option>
+<option value="MA">Massachusetts</option>
+<option value="MI">Michigan</option>
+<option value="MN">Minnesota</option>
+<option value="MS">Mississippi</option>
+<option value="MO">Missouri</option>
+<option value="MT">Montana</option>
+<option value="NE">Nebraska</option>
+<option value="NV">Nevada</option>
+<option value="NH">New Hampshire</option>
+<option value="NJ">New Jersey</option>
+<option value="NM">New Mexico</option>
+<option value="NY">New York</option>
+<option value="NC">North Carolina</option>
+<option value="ND">North Dakota</option>
+<option value="OH">Ohio</option>
+<option value="OK">Oklahoma</option>
+<option value="OR">Oregon</option>
+<option value="PA">Pennsylvania</option>
+<option value="PR">Puerto Rico</option>
+<option value="RI">Rhode Island</option>
+<option value="SC">South Carolina</option>
+<option value="SD">South Dakota</option>
+<option value="TN">Tennessee</option>
+<option value="TX">Texas</option>
+<option value="UT">Utah</option>
+<option value="VT">Vermont</option>
+<option value="VA">Virginia</option>
+<option value="WA">Washington</option>
+<option value="WV">West Virginia</option>
+<option value="WI">Wisconsin</option>
+<option value="WY">Wyoming</option>
+</select>          </td>
+         </tr>
+         <tr>
+            <td><span class="required">SE Zip Code: </span></td>
+            <td><input type="entry" class="form-control" size="10" name="i2subscriber_employer_postal_code" value=""></td>
+            <td><span class="required">SE Country: </span></td>
+      <td>
+                <select name="form_i2subscriber_employer_country" id="form_i2subscriber_employer_country" class="form-control addtolistclass_country" title=""><option value="">Unassigned</option><option value="USA">USA</option>
+</select>      </td>
+         </tr>
+        </tbody></table>
+       </td>
+      </tr>
+
+     </tbody></table>
+    </td>
+
+    <td valign="top">
+       <span class="required">Subscriber: </span>
+       <input type="entry" class="form-control" size="10" name="i2subscriber_fname" value="" onchange="capitalizeMe(this);">
+       <input type="entry" class="form-control" size="3" name="i2subscriber_mname" value="" onchange="capitalizeMe(this);">
+       <input type="entry" class="form-control" size="10" name="i2subscriber_lname" value="" onchange="capitalizeMe(this);">
+     <br>
+       <span class="required">Relationship: </span>
+        <select name="form_i2subscriber_relationship" id="form_i2subscriber_relationship" class="form-control" title=""><option value=""> </option><option value="self">Self</option>
+<option value="spouse">Spouse</option>
+<option value="child">Child</option>
+<option value="other">Other</option>
+</select>       <a href="javascript:popUp('../../interface/patient_file/summary/browse.php?browsenum=2')" class="text">(Browse)</a><br>
+
+       <span class="bold">D.O.B.: </span>
+       <input type="entry" size="11" class="datepicker form-control" name="i2subscriber_DOB" id="i2subscriber_DOB" value="" title="yyyy-mm-dd">
+
+       <span class="bold">S.S.: </span>
+       <input type="entry" class="form-control" size="11" name="i2subscriber_ss" value="">&nbsp;
+       <span class="bold">Sex: </span>
+        <select name="form_i2subscriber_sex" id="form_i2subscriber_sex" class="form-control" title=""><option value="">Unassigned</option><option value="Female">Female</option>
+<option value="Male">Male</option>
+</select>     <br>
+       <span class="required">Subscriber Address: </span>
+       <input type="entry" class="form-control" size="25" name="i2subscriber_street" value="" onchange="capitalizeMe(this);"><br>
+       <span class="required">City: </span>
+       <input type="entry" class="form-control" size="15" name="i2subscriber_city" value="" onchange="capitalizeMe(this);">
+       <span class="required">State: </span>
+        <select name="form_i2subscriber_state" id="form_i2subscriber_state" class="form-control addtolistclass_state" title=""><option value="">Unassigned</option><option value="AL">Alabama</option>
+<option value="AK">Alaska</option>
+<option value="AZ">Arizona</option>
+<option value="AR">Arkansas</option>
+<option value="CA">California</option>
+<option value="CO">Colorado</option>
+<option value="CT">Connecticut</option>
+<option value="DE">Delaware</option>
+<option value="DC">District of Columbia</option>
+<option value="FL">Florida</option>
+<option value="GA">Georgia</option>
+<option value="HI">Hawaii</option>
+<option value="ID">Idaho</option>
+<option value="IL">Illinois</option>
+<option value="IN">Indiana</option>
+<option value="IA">Iowa</option>
+<option value="KS">Kansas</option>
+<option value="KY">Kentucky</option>
+<option value="LA">Louisiana</option>
+<option value="ME">Maine</option>
+<option value="MD">Maryland</option>
+<option value="MA">Massachusetts</option>
+<option value="MI">Michigan</option>
+<option value="MN">Minnesota</option>
+<option value="MS">Mississippi</option>
+<option value="MO">Missouri</option>
+<option value="MT">Montana</option>
+<option value="NE">Nebraska</option>
+<option value="NV">Nevada</option>
+<option value="NH">New Hampshire</option>
+<option value="NJ">New Jersey</option>
+<option value="NM">New Mexico</option>
+<option value="NY">New York</option>
+<option value="NC">North Carolina</option>
+<option value="ND">North Dakota</option>
+<option value="OH">Ohio</option>
+<option value="OK">Oklahoma</option>
+<option value="OR">Oregon</option>
+<option value="PA">Pennsylvania</option>
+<option value="PR">Puerto Rico</option>
+<option value="RI">Rhode Island</option>
+<option value="SC">South Carolina</option>
+<option value="SD">South Dakota</option>
+<option value="TN">Tennessee</option>
+<option value="TX">Texas</option>
+<option value="UT">Utah</option>
+<option value="VT">Vermont</option>
+<option value="VA">Virginia</option>
+<option value="WA">Washington</option>
+<option value="WV">West Virginia</option>
+<option value="WI">Wisconsin</option>
+<option value="WY">Wyoming</option>
+</select>     <br>
+       <span class="required">Zip Code: </span>
+       <input type="entry" class="form-control" size="10" name="i2subscriber_postal_code" value="">
+       <span class="required">
+        Country: </span>
+        <select name="form_i2subscriber_country" id="form_i2subscriber_country" class="form-control addtolistclass_country" title=""><option value="">Unassigned</option><option value="USA">USA</option>
+</select>     <br>
+       <span class="bold">Subscriber Phone:
+       <input type="text" class="form-control" size="20" name="i2subscriber_phone" value="" onkeyup="phonekeyup(this,mypcc)">
+     </span><br>
+       <span class="bold">CoPay: <input type="text" class="form-control" size="6" name="i2copay" value="">
+     </span><br>
+       <span class="required">Accept Assignment: </span>
+       <select class="form-control" name="i2accept_assignment">
+         <option value="TRUE">YES</option>
+         <option value="FALSE">NO</option>
+       </select>
+    </td>
+   </tr>
+
+  </tbody></table>
+  <hr>
+      <table border="0">
+   <tbody><tr>
+    <td valign="top" colspan="2">
+     <span class="required">Tertiary Insurance provider:</span>
+     <select name="i3provider" class="form-control">
+    <option value="">Unassigned</option>
+<option value="2">bluecross</option>
+     </select>&nbsp;<a class="medium_modal" href="../practice/ins_search.php" onclick="ins_search(3)">
+  <span> Search/Add Insurer</span></a>
+  </td>
+ </tr>
+ <tr>
+  <td valign="top">
+   <table border="0">
+
+    <tbody><tr>
+     <td>
+      <span class="required">Plan Name: </span>
+     </td>
+     <td>
+      <input type="entry" class="form-control" size="20" name="i3plan_name" value="" onchange="capitalizeMe(this);">&nbsp;&nbsp;
+     </td>
+    </tr>
+
+    <tr>
+     <td>
+      <span class="required">Effective Date: </span>
+     </td>
+     <td>
+      <input type="entry" size="11" class="datepicker form-control" name="i3effective_date" id="i3effective_date" value="" title="yyyy-mm-dd">
+     </td>
+    </tr>
+
+    <tr>
+     <td><span class="required">Policy Number: </span></td>
+     <td><input type="entry" class="form-control" size="16" name="i3policy_number" value="" onkeyup="policykeyup(this)"></td>
+    </tr>
+
+    <tr>
+     <td><span class="required">Group Number: </span></td>
+    <td><input type="entry" class="form-control" size="16" name="i3group_number" value="" onkeyup="policykeyup(this)"></td>
+    </tr>
+
+    <tr>
+     <td class="required">Subscriber Employer (SE)<br><span style="font-weight:normal">
+      (if unemployed enter Student,<br>PT Student, or leave blank): </span></td>
+     <td><input type="entry" class="form-control" size="25" name="i3subscriber_employer" value="" onchange="capitalizeMe(this);"></td>
+    </tr>
+
+    <tr>
+     <td><span class="required">SE Address: </span></td>
+     <td><input type="entry" class="form-control" size="25" name="i3subscriber_employer_street" value="" onchange="capitalizeMe(this);"></td>
+    </tr>
+
+    <tr>
+     <td colspan="2">
+      <table>
+       <tbody><tr>
+        <td><span class="required">SE City: </span></td>
+        <td><input type="entry" class="form-control" size="15" name="i3subscriber_employer_city" value="" onchange="capitalizeMe(this);"></td>
+        <td><span class="required">SE State: </span></td>
+    <td>
+            <select name="form_i3subscriber_employer_state" id="form_i3subscriber_employer_state" class="form-control addtolistclass_state" title=""><option value="">Unassigned</option><option value="AL">Alabama</option>
+<option value="AK">Alaska</option>
+<option value="AZ">Arizona</option>
+<option value="AR">Arkansas</option>
+<option value="CA">California</option>
+<option value="CO">Colorado</option>
+<option value="CT">Connecticut</option>
+<option value="DE">Delaware</option>
+<option value="DC">District of Columbia</option>
+<option value="FL">Florida</option>
+<option value="GA">Georgia</option>
+<option value="HI">Hawaii</option>
+<option value="ID">Idaho</option>
+<option value="IL">Illinois</option>
+<option value="IN">Indiana</option>
+<option value="IA">Iowa</option>
+<option value="KS">Kansas</option>
+<option value="KY">Kentucky</option>
+<option value="LA">Louisiana</option>
+<option value="ME">Maine</option>
+<option value="MD">Maryland</option>
+<option value="MA">Massachusetts</option>
+<option value="MI">Michigan</option>
+<option value="MN">Minnesota</option>
+<option value="MS">Mississippi</option>
+<option value="MO">Missouri</option>
+<option value="MT">Montana</option>
+<option value="NE">Nebraska</option>
+<option value="NV">Nevada</option>
+<option value="NH">New Hampshire</option>
+<option value="NJ">New Jersey</option>
+<option value="NM">New Mexico</option>
+<option value="NY">New York</option>
+<option value="NC">North Carolina</option>
+<option value="ND">North Dakota</option>
+<option value="OH">Ohio</option>
+<option value="OK">Oklahoma</option>
+<option value="OR">Oregon</option>
+<option value="PA">Pennsylvania</option>
+<option value="PR">Puerto Rico</option>
+<option value="RI">Rhode Island</option>
+<option value="SC">South Carolina</option>
+<option value="SD">South Dakota</option>
+<option value="TN">Tennessee</option>
+<option value="TX">Texas</option>
+<option value="UT">Utah</option>
+<option value="VT">Vermont</option>
+<option value="VA">Virginia</option>
+<option value="WA">Washington</option>
+<option value="WV">West Virginia</option>
+<option value="WI">Wisconsin</option>
+<option value="WY">Wyoming</option>
+</select>          </td>
+         </tr>
+         <tr>
+            <td><span class="required">SE Zip Code: </span></td>
+            <td><input type="entry" class="form-control" size="10" name="i3subscriber_employer_postal_code" value=""></td>
+            <td><span class="required">SE Country: </span></td>
+      <td>
+                <select name="form_i3subscriber_employer_country" id="form_i3subscriber_employer_country" class="form-control addtolistclass_country" title=""><option value="">Unassigned</option><option value="USA">USA</option>
+</select>      </td>
+         </tr>
+        </tbody></table>
+       </td>
+      </tr>
+
+     </tbody></table>
+    </td>
+
+    <td valign="top">
+       <span class="required">Subscriber: </span>
+       <input type="entry" class="form-control" size="10" name="i3subscriber_fname" value="" onchange="capitalizeMe(this);">
+       <input type="entry" class="form-control" size="3" name="i3subscriber_mname" value="" onchange="capitalizeMe(this);">
+       <input type="entry" class="form-control" size="10" name="i3subscriber_lname" value="" onchange="capitalizeMe(this);">
+     <br>
+       <span class="required">Relationship: </span>
+        <select name="form_i3subscriber_relationship" id="form_i3subscriber_relationship" class="form-control" title=""><option value=""> </option><option value="self">Self</option>
+<option value="spouse">Spouse</option>
+<option value="child">Child</option>
+<option value="other">Other</option>
+</select>       <a href="javascript:popUp('../../interface/patient_file/summary/browse.php?browsenum=3')" class="text">(Browse)</a><br>
+
+       <span class="bold">D.O.B.: </span>
+       <input type="entry" size="11" class="datepicker form-control" name="i3subscriber_DOB" id="i3subscriber_DOB" value="" title="yyyy-mm-dd">
+
+       <span class="bold">S.S.: </span>
+       <input type="entry" class="form-control" size="11" name="i3subscriber_ss" value="">&nbsp;
+       <span class="bold">Sex: </span>
+        <select name="form_i3subscriber_sex" id="form_i3subscriber_sex" class="form-control" title=""><option value="">Unassigned</option><option value="Female">Female</option>
+<option value="Male">Male</option>
+</select>     <br>
+       <span class="required">Subscriber Address: </span>
+       <input type="entry" class="form-control" size="25" name="i3subscriber_street" value="" onchange="capitalizeMe(this);"><br>
+       <span class="required">City: </span>
+       <input type="entry" class="form-control" size="15" name="i3subscriber_city" value="" onchange="capitalizeMe(this);">
+       <span class="required">State: </span>
+        <select name="form_i3subscriber_state" id="form_i3subscriber_state" class="form-control addtolistclass_state" title=""><option value="">Unassigned</option><option value="AL">Alabama</option>
+<option value="AK">Alaska</option>
+<option value="AZ">Arizona</option>
+<option value="AR">Arkansas</option>
+<option value="CA">California</option>
+<option value="CO">Colorado</option>
+<option value="CT">Connecticut</option>
+<option value="DE">Delaware</option>
+<option value="DC">District of Columbia</option>
+<option value="FL">Florida</option>
+<option value="GA">Georgia</option>
+<option value="HI">Hawaii</option>
+<option value="ID">Idaho</option>
+<option value="IL">Illinois</option>
+<option value="IN">Indiana</option>
+<option value="IA">Iowa</option>
+<option value="KS">Kansas</option>
+<option value="KY">Kentucky</option>
+<option value="LA">Louisiana</option>
+<option value="ME">Maine</option>
+<option value="MD">Maryland</option>
+<option value="MA">Massachusetts</option>
+<option value="MI">Michigan</option>
+<option value="MN">Minnesota</option>
+<option value="MS">Mississippi</option>
+<option value="MO">Missouri</option>
+<option value="MT">Montana</option>
+<option value="NE">Nebraska</option>
+<option value="NV">Nevada</option>
+<option value="NH">New Hampshire</option>
+<option value="NJ">New Jersey</option>
+<option value="NM">New Mexico</option>
+<option value="NY">New York</option>
+<option value="NC">North Carolina</option>
+<option value="ND">North Dakota</option>
+<option value="OH">Ohio</option>
+<option value="OK">Oklahoma</option>
+<option value="OR">Oregon</option>
+<option value="PA">Pennsylvania</option>
+<option value="PR">Puerto Rico</option>
+<option value="RI">Rhode Island</option>
+<option value="SC">South Carolina</option>
+<option value="SD">South Dakota</option>
+<option value="TN">Tennessee</option>
+<option value="TX">Texas</option>
+<option value="UT">Utah</option>
+<option value="VT">Vermont</option>
+<option value="VA">Virginia</option>
+<option value="WA">Washington</option>
+<option value="WV">West Virginia</option>
+<option value="WI">Wisconsin</option>
+<option value="WY">Wyoming</option>
+</select>     <br>
+       <span class="required">Zip Code: </span>
+       <input type="entry" class="form-control" size="10" name="i3subscriber_postal_code" value="">
+       <span class="required">
+        Country: </span>
+        <select name="form_i3subscriber_country" id="form_i3subscriber_country" class="form-control addtolistclass_country" title=""><option value="">Unassigned</option><option value="USA">USA</option>
+</select>     <br>
+       <span class="bold">Subscriber Phone:
+       <input type="text" class="form-control" size="20" name="i3subscriber_phone" value="" onkeyup="phonekeyup(this,mypcc)">
+     </span><br>
+       <span class="bold">CoPay: <input type="text" class="form-control" size="6" name="i3copay" value="">
+     </span><br>
+       <span class="required">Accept Assignment: </span>
+       <select class="form-control" name="i3accept_assignment">
+         <option value="TRUE">YES</option>
+         <option value="FALSE">NO</option>
+       </select>
+    </td>
+   </tr>
+
+  </tbody></table>
+  <hr>
+    </div>
+
+
+  </td>
+  <td align="right" valign="top" width="1%" nowrap="">
+   <!-- Image upload stuff was here but got moved. -->
+  </td>
+ </tr>
+</tbody></table>
+
+</form>
+
+<!-- include support for the list-add selectbox feature -->
+
+
+<!-- hidden DIV used for creating new list items -->
+<div id="newlistitem" class="body_top" style="border: 2px outset #666; display:none; position:absolute; padding:5px; ">
+ <input type="hidden" name="newlistitem_listid" id="newlistitem_listid" value="">
+ <input type="hidden" name="newlistitem_fieldid" id="newlistitem_fieldid" value="">
+ <div id="specificForm">
+ </div>
+ <div style="text-align:center;">
+  <div style="margin:0.5em 0 0 0;">
+   <input type="button" name="newlistitem_submit" id="newlistitem_submit" value="Add">
+   <input type="button" name="newlistitem_cancel" id="newlistitem_cancel" value="Cancel">
+  </div>
+ </div>
+</div>
+
+
+<script language="javascript">
+
+    // collect the custom state widget flag
+    var stateCustomFlag = "1"
+    
+    // generic form for input box
+    var generic = "<input type='textbox' name='newlistitem_value' id='newlistitem_value' size='20' maxlength='50'>"
+
+    // state form for input box
+    var state   = "\
+<ul style='list-style-type:none; margin:0; padding:0;'>\
+ <li style='font-weight:bold; font-size:120%; text-align:center;'>\
+    Enter new State</li>\
+ <li style='margin:0.5em 0 0 0; padding:0;'>\
+    Full Name:\
+  <input type='textbox' name='newlistitem_value' id='newlistitem_value' size='20' maxlength='50'><li>\
+ <li style='margin:0.5em 0 0 0; padding:0;'>\
+    Abbreviation:\
+  <input type='textbox' name='newlistitem_abbr' id='newlistitem_abbr' size='10' maxlength='50'><li>\
+</ul>\
+"
+
+// jQuery makes life easier (sometimes)
+
+$(document).ready(function(){
+
+    /********************************************************/
+    /************ List-box modification functions ***********/
+    /********************************************************/
+   
+    $("#newlistitem").keypress(function(evt) { if (evt.keyCode == 13) { SaveNewListItem(this, evt); return false; }});
+    $(".addtolist").click(function(evt) { AddToList(this, evt); });
+    $("#newlistitem_submit").click(function(evt) { SaveNewListItem(this, evt); });
+    $("#newlistitem_cancel").click(function(evt) { CancelAddToList(this, evt); });
+
+    // display the 'new list item' DIV at the mouse position
+    var AddToList = function(btnObj, e) {
+        // capture the ID of the list and specific field being modified from the object's ID
+        $('#newlistitem_listid').val($(btnObj).attr("id").replace(/^addtolistid_/g, ""));
+        $('#newlistitem_fieldid').val($(btnObj).attr("fieldid"));
+
+        // REMOVE previous form
+    $("#specificForm").empty();
+    
+    // INSERT the selected form
+    if (($("#newlistitem_listid").val() == "state") && (stateCustomFlag)) {
+     // insert state form and clear values
+         $("#specificForm").append(state);
+     $('#newlistitem_value').val("");
+     $('#newlistitem_abbr').val("");
+    }
+    else {
+     // insert generic form and clear values
+     $("#specificForm").append(generic);
+     $('#newlistitem_value').val("");
+        }
+    
+        // make the item visible before setting its x,y location
+        $('#newlistitem').css('display', 'inline');
+        //getting height and width of the message box
+        var height = $('#newlistitem').height();
+        var width = $('#newlistitem').width();
+        //calculating offset for displaying popup message
+        leftVal=e.pageX-(width/2)+"px";
+        topVal=e.pageY-(height/2)+"px";
+        //show the DIV and set cursor focus
+        $('#newlistitem').css({left:leftVal,top:topVal}).show();
+        $('#newlistitem_value').focus();
+    };
+   
+    // hide the add-to-list DIV and clear its textbox
+    var CancelAddToList = function(btnObj, e) {
+        $('#newlistitem').hide();
+    }
+    
+    // save the new list item to the given list
+    var SaveNewListItem = function(btnObj, e) {
+    // VALIDATE the selected form
+        //  Don't allow a number as first character
+        //  Don't allow illegal characters (' and " for now) - still developing
+    //   First, validate fields common to all forms
+        if ($("#newlistitem_value").val().match(/^\d/)) {
+            alert("List items can not start with a number.");
+            $("#newlistitem_value").focus();
+            return false;
+        }
+        if ($("#newlistitem_value").val().match(/[\'\"]/)) {
+            alert("List items contains illegal character(s).");
+            $("#newlistitem_value").focus();
+            return false;
+        }
+    //  Second, validate form specific fields
+        if (($("#newlistitem_listid").val() == "state") && (stateCustomFlag)) {
+            // state forms specific validation
+            if ($("#newlistitem_abbr").val().match(/^\d/)) {
+                alert("List items can not start with a number.");
+                $("#newlistitem_abbr").focus();
+                return false;
+            }
+            if ($("#newlistitem_abbr").val().match(/[\'\"]/)) {
+                alert("List items contains illegal character(s).");
+                $("#newlistitem_abbr").focus();
+                return false;
+            }
+        }
+
+        // PROCESS the selected form
+        if (($("#newlistitem_listid").val() == "state") && (stateCustomFlag)) {
+        // process state form
+        //  (note we have collected a title and abbreviation)
+        var listid = $("#newlistitem_listid").val();
+        var newitem = $('#newlistitem_value').val();
+        var newitem_abbr = $('#newlistitem_abbr').val();
+        
+    }
+    else {
+        // process generic form
+        //  (note we have only collected the title, so will make
+        //   abbreviation same as title)
+        var listid = $("#newlistitem_listid").val();
+        var newitem = $('#newlistitem_value').val();
+        var newitem_abbr = $('#newlistitem_value').val();
+    }
+
+        // make the AJAX call to save the new value to the specified list
+        // upon returning successfully, refresh the list box and select 
+        // the new list item
+        $.getJSON("/acianaehr/library/ajax/addlistitem.php",
+                    {listid: listid,
+             newitem: newitem,
+             newitem_abbr: newitem_abbr},
+                    function(jsondata, txtresponse) {
+                 if( jsondata.error == '' ){
+              //process each widget with the same list
+            $("select.addtolistclass_"+listid).each(function(){
+                var pointer = $(this);
+                var currentselected = pointer.val();
+                var listboxfield = pointer.attr("id");
+                var listbox = document.getElementById(listboxfield);
+                            while (listbox.options.length > 0) { listbox.options[0] = null; }
+                            $.each(jsondata.options, function () {
+                    if (listboxfield == $('#newlistitem_fieldid').val()) {
+                    // build select for the chosen widget field
+                                    listbox.options[listbox.options.length] = new Option(this.title, this.id);
+                                    if (this.id == newitem_abbr) {
+                        pointer.val(this.id);
+                                    }
+                }
+                else {
+                    // build select for the other widgets using the same list
+                    listbox.options[listbox.options.length] = new Option(this.title, this.id);
+                    if (this.id == currentselected) {
+                                        pointer.val(currentselected);
+                    }
+                }
+                            }); 
+            });
+        
+                        // now hide the DIV
+                        $('#newlistitem').hide();
+             }else{
+                
+                 alert( jsondata.error );
+             }
+                    }
+                );
+
+    }  // end SaveNewListItem
+
+}); // end jQuery .ready 
+</script>
+
+
+
+
+<script language="JavaScript">
+
+// hard code validation for old validation, in the new validation possible to add match rules
+
+
+// -=- jQuery makes life easier -=-
+
+// var matches = 0; // number of patients that match the demographic information being entered
+// var override = false; // flag that overrides the duplication warning
+
+$(document).ready(function() {
+    $(".medium_modal").on('click', function(e) {
+        e.preventDefault();e.stopPropagation();
+        dlgopen('', '', 650, 460, '', '', {
+            buttons: [
+                {text: 'Close', close: true, style: 'default btn-sm'}
+            ],
+            //onClosed: 'refreshme',
+            allowResize: false,
+            allowDrag: true,
+            dialogId: '',
+            type: 'iframe',
+            url: $(this).attr('href')
+        });
+    });
+    // added to integrate insurance stuff
+        $("#form_i1subscriber_relationship").change(function() { auto_populate_employer_address1(); });
+        $("#form_i2subscriber_relationship").change(function() { auto_populate_employer_address2(); });
+        $("#form_i3subscriber_relationship").change(function() { auto_populate_employer_address3(); });
+    
+    $('#search').click(function() { searchme(); });
+    $('#create').click(function() { check()});
+
+    var check = function(e) {
+                    var valid = submitme(1,e,"DEM",constraints);
+                if (valid) {
+            if (force_submit) {
+                // In this case dups were shown already and Save should just save.
+                top.restoreSession();
+                f.submit();
+                return;
+            }
+
+                            // Build and invoke the URL to create the dup-checker dialog.
+            var url = 'new_search_popup.php';
+        
+        var flds = new Array('fname','lname','pubpid','DOB','financial_review','deceased_date');
+        var separator = '?';
+        for (var i = 0; i < flds.length; ++i) {
+            var fval = $('#form_' + flds[i]).val();
+            if (fval && fval != '') {
+                url += separator;
+                separator = '&';
+                url += 'mf_' + flds[i] + '=' + encodeURIComponent(fval);
+            }
+        }
+        url+="&close"
+        dlgopen(url, '_blank', 700, 500);
+        } // end function
+    } // end function
+
+// Set onclick/onfocus handlers for toggling background color.
+    $('#form_title').click(function() { selClick(this); });
+    $('#form_title').blur(function() { selBlur(this); });
+    $('#form_fname').click(function() { toggleSearch(this); });
+    $('#form_mname').click(function() { toggleSearch(this); });
+    $('#form_lname').click(function() { toggleSearch(this); });
+    $('#form_pubpid').click(function() { toggleSearch(this); });
+    $('#form_DOB').click(function() { toggleSearch(this); });
+    $('#form_sex').click(function() { selClick(this); });
+    $('#form_sex').blur(function() { selBlur(this); });
+    $('#form_ss').click(function() { toggleSearch(this); });
+    $('#form_drivers_license').click(function() { toggleSearch(this); });
+    $('#form_status').click(function() { selClick(this); });
+    $('#form_status').blur(function() { selBlur(this); });
+    $('#form_genericname1').click(function() { toggleSearch(this); });
+    $('#form_genericval1').click(function() { toggleSearch(this); });
+    $('#form_genericname2').click(function() { toggleSearch(this); });
+    $('#form_genericval2').click(function() { toggleSearch(this); });
+    $('#form_billing_note').click(function() { toggleSearch(this); });
+    $('#form_street').click(function() { toggleSearch(this); });
+    $('#form_city').click(function() { toggleSearch(this); });
+    $('#form_state').click(function() { selClick(this); });
+    $('#form_state').blur(function() { selBlur(this); });
+    $('#form_postal_code').click(function() { toggleSearch(this); });
+    $('#form_county').click(function() { selClick(this); });
+    $('#form_county').blur(function() { selBlur(this); });
+    $('#form_country_code').click(function() { selClick(this); });
+    $('#form_country_code').blur(function() { selBlur(this); });
+    $('#form_mothersname').click(function() { toggleSearch(this); });
+    $('#form_contact_relationship').click(function() { toggleSearch(this); });
+    $('#form_phone_contact').click(function() { toggleSearch(this); });
+    $('#form_phone_home').click(function() { toggleSearch(this); });
+    $('#form_phone_biz').click(function() { toggleSearch(this); });
+    $('#form_phone_cell').click(function() { toggleSearch(this); });
+    $('#form_email').click(function() { toggleSearch(this); });
+    $('#form_email_direct').click(function() { toggleSearch(this); });
+    $('#form_providerID').click(function() { selClick(this); });
+    $('#form_providerID').blur(function() { selBlur(this); });
+    $('#form_ref_providerID').click(function() { selClick(this); });
+    $('#form_ref_providerID').blur(function() { selBlur(this); });
+    $('#form_pharmacy_id').click(function() { selClick(this); });
+    $('#form_pharmacy_id').blur(function() { selBlur(this); });
+    $('#form_hipaa_notice').click(function() { selClick(this); });
+    $('#form_hipaa_notice').blur(function() { selBlur(this); });
+    $('#form_hipaa_voice').click(function() { selClick(this); });
+    $('#form_hipaa_voice').blur(function() { selBlur(this); });
+    $('#form_hipaa_message').click(function() { toggleSearch(this); });
+    $('#form_hipaa_mail').click(function() { selClick(this); });
+    $('#form_hipaa_mail').blur(function() { selBlur(this); });
+    $('#form_hipaa_allowsms').click(function() { selClick(this); });
+    $('#form_hipaa_allowsms').blur(function() { selBlur(this); });
+    $('#form_hipaa_allowemail').click(function() { selClick(this); });
+    $('#form_hipaa_allowemail').blur(function() { selBlur(this); });
+    $('#form_allow_imm_reg_use').click(function() { selClick(this); });
+    $('#form_allow_imm_reg_use').blur(function() { selBlur(this); });
+    $('#form_allow_imm_info_share').click(function() { selClick(this); });
+    $('#form_allow_imm_info_share').blur(function() { selBlur(this); });
+    $('#form_allow_health_info_ex').click(function() { selClick(this); });
+    $('#form_allow_health_info_ex').blur(function() { selBlur(this); });
+    $('#form_allow_patient_portal').click(function() { selClick(this); });
+    $('#form_allow_patient_portal').blur(function() { selBlur(this); });
+    $('#form_care_team').click(function() { selClick(this); });
+    $('#form_care_team').blur(function() { selBlur(this); });
+    $('#form_cmsportal_login').click(function() { toggleSearch(this); });
+    $('#form_imm_reg_status').click(function() { selClick(this); });
+    $('#form_imm_reg_status').blur(function() { selBlur(this); });
+    $('#form_imm_reg_stat_effdate').click(function() { toggleSearch(this); });
+    $('#form_publicity_code').click(function() { selClick(this); });
+    $('#form_publicity_code').blur(function() { selBlur(this); });
+    $('#form_publ_code_eff_date').click(function() { toggleSearch(this); });
+    $('#form_protect_indicator').click(function() { selClick(this); });
+    $('#form_protect_indicator').blur(function() { selBlur(this); });
+    $('#form_prot_indi_effdate').click(function() { toggleSearch(this); });
+    $('#form_industry').click(function() { selClick(this); });
+    $('#form_industry').blur(function() { selBlur(this); });
+    $('#form_occupation').click(function() { toggleSearch(this); });
+    $('#form_language').click(function() { selClick(this); });
+    $('#form_language').blur(function() { selBlur(this); });
+    $('#form_family_size').click(function() { toggleSearch(this); });
+    $('#form_financial_review').click(function() { toggleSearch(this); });
+    $('#form_monthly_income').click(function() { toggleSearch(this); });
+    $('#form_homeless').click(function() { toggleSearch(this); });
+    $('#form_interpretter').click(function() { toggleSearch(this); });
+    $('#form_migrantseasonal').click(function() { toggleSearch(this); });
+    $('#form_referral_source').click(function() { selClick(this); });
+    $('#form_referral_source').blur(function() { selBlur(this); });
+    $('#form_vfc').click(function() { selClick(this); });
+    $('#form_vfc').blur(function() { selBlur(this); });
+    $('#form_religion').click(function() { selClick(this); });
+    $('#form_religion').blur(function() { selBlur(this); });
+    $('#form_deceased_date').click(function() { toggleSearch(this); });
+    $('#form_deceased_reason').click(function() { toggleSearch(this); });
+    $('#form_guardiansname').click(function() { toggleSearch(this); });
+    $('#form_guardianrelationship').click(function() { selClick(this); });
+    $('#form_guardianrelationship').blur(function() { selBlur(this); });
+    $('#form_guardiansex').click(function() { selClick(this); });
+    $('#form_guardiansex').blur(function() { selBlur(this); });
+    $('#form_guardianaddress').click(function() { toggleSearch(this); });
+    $('#form_guardiancity').click(function() { toggleSearch(this); });
+    $('#form_guardianstate').click(function() { selClick(this); });
+    $('#form_guardianstate').blur(function() { selBlur(this); });
+    $('#form_guardianpostalcode').click(function() { toggleSearch(this); });
+    $('#form_guardiancountry').click(function() { selClick(this); });
+    $('#form_guardiancountry').blur(function() { selBlur(this); });
+    $('#form_guardianphone').click(function() { toggleSearch(this); });
+    $('#form_guardianworkphone').click(function() { toggleSearch(this); });
+    $('#form_guardianemail').click(function() { toggleSearch(this); });
+
+  $('.datepicker').datetimepicker({
+                    i18n:{
+        en: {
+            months: [
+                "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+            ],
+            dayOfWeekShort: [
+                "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+            ],
+            dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+            ]
+        },
+    },
+        yearStart: '1900',
+    scrollInput: false,
+    scrollMonth: false,
+    rtl: false,
+                        format: 'Y-m-d',
+                timepicker:false
+          });
+  $('.datetimepicker').datetimepicker({
+                    i18n:{
+        en: {
+            months: [
+                "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+            ],
+            dayOfWeekShort: [
+                "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+            ],
+            dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+            ]
+        },
+    },
+        yearStart: '1900',
+    scrollInput: false,
+    scrollMonth: false,
+    rtl: false,
+                                        format: 'Y-m-d H:i',
+                            timepicker:true,
+        step: '30'
+          });
+
+}); // end document.ready
+
+// callback for new patient save confirm from new_search_popup.php
+// note that dlgclose() callbacks mostly need to init outside dom.
+function srcConfirmSave() {
+    document.forms[0].submit();
+}
+
+</script>
+
+    <script type="text/javascript" src="/acianaehr/public/assets/moment-2-13-0/moment.js"></script>
+    <script type="text/javascript" src="/acianaehr/interface/../library/js/vendors/validate/validate_modified.js"></script>
+    <script type="text/javascript" src="/acianaehr/interface/../library/js/vendors/validate/validate_extend.js"></script>
+
+<script language="JavaScript">
+    
+    var g_date_format='0';
+
+function submitme(new_validate,e,form_id, constraints) {
+
+        top.restoreSession();
+
+        //Use the old validation script if no parameter sent (backward compatibility)
+        //if we want to use the "old" validate function (set in globals) the validate function that will be called is the one that
+        // was on code up to today (the validate library was not loaded ( look at the top of this file)
+        if (new_validate !== 1) {
+            var f = document.forms[0];
+            if (validate(f)) {
+                somethingChanged = false;
+                f.submit();
+            } else { //If there was an error prevent the form submit in order to display them
+                e.preventDefault();
+            }
+        } else { //If the new validation library is used :
+
+            //Variables used for the validation library and validation mechanism
+            /*Get the constraint from the DB-> LBF forms accordinf the form_id*/
+            if(constraints==undefined || constraints=='') {
+                                 constraints = {"form_fname":{"presence":true},"form_lname":{"presence":true},"form_DOB":{"presence":true},"form_sex":{"presence":true}};
+            }
+            var valid = true ;
+
+            //We use a common error for all the errors because of the multilanguage capability of openemr
+            var form = document.querySelector("form#"+form_id);
+            //gets all the "elements" in the form and sends them to the validate library
+            //for more information @see https://validatejs.org/
+            var elements = validate.collectFormValues(form);
+            var element, new_key;
+
+            //before catch all values - clear filed that in display none, this will enable to fail on this fields.
+            for(var key in elements){
+                    //catch th element with the name because the id of select-multiple contain '[]'
+                   // and jquery throws error in those situation
+                    element = $('[name="'+ key + '"]');
+                    if(!$(element).is('select[multiple]')) {
+
+                            if($(element).parent().prop('style') != undefined && ($(element).parent().prop('style').visibility == 'hidden'|| element.parent().parent().css('display')== 'none')){
+                                $(element).val("");
+                            }
+
+                    }
+                }
+
+            //get the input value after romoving hide fields
+            elements = validate.collectFormValues(form);
+            //custom validate for multiple select(failed validate.js)
+            //the validate js cannot handle the LBF multiple select fields
+            for(var key in elements){
+
+                element = $('[name="'+ key + '"]');
+
+                if($(element).is('select[multiple]')) {
+
+                    new_key = key.substring(0, key.length - 2);
+                    if(validate.isObject(constraints[new_key])) {
+                        //check if select multiple does empty (empty or unassigned)
+                        if(constraints[new_key].presence && (elements[key].length == 0 || elements[key][0] == null )) {
+
+                            appendError(element, new_key);
+                            e.preventDefault();
+                            valid = false;
+                        }
+                    }
+                    //remove multi select key to prevent errors
+                    delete elements[key];
+                    delete constraints[new_key];
+                }
+            }
+
+            //error conatins an list of the elements and their errors
+            //set false full message because the name of the input not can be translated
+            var errors = validate(elements, constraints, {fullMessages: false});
+            if (typeof  errors !== 'undefined') {
+                //prevent default if trigger is submit button
+                if(typeof (e) !== 'undefined') {
+                    e.preventDefault();
+                }
+                showErrors(form, errors);
+                valid = false;
+            }else{
+                somethingChanged = false;
+            }
+
+            //In case there were errors they are displayed with this functionn
+            function showErrors(form, errors) {
+
+                for (var key in errors) {
+                    element = $('[name="'+ key + '"]');
+                    if (errors.hasOwnProperty(key)) {
+                        appendError(element, key, errors[key][0])
+                    }
+                }
+            }
+            /**
+            * append 'span' with error message
+            */
+            function appendError(input, id, message){
+
+                //append 'span' tag for error massages if not exist
+                if($("#error_" + id).length == 0) {
+                    //If have another element after the input
+                    if($(input).next().length > 0) {
+
+                        $(input).next().after("<span id='error_" + id +"' class='error-message' '></span>");
+
+                    } else {
+                        $(input).after("<span id='error_" + id +"' class='error-message'></span>");
+
+                    }
+                }
+                //show error message
+                var error_msg = getErrorMessage(message);
+
+                var title= $(input).attr('title');
+                //if it's long title remove it from error message (this could destroy the UI)
+                if(title == undefined || title.length > 20) { title = "" }
+                $("#error_" + id).text(title +' '+error_msg);
+
+                $(input).addClass('error-border');
+
+                //mark the tub
+                var parent_div = $(input).parents('div.tab');
+                if($(parent_div).is('div')) {
+                    var div_id = $(parent_div).attr('id');
+                    var type_tab = div_id.substr(4);
+                    $('a#header_tab_'+type_tab).css('color', 'red');
+                 }
+
+                //open tab for new patient form
+                parent_div = $(input).parents('div.section');
+                if(parent_div !== undefined) {
+                    $(parent_div).css('display' , 'block');
+                    div_id = $(parent_div).attr('id');
+                    if(div_id !== undefined) {
+                        div_id = div_id.substr(-1);
+                        var input_checkbox = document.getElementById('form_cb_' + div_id);
+                        input_checkbox.checked = true;
+                    }
+                }
+
+
+                //bind hide function on focus/select again
+                $(input).on('click focus select', function(){
+                    hideErrors(this, id);
+                });
+                //for datepicker button
+                if($(input).next().is('img')){
+                    $(input).next().click(function(){
+
+                        hideErrors($(this).prev(), id);
+                    });
+                }
+
+            }
+            /*
+            * hide error message
+            * @param element
+            **/
+            function hideErrors(input, id){
+                $(input).removeClass('error-border');
+                $("#error_" + id).text('');
+
+                var parent_div = $(input).parents('div.tab');
+                if($(parent_div).is('div')) {
+                    var div_id = $(parent_div).attr('id');
+                    var type_tab = div_id.substr(4);
+                    $('a#header_tab_'+type_tab).css('color', 'black');
+                }
+            }
+            /*
+            * Check if exist translation for current error message else return default message.
+            * In addition you can adding custom error message to the constraints json according validate.js instructions and add the translation here
+            * @param message
+            **/
+            function getErrorMessage(message){
+                //enable to translate error message
+                //todo - adding all the translations string from validate.js
+                // console.log(message);
+                switch (message){
+                    case 'Patient Name Required':
+                        return 'Patient Name Required';
+                    case 'An end date later than the start date is required for repeated events!':
+                       return 'An end date later than the start date is required for repeated events!';
+                    case 'Required field missing: Please enter the User Name':
+                        return 'Required field missing: Please enter the User Name';
+                    case 'Please enter the password':
+                        return 'Please enter the password';
+                    case 'Required field missing: Please enter the First name':
+                        return 'Required field missing: Please enter the First name';
+                    case 'Required field missing: Please enter the Last name':
+                        return 'Required field missing: Please enter the Last name';
+                    default:
+                       return 'is not valid';
+                }
+            }
+            //the result of validation
+            return valid;
+        }
+    }
+    //enable submit button until load submitme function
+    if(document.getElementById('submit_btn') != null){
+        document.getElementById('submit_btn').disabled = false;
+    }
+</script>
+<script language="JavaScript">
+    // Array of skip conditions for the checkSkipConditions() function.
+    var skipArray = [
+            ];
+    checkSkipConditions();
+    $("input").change(function() {
+        checkSkipConditions();
+    });
+    $("select").change(function() {
+        checkSkipConditions();
+    });
+</script>
+
+
+<div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span></span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span></span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"></div><button type="button" class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div></body></html>

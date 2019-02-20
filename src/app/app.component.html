@@ -1,0 +1,181 @@
+<!--<nav class="navbar navbar-light" style="background-color: #ffcccc">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Aciana Healthcare</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="#">Home</a></li>
+      
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Patient Name</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav>-->
+  
+  
+ <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Aciana Healthcare</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+     
+      <div class="nav-item dropdown" style="margin-right: 200px">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #212223e0 !important;">
+          Patient's Name
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">Profile</a>
+          <a class="dropdown-item" href="#">Settings</a>
+          <a class="dropdown-item" href="#">Logout</a>
+        </div>
+      </div>
+    </div>
+    </nav>
+
+<div class="container-fluid" style="margin-top:2%">
+<div class="card" style="width: 50%">
+  <h5 class="card-header">Book Appointment</h5>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <h5 class="card-header">Chief Complaint</h5>
+       <textarea rows="4" cols="40"></textarea>
+      </div>
+      <div class="col-md-6" style="margin-top: 50px">
+        <select  class="form-control" (change)="onChange($event.target.value)">
+          <option style="font-weight: bold;">Provider type</option>
+          <option>Immunologist</option>
+          <option>Anesthesiologist</option>
+          <option>Cardiologist</option>
+          <option>Dermatologist</option>
+          <option>Neurologist</option>
+          <option>Gastroenterologist</option>
+          <option>Hematologist</option>
+          <option>Gynecologist</option>
+        </select>
+      </div>
+
+    </div>
+   <div style="margin-top:5%">
+    <a href="#" class="btn btn-primary">Submit</a>
+  </div>
+  </div>
+</div> -->
+
+<div class="container-fluid" style="background-image:url('./assets/1.jpg');
+position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  overflow-x: hidden;
+  background-position: center;
+  background-size: cover;
+    opacity: 0.7">
+    
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="position:fixed;width:100%;margin-left: -1%;">
+  <img src="./assets/profile-img.png" style="width:2%">&nbsp;&nbsp;
+  <a class="navbar-brand" href="#"><b style="color:red;font-size: 24px">aciana healthcare</b></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+   aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <!-- <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul> -->
+     
+    <!-- <div class="nav-item dropdown" style="margin-right: 200px">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #212223e0 !important;">
+          Patient's Name
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">Profile</a>
+          <a class="dropdown-item" href="#">Settings</a>
+          <a class="dropdown-item" href="#">Logout</a>
+        </div>
+      </div> -->
+    </div>
+    </nav>
+    
+
+    
+    
+<router-outlet></router-outlet>
+
+
+  
+
+
+<!-- <div class=col-md-4>
+<dl-date-time-picker class="date"></dl-date-time-picker>
+</div>
+<div style="margin-top:2%;margin-left: 2%">
+  <a href="#" class="btn btn-primary">Submit</a>
+</div> -->
+
+
+
+<!-- <div id="carouselExampleIndicators" class="carousel slide" style="width:350px;margin-left:55%;margin-top: -23.5%;background-color: grey" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+     <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+    
+
+  </ol>
+  <div *ngIf="bodycomponent" class="carousel-inner">
+     <div class="carousel-item active"  >
+      
+     <img src="./assets/profile.jpg" style="height: 50%;width:50%;margin:5% 22% 0 22%" alt="First slide"> 
+      <div class="card-body">
+       <h4 class="card-title">doctor1</h4>
+       <a href="#" class="btn btn-primary">See Profile</a>
+     </div> 
+    
+    <div  *ngFor=" let data of doctorlist">
+      <div class="carousel-item active">
+      
+      <img src="./assets/profile.jpg" style="height: 50%;width:50%;margin:5% 22% 0 22%" alt="First slide">
+      <div class="card-body">
+       <h4 class="card-title">{{data.doctor}}</h4>
+       <a href="#" class="btn btn-primary">See Profile</a>
+     </div>
+    </div>
+      </div>
+    </div>
+    
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" 
+  data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" 
+  data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+
+<div *ngIf="bodycomponent" class="card" style="width:300px;margin-left:55%;margin-top: -23.5%">
+  <img class="card-img-top" src="./assets/profile.jpg" alt="Card image">
+  <div class="card-body">
+    <h4 class="card-title">{{singleobject.doctorname}}</h4>
+     <p class="card-text">{{singleobject.expereince}}</p> 
+    <a href="#" class="btn btn-primary">See Profile</a>
+  </div>
+</div>-->
+ 

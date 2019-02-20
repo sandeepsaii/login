@@ -1,0 +1,101 @@
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Aciana Healthcare</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+     
+      <div class="nav-item dropdown" style="margin-right: 200px">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #212223e0 !important;">
+          Patient's Name
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">Profile</a>
+          <a class="dropdown-item" href="#">Settings</a>
+          <a class="dropdown-item" href="#">Logout</a>
+        </div>
+      </div>
+    </div>
+    </nav> -->
+
+<div class="container-fluid row" style="margin-top:8%">
+<div class="card col-sm-6" style="width: 50%;margin-top:2%;">
+  <h5 class="card-header">Book Appointment</h5>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <h5 class="card-header">Chief Complaint</h5>
+       <textarea rows="4" cols="40"></textarea>
+      </div>
+      <div class="col-md-6" style="margin-top: 50px">
+        <select  class="form-control" (change)="onChange($event.value)">
+          <option style="font-weight: bold;">Provider type</option>
+          <option>Immunologist</option>
+          <option>Anesthesiologist</option>
+          <option>Cardiologist</option>
+          <option>Dermatologist</option>
+          <option>Neurologist</option>
+          <option>Gastroenterologist</option>
+          <option>Hematologist</option>
+          <option>Gynecologist</option>
+        </select>
+      </div>
+
+
+      
+
+
+    </div>
+   
+  </div>
+</div>
+
+<div class="container col-sm-6" style="overflow-y: auto;height: 400px;" *ngIf="root">
+<div class="row col-md-8">
+<div class="card" style="width: 18rem;" *ngFor="let doc of docinfo; let i = index">
+<img class="card-img-top" src="./assets/profile.jpg" alt="Card image cap">
+<div class="card-body">
+<h5 class="card-title" >{{doc.docname}}</h5>
+<a href="#"><i class="fas fa-phone"></i>&nbsp;Voice call</a>&nbsp;&nbsp;<a href="#"><i class="fas fa-video"></i> &nbsp;Video call</a>
+
+<div>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" style="margin-top: 5px;" data-toggle="modal" data-target="#exampleModal" (click)=profile(doc.docname,i) >
+  Profile
+</button>
+</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{doc.docname}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <p><b>Designation: </b>{{infos.Designation}}</p>
+       <p><b>Specialist: </b>{{infos.Specialist}}</p>
+       <p><b>Experience: </b>{{infos.Experience}}</p>
+       <p><b>Contact: </b>{{infos.Contact}}</p>
+       <p><b>Address: </b>{{infos.Address}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+

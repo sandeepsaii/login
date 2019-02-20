@@ -1,0 +1,1964 @@
+
+ <div>
+ <form  [formGroup]="uRegister" (ngSubmit)="register($event)"  id="form" class="needs-validation ml" 
+  novalidate>
+
+  <div id="accordion" class="container" style="margin-top:6%;position:relative;height:520px;overflow-y:auto">
+      <div class="card">
+          <div class="card-header fixed" style="font-weight: bold;color:#800000;font-size:20px"  *ngIf="!show">
+              Search Patient 
+            </div>
+            <div class="card-header fixed" style="font-weight: bold;background-color:#fff;color:#ff0505;font-size:20px" *ngIf="show">
+               Patient Registration
+              </div>
+            <div class="card-body" *ngIf="!show">
+                <!-- <h5 class="card-title" style="font-size:18px">Search Patient</h5> -->
+    <div class="row" >
+         
+      <div class="col-md-3">
+         
+      <input type="text" class="form-control" id="firstName" placeholder="First Name" value="" required>
+      </div>
+      <div class="col-md-2">
+         
+        <input type="text" class="form-control" id="middleName" placeholder="Middle Name" value="" required>
+        </div>
+        <div class="col-md-3">
+         
+          <input type="text" class="form-control" id="lastName" placeholder="Last Name" value="" required>
+          </div>
+          <div class="row">
+          <div class="col-md-3">
+         
+            <button  (click)="toggle()" id="#form" class="btn btn-success"
+             style="margin-left: 12px"> {{buttonName}}</button>
+            </div>
+          </div>
+        <div class="col-md-4" style="margin-top: 12px">
+        <!--<button type="button" class="btn" style="margin-left: -12px">Create New Patient</button>-->
+        <button type="submit" class="btn btn-primary" >
+       Submit
+      </button>
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Who
+    data-toggle="collapse" 
+            data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" -->
+    
+    <div *ngIf="show">
+    <div style="margin-top:10px" class="card" (click)="whotoggle(1)">
+      <div class="card-header" style="height:50px" id="headingOne" data-toggle="collapse" 
+      data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        <div class="row" >
+          
+          <div class="col-md-8">
+            <h6 class="mb-0 cl" style="font-weight: bold;color:#800000">Who</h6>
+          </div>
+         <div class="col-md-4">
+            <i style="margin-left:90%;font-size:20px;color:#800000;" *ngIf="!Arrshow[0]" data-toggle="collapse" 
+            data-target="#collapseOne" class="fa fa-chevron-circle-left"></i>
+            <i style="margin-left:90%;font-size:20px;color:#800000;"  data-toggle="collapse" 
+            data-target="#collapseOne" *ngIf="Arrshow[0]" class="fa fa-chevron-circle-down"></i>
+            <!-- <i style="margin-left:90%;font-size:24px;color:#800000" class="material-icons" *ngIf="!Arrshow">add_circle</i> -->
+          <!-- <i style="margin-left:90%;font-size:24px;color:#800000" class="material-icons" *ngIf="Arrshow">remove_circle</i> -->
+          </div>
+        </div>
+      </div>
+      <div id="collapseOne" class="collapse hide" style="background-color: #f2f4f7" 
+      aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="col-md-10 order-md-1 container">
+          <div formGroupName="Newpatient">
+            <div class="row " style="margin-top:10px" >
+              <div class="col-md-3 mb-3 ">
+                <label for="Title">Title</label>
+                <select class="custom-select d-block w-100" id="country" required>
+                  <option value="">Unassigned</option>
+                  <option>Mr.</option>
+                  <option>Mrs.</option>
+                  <option>Ms.</option>
+                  <option>Dr.</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="firstName" >First Name</label>
+                <input type="text" class="form-control" formControlName="First_Name" id="firstName" placeholder="" value="" required>
+                <div class="invalid-feedback">
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="firstName" >Middle Name</label>
+                <input type="text" class="form-control" id="middleName" placeholder="" formControlName="Middle_Name">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="" value=""  formControlName="Last_Name" required>
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label for="firstName">Sex</label>
+                <select class="custom-select d-block w-100" id="country" required  formControlName="Sex" >
+                  <option value="">Unassigned</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Others</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="dob">DOB</label>
+                <input type="date"  formControlName="DOB" class="form-control" id="date">
+                <div class="invalid-feedback">
+                  Please enter a valid dob.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="firstName" >Marital Status</label>
+                <select class="custom-select d-block w-100" id="country" required  formControlName="marital_status">
+                  <option value="">Unassigned</option>
+                  <option>Married</option>
+                  <option>Single</option>
+                  <option>Divorced</option>
+                  <option>Widowed</option>
+                  <option>Separated</option>
+                  <option>Domestic Partner</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3 mb-4">
+                  <label for="firstName">SSN</label>
+                  <input type="text" class="form-control" id="middleName"  formControlName="SSN" placeholder="">
+                <div class="invalid-feedback">
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-3 mb-4">
+                <label for="firstName">License/ID</label>
+                <input type="text" class="form-control" id="middleName" formControlName="SSN" placeholder="">
+              </div>
+            </div>
+
+            <!-- <div class="row">
+              <div class="col-md-3 mb-3">
+               <label for="firstName">User Defined</label>
+               <input type="text" class="form-control" id="firstName" placeholder="" value=""  formControlName="User_Defined" required>
+              </div>
+              <div class="col-md-3 mb-3" style="margin-top:32px">
+                <input type="text" class="form-control" id="middleName"  formControlName="User_Defined" placeholder="">
+              </div>
+              <div class="col-md-3 mb-3" style="margin-top:32px">
+                <input type="text" class="form-control" id="middleName"  formControlName="User_Defined" placeholder="">
+              </div>
+              <div class="col-md-3 mb-3" style="margin-top:32px">
+                <input type="text" class="form-control" id="middleName"  formControlName="External_ID" placeholder="">
+              </div>
+            </div> -->
+              <div class="mb-3">
+                <label for="address2">Billing Note</label>
+                <input type="text" class="form-control" id="address2" placeholder="" formControlName="Billing_Note" >
+              </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  
+
+    <!-- Contact -->
+    <div formGroupName="patientrecord" (click)="whotoggle(2)">
+      <div style="margin-top:10px;" class="card">
+        <div class="card-header" style="height:50px" id="headingTwo" data-toggle="collapse" 
+        data-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo">
+          <div class="row">
+            <div class="col-md-8" >
+                <h6 class="mb-0 cl" style="font-weight: bold;color:#800000">Contact</h6>
+             </div>
+              <div class="col-md-4">
+                  <i style="margin-left:90%;font-size:20px;color:#800000" *ngIf="!Arrshow[1]" data-toggle="collapse" 
+                  data-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo" class="fa fa-chevron-circle-left"></i>
+                 <i style="margin-left:90%;font-size:20px;color:#800000" *ngIf="Arrshow[1]" data-toggle="collapse" 
+                 data-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo" class="fa fa-chevron-circle-down"></i>     
+              </div>
+          </div>    
+        </div>
+        <div id="collapsetwo" class="collapse hide clp container">
+          <div class="col-md-10 order-md-1 container">
+            <div formGroupName="Contact">
+                <div class="row " style="margin-top:10px">
+                  <div class="col-md-4 mb-4">
+                      <label for="firstName">Address</label>
+                      <input type="text" class="form-control" formControlName="Address" id="middleName" placeholder="">
+                  </div>
+                  <div class="col-md-4 mb-4">
+                      <label for="firstName">City</label>
+                      <input type="text" class="form-control" formControlName="City" id="middleName" placeholder="">
+                 </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="firstName">Postal Code</label>
+                    <input type="text" class="form-control" formControlName="Postal_Code" id="middleName" placeholder="">
+                 </div>
+                </div>
+
+             <div class="row">
+                <div class="col-md-4 mb-4">
+                    <label for="state">State</label>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                    </div>
+                    <div class="col-sm-10">
+                        <select class="custom-select d-block w-100" formControlName="State" id="state" required>
+                          <option value="">Unassigned</option>
+                          <option>Alabama</option>
+                          <option>Alaska</option>
+                          <option>Arizona</option>
+                          <option>Arkansas</option>
+                          <option>California</option>
+                          <option>Colorado</option>
+                          <option>Connecticut</option>
+                          <option>Delaware</option>
+                          <option>District Of Columbia</option>
+                          <option>Florida</option>
+                          <option>Georgia</option>
+                        </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <label for="state" style="margin-left:1px">County</label>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                    </div>
+                    <div class="col-sm-10" style>
+                      <select class="custom-select d-block w-100" formControlName="County" id="state" required>
+                        <option value="">Unassigned</option>
+                        <option>ADAIR</option>
+                        <option>ANDREW</option>
+                        <option>ATCHISON</option>
+                        <option>AUDRAIN</option>
+                        <option>BARRY</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <label for="state" style="margin-left:2px">Country</label>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                    </div>
+                    <div class="col-sm-10">
+                      <select class="custom-select d-block w-100" formControlName="Country" id="state" required>
+                        <option value="">Unassigned</option>
+                        <option>USA</option>
+                        <option>INDIA</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="invalid-feedback">
+                    Please provide a valid state.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Mother's Name</label>
+                  <input type="text" class="form-control" formControlName="Mothers_Name" id="middleName" placeholder="">
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Emergency Contact</label>
+                  <input type="text" class="form-control" formControlName="Emergency_Phone" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Emergency Phone</label>
+                  <input type="text" class="form-control" formControlName="Emergency_Phone" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid postal code is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Home Phone</label>
+                  <input type="text" class="form-control" formControlName="Home_Phone" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid address is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Work Phone</label>
+                  <input type="text" class="form-control" formControlName="Work_Phone" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Mobile Phone</label>
+                  <input type="text" class="form-control" formControlName="Mobile_Phone" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid postal code is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="firstName">Contact Email</label>
+                  <input type="text" class="form-control" formControlName="Email" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid address is required.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="firstName">Trusted Email</label>
+                  <input type="text" class="form-control" formControlName="Trusted_Email" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--choices-->
+      <div style="margin-top:10px;" class="card" (click)="whotoggle(3)">
+      <div class="card-header" style="height:50px" id="headingThree" data-toggle="collapse"
+       data-target="#collapsethree" aria-expanded="true" aria-controls="collapsethree">
+        <div class="row">
+          <div class="col-md-8">
+            <h6 class="mb-0 cl" style="font-weight: bold;color:#800000">Choices</h6>
+          </div>
+          <div class="col-md-4">
+            <i style="margin-left:90%;font-size:20px;color:#800000" *ngIf="!Arrshow[2]" data-toggle="collapse" 
+            data-target="#collapsethree" class="fa fa-chevron-circle-left"></i>
+             <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+             data-target="#collapsethree" *ngIf="Arrshow[2]" class="fa fa-chevron-circle-down"></i>
+          </div>
+        </div>    
+      </div>
+      <div id="collapsethree" class="collapse hide clp container">
+        <div class="col-md-10 order-md-1 container">
+          <div formGroupName="choices">
+            <div class="row " style="margin-top:10px">
+              <div class="col-md-4 mb-4">
+                <label for="Title">Provider</label>
+                <select class="custom-select d-block w-100" formControlName="Provider" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Administrator</option>
+                  <option>Satya Vantipalli</option>
+                  <option>Jaswanth Gorripati</option>
+                  <option>Saiomkar Vudutha</option>
+                  <option>Sandeep Perugu</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-4">
+                <label for="Title">Referring Provider</label>
+                <select class="custom-select d-block w-100" formControlName="Referring_Provider" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Administrator</option>
+                  <option>Satya Vantipalli</option>
+                  <option>Jaswanth Gorripati</option>
+                  <option>Saiomkar Vudutha</option>
+                  <option>Sandeep Perugu</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="Title">HIPAA Notice Received</label>
+                <select class="custom-select d-block w-100" formControlName="HIPAA_Notice_Received" id="country" required style="">
+
+                  <option value="">Unassigned</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="Title">Pharmacy</label>
+                <select class="custom-select d-block w-100" formControlName="Pharmacy" id="country" required style="">
+
+                  <option value="">Unassigned</option>
+                  <option>Aciana Pharmaceuticals 456-852-4587 / Bangalore / Hyd</option>
+                  <option>Nakauty Pharmaceuticals 502-257-0872 / Mumbai</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="Title">Leave Message With</label>
+
+                <input type="text" class="form-control" formControlName="Leave_Message_With" id="middleName" placeholder="">
+                <div class="invalid-feedback">
+                  Valid address is required.
+                </div>
+              </div>
+            </div>
+            <div class="row " style="margin-top: 25px">
+              <div class="col-md-4 mb-4">
+                <label for="Title">Allow Voice Message</label>
+                <select class="custom-select d-block w-100" formControlName="Allow_Voice_Message" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="Title">Allow Mail Message</label>
+                <select class="custom-select d-block w-100" formControlName="Allow_Mail_Message" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="Title">Allow SMS</label>
+                <select class="custom-select d-block w-100" formControlName="Allow_SMS"  id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+            </div>
+            <div class="row " style="margin-top:8px">
+              <div class="col-md-4 mb-4">
+                <label for="Title">Allow Email</label>
+                <select class="custom-select d-block w-100" formControlName="Allow_Email" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="Title">Allow Immunization Registry Use</label>
+                <select class="custom-select d-block w-100" formControlName="Allow_Immunization_Registry_Use" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="Title">Allow Immunization Info Sharing</label>
+                <select class="custom-select d-block w-100" formControlName="Allow_Immunization_Info_Sharing" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+            </div>
+
+            <div class="row " style="margin-top:10px">
+              <div class="col-md-4 mb-4">
+                <label for="Title">Allow Health Information Exchange</label>
+                <select class="custom-select d-block w-100" formControlName="Allow_Health_Information_Exchange" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="Title">Allow Patient Portal</label>
+                <select class="custom-select d-block w-100" formControlName="Allow_Patient_Portal"  id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="Title">Care Team</label>
+                <select class="custom-select d-block w-100" formControlName="Care_Team" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Administrator</option>
+                  <option>Satya Vantipalli</option>
+                  <option>Jaswanth Gorripati.</option>
+                  <option>Saiomkar Vudutha</option>
+                  <option>Sandeep Perugu</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+            </div>
+            <div class="row " style="margin-top: 10px;">
+              <div class="col-md-4 mb-4">
+                <label for="Title">Publicity Code Effective Date</label>
+                <input type="text" class="form-control" formControlName="Publicity_Code_Effective_Date" >
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="Title">Protection Indicator</label>
+                <select class="custom-select d-block w-100" formControlName="Protection_Indicator" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                <div class="invalid-feedback">
+                  Valid address is required.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="Title">Protection Indicator Effective Date</label>
+                <input type="text" class="form-control" formControlName="Protection_Indicator_Effective_Date">
+                <div class="invalid-feedback">
+                  Valid address is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="row " style="margin-top:6px">
+              <div class="col-md-6">
+                <label for="Title">Publicity Code</label>
+                <select class="custom-select d-block w-100" formControlName="Publicity_Code" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>No reminder/recall</option>
+                  <option>Reminder/recall - any method</option>
+                  <option>Reminder/recall - no calls</option>
+                  <option>Reminder only - any method</option>
+                  <option>Reminder only - no calls</option>
+                  <option>Recall only - any method</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="Title">Immunization Registry Status Effective Date</label>
+                <input type="text" class="form-control" formControlName="Immunization_Registry_Status_Effective_Date">
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+            </div>
+
+            <div class="row " style="margin-top: 20px;margin-bottom: 10px">
+              <div class="col-md-6">
+                <label for="Title">CMS Portal Login</label>
+                <input type="text" class="form-control" formControlName="CMS_Portal_Login">
+                <div class="invalid-feedback">
+                  Please select a valid title.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="Title">Immunization Registry Status</label>
+                <select class="custom-select d-block w-100" formControlName="Immunization_Registry_Status" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Active</option>
+                  <option>Inactive - Lost to follow - up</option>
+                  <option>Inactive - Moved or gone elsewhere</option>
+                  <option>Inactive - Permanently Inactive</option>
+                  <option>Inactive - Unspecified</option>
+                  <option>Unknown</option>
+                </select>
+                <div class="invalid-feedback">
+                  Valid address is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Employer -->
+    <div style="margin-top:10px;" class="card" (click)="whotoggle(4)">
+      <div class="card-header" style="height:50px" id="headingOne" data-toggle="collapse" 
+      data-target="#collapsefour" aria-expanded="true" aria-controls="collapsefour">
+        <div class="row">
+          <div class="col-md-8">
+            <h6 class="mb-0  cl" style="font-weight: bold;color:#800000">Employer</h6>
+          </div> 
+          <div class="col-md-4">
+              <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+              data-target="#collapsefour" *ngIf="!Arrshow[3]" class="fa fa-chevron-circle-left"></i>
+              <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+              data-target="#collapsefour" *ngIf="Arrshow[3]" class="fa fa-chevron-circle-down"></i>
+          </div>
+        </div>    
+      </div>
+      <div id="collapsefour" class="collapse hide clp">
+        <div class="col-md-10 order-md-1 container">
+          <div formGroupName="employer">
+            <div class="row " style="margin-top:10px">
+              <div class="col-md-4 mb-4">
+                  <label for="state" style="margin-left:2px">Industry</label>
+                <div class="row">
+                  <div class="col-sm-2">
+                      <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                  </div>
+                  <div class="col-sm-10">
+                      <select class="custom-select d-block w-100" formControlName="Industry" id="state" required>
+                        <option value="">Unassigned</option>
+                        <option>Law Firm</option>
+                        <option>Engineering Firm</option>
+                        <option>Construction Firm</option>
+                        <option>Aciana Health Systems</option>
+                      </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">Occupation</label>
+                  <input type="text" class="form-control" formControlName="Occupation" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid address is required.
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">Employer Name</label>
+                  <input type="text" class="form-control" formControlName="Employer_Name" id="Name" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+              </div>
+            </div>
+            <div formGroupName="EmployerAddress">
+            <div class="row" style="margin-top: 10px">
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">Employer Address</label>
+                  <input type="text" class="form-control" formControlName="Address" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid address is required.
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">City</label>
+                  <input type="text" class="form-control" formControlName="City" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">Postal Code</label>
+                  <input type="text" class="form-control" formControlName="Postal_Code" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-4">
+                  <label for="state">State</label>
+                <div class="row">
+                  <div class="col-sm-2">
+                    <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                  </div>
+                  <div class="col-sm-10">
+                      <select class="custom-select d-block w-100" formControlName="State" id="state" required>
+                        <option value="">Unassigned</option>
+                        <option>Alabama</option>
+                        <option>Alaska</option>
+                        <option>Arizona</option>
+                        <option>Arkansas</option>
+                        <option>California</option>
+                        <option>Colorado</option>
+                        <option>Connecticut</option>
+                        <option>Delaware</option>
+                        <option>District Of Columbia</option>
+                        <option>Florida</option>
+                        <option>Georgia</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Please provide a valid state.
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="state" style="margin-left:1px">Country</label>
+                <div class="row">
+                  <div class="col-sm-2">
+                    <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                  </div>
+                    <div class="col-sm-10" style>
+                      <select class="custom-select d-block w-100" formControlName="Country" id="state" required >
+                        <option value="">Unassigned</option>
+                        <option>USA</option>                  
+                        <option>INDIA</option>
+                      </select>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+  
+    <!-- Stats -->
+    <div style="margin-top:10px;background-color: " class="card" (click)="whotoggle(5)">
+      <div class="card-header" style="height:50px" id="headingfive" data-toggle="collapse" 
+        data-target="#collapsefive" aria-expanded="true" aria-controls="collapsefive">
+          <div class="row">
+            <div class="col-md-8">
+              <h6 class="mb-0 cl" style="font-weight: bold;color:#800000">Stats</h6>
+            </div>
+            <div class="col-md-4">
+              <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+              data-target="#collapsefive" *ngIf="!Arrshow[4]" class="fa fa-chevron-circle-left"></i>
+            <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+            data-target="#collapsefive" *ngIf="Arrshow[4]" class="fa fa-chevron-circle-down"></i>
+            </div>
+          </div>    
+      </div>
+      <div id="collapsefive" class="collapse hide clp">
+        <div class="col-md-10 order-md-1 container">
+          <div formGroupName="stats">
+            <div class="row " style="margin-top:10px">
+              <div class="col-md-4 mb-4">
+                      <label for="state" style="margin-left:2px">Language</label>
+                <div class="row">
+                  <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                  </div>
+                  <div class="col-sm-10">
+                      <select class="custom-select d-block w-100" formControlName="Language" id="state" required>
+                          <option value="">Unassigned</option>
+                          <option>Declined to specify</option>
+                          <option>Arabic</option>
+                          <option>Armenian</option>
+                          <option>Assamese</option>
+                          <option>English</option>
+                          <option>Telugu</option>
+                          <option>Kannada</option>
+                          <option>Hindi</option>
+                      </select>
+                  </div>
+                </div>
+                  <div class="invalid-feedback">
+                      Please provide a valid state.
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="Title">Ethnicity</label>
+                  <select class="custom-select d-block w-100" formControlName="Ethnicity" id="country" required style="">
+                    <option value="">Unassigned</option>
+                    <option>Declined To Specify</option>
+                    <option>Hispanic or Latino</option>
+                    <option>Not Hispanic or Latino</option>
+                  </select>            
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="Title">Race</label>
+                  <select class="custom-select d-block w-100" formControlName="Race" id="country" required style="">
+                    <option value="">Unassigned</option>
+                    <option>Declined To Specify</option>
+                    <option>American Indian or Alaska Native</option>
+                    <option>Black or African American</option>
+                    <option>Asian</option>
+                    <option>Native Hawaiian or Other Pacific Islander</option>
+                    <option>White</option>  
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select a valid title.
+                  </div>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 10px">
+              <div class="col-md-4 mb-4">
+                <label for="firstName">Family Size</label>
+                <input type="text" class="form-control" formControlName="Family_Size" id="middleName" placeholder="">
+                <div class="invalid-feedback">
+                    Valid address is required.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="firstName">Financial Review Date</label>
+                <input type="text" class="form-control" formControlName="Financial_Review_Date" id="middleName" placeholder="">
+                <div class="invalid-feedback">
+                  Valid city is required.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="firstName">Monthly Income</label>
+                <input type="text" class="form-control" formControlName="Monthly_Income" id="middleName" placeholder="">
+                <div class="invalid-feedback">
+                    Valid city is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+              <div class="col-md-4 mb-4">
+                <label for="firstName">Homeless,etc.</label>
+                <input type="text" class="form-control" formControlName="Homeless" id="middleName" placeholder="">
+                <div class="invalid-feedback">
+                    Valid address is required.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="firstName">Interpreter</label>
+
+                <input type="text" class="form-control" formControlName="Interpreter" id="middleName" placeholder="">
+                <div class="invalid-feedback">
+                  Valid city is required.
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="firstName">Migrant/Seasonal</label>
+
+                <input type="text" class="form-control" formControlName="Migrant_Seasonal" id="middleName" placeholder="">
+                <div class="invalid-feedback">
+                  Valid city is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+              <div class="col-md-4 mb-4">
+                  <label for="state" style="margin-left:2px">Referral Source</label>
+                <div class="row">
+                  <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                  </div>
+                  <div class="col-sm-10">
+                      <select class="custom-select d-block w-100" formControlName="Referral_Source" id="state" required>
+                          <option value="">Unassigned</option>
+                          <option>Patient</option>
+                          <option>Employee</option>
+                          <option>Walk-In</option>
+                          <option>Newspaper</option>
+                          <option>Radio</option>
+                          <option>TV</option>
+                          <option>Referral Card</option>
+                          <option>Other</option>
+                      </select>
+                  </div>
+                </div>              
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="Title">VFC</label>
+                  <select class="custom-select d-block w-100" formControlName="VFC" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Eligible</option>
+                  <option>Ineligible</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select a valid title.
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="Title">Religion</label>
+                <select class="custom-select d-block w-100" formControlName="Religion" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Agnosticism</option>
+                  <option>Anglican</option>
+                  <option>Assembly Of God</option>
+                  <option>Baptist</option>
+                  <option>Disciples Of Christ</option>
+                  <option>Christian</option>  
+                  <option>Hinduism</option> 
+                  <option>Islam</option>  
+                  <option>Jainism</option>
+                </select>
+                    <div class="invalid-feedback">
+                      Please select a valid title.
+                    </div>
+              </div>
+            </div>
+          </div>        
+        </div>
+      </div>
+    </div>
+
+    <!-- miscellaneous --> 
+    <div style="margin-top:10px;background-color: " class="card" (click)="whotoggle(6)">
+      <div class="card-header" style="height:50px" id="headingSix" data-toggle="collapse" 
+        data-target="#collapsesix" aria-expanded="true" aria-controls="collapsesix">
+        <div class="row">
+          <div class="col-md-8">
+            <h6 class="mb-0 cl" style="font-weight: bold;color:#800000">Misc</h6>
+          </div>
+          <div class="col-md-4">
+            <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+            data-target="#collapsesix" *ngIf="!Arrshow[5]" class="fa fa-chevron-circle-left"></i>
+            <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+            data-target="#collapsesix" *ngIf="Arrshow[5]" class="fa fa-chevron-circle-down"></i>
+          </div>
+        </div>    
+      </div>
+      <div id="collapsesix" class="collapse hide clp">
+        <div class="col-md-10 order-md-1 container">         
+          <div formGroupName="misc">
+            <div class="row " style="margin-top:10px">
+              <div class="col-md-4 mb-4">
+                <label for="firstName">Date Deceased</label>
+                <input type="text" class="form-control" formControlName="Date_Deceased" id="middleName" placeholder="">
+                
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="firstName">Reason Deceased</label>
+                <input type="text" class="form-control" formControlName="Reason_Deceased" id="middleName" placeholder="">
+                
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+
+    <!-- guardian -->
+    <div style="margin-top:10px;background-color: " class="card" (click)="whotoggle(7)">
+      <div class="card-header" style="height:50px" id="headingOne" data-toggle="collapse" 
+      data-target="#collapseseven" aria-expanded="true" aria-controls="collapseseven">
+        <div class="row">
+          <div class="col-md-8">
+            <h6 class="mb-0  cl" style="font-weight: bold;color:#800000">Guardian</h6>
+          </div> 
+          <div class="col-md-4">
+            <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+            data-target="#collapseseven" *ngIf="!Arrshow[6]" class="fa fa-chevron-circle-left"></i>
+            <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+            data-target="#collapseseven" *ngIf="Arrshow[6]" class="fa fa-chevron-circle-down"></i>
+          </div>
+        </div>    
+      </div>
+      <div id="collapseseven" class="collapse hide clp">
+        <div class="col-md-10 order-md-1 container">
+          <div formGroupName="guardian">
+            <div class="row " style="margin-top:10px">
+              <div class="col-md-4 mb-4">
+                  <label for="state" style="margin-left:2px">Name</label>
+                  <input type="text" class="form-control" formControlName="Name" id="middleName" placeholder="">
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">Relationship</label>
+                  <select class="custom-select d-block w-100" formControlName="Relationship" id="country" required style="">
+              <option value="">Unassigned</option>
+              <option>Brother</option>
+              <option>Sister</option>
+              <option>Employer</option>
+              <option>Father</option>
+              <option>Guardian</option>
+              <option>Sibling</option>  
+            </select>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">Sex</label>
+                  <select class="custom-select d-block w-100" formControlName="Sex" id="country" required style="">
+                  <option value="">Unassigned</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Others</option>
+                </select>
+              </div>
+            </div>
+            <div formGroupName="GuardianAddress">
+            <div class="row" style="margin-top: 10px">
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">Address</label>
+                  <input type="text" class="form-control" formControlName="Address" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid address is required.
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">City</label>
+                  <input type="text" class="form-control" formControlName="City" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">Postal Code</label>
+                  <input type="text" class="form-control" formControlName="Postal_Code" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-4">
+                  <label for="state">State</label>
+                <div class="row">
+                  <div class="col-sm-2">
+                    <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                  </div>
+                  <div class="col-sm-10">
+                      <select class="custom-select d-block w-100" formControlName="State" id="state" required>
+                        <option value="">Unassigned</option>
+                        <option>Alabama</option>
+                        <option>Alaska</option>
+                        <option>Arizona</option>
+                        <option>Arkansas</option>
+                        <option>California</option>
+                        <option>Colorado</option>
+                        <option>Connecticut</option>
+                        <option>Delaware</option>
+                        <option>District Of Columbia</option>
+                        <option>Florida</option>
+                        <option>Georgia</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Please provide a valid state.
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="state" style="margin-left:1px">Country</label>
+                <div class="row">
+                  <div class="col-sm-2">
+                    <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                  </div>
+                    <div class="col-sm-10" style>
+                      <select class="custom-select d-block w-100" formControlName="Country" id="state" required >
+                        <option value="">Unassigned</option>
+                        <option>USA</option>                  
+                        <option>INDIA</option>
+                      </select>
+                    </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="phone">Phone</label>
+                <input type="text" class="form-control" formControlName="Home_Phone" id="middleName" placeholder="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">Work Phone</label>
+                  <input type="text" class="form-control" formControlName="Work_Phone" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                  <label for="firstName">Email</label>
+                  <input type="text" class="form-control" formControlName="Email" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+              </div>
+            </div>
+
+          </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+
+    <!-- insurer -->
+    <div style="margin-top:10px;background-color: " class="card" (click)="whotoggle(8)">
+      <div class="card-header" style="height:50px" id="headingEight" data-toggle="collapse" 
+        data-target="#collapseeight" aria-expanded="true" aria-controls="collapseeight">
+        <div class="row">
+          <div class="col-md-8">
+            <h6 class="mb-0 cl" style="font-weight: bold;color:#800000">Insurance</h6>
+          </div>
+          <div class="col-md-4">
+            <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+            data-target="#collapseeight" *ngIf="!Arrshow[7]" class="fa fa-chevron-circle-left"></i>
+            <i style="margin-left:90%;font-size:20px;color:#800000" data-toggle="collapse" 
+            data-target="#collapseeight" *ngIf="Arrshow[7]" class="fa fa-chevron-circle-down"></i>
+          </div>
+        </div>    
+      </div>
+      <div id="collapseeight" class="collapse hide clp">
+        <div class="col-md-10 order-md-1 container">
+          <div formArrayName="insurance" >
+            
+            <div [formGroupName]="0">
+                <div class="row " style="margin-top:20px">
+                  <div class="col-md-6">
+                    <h5 style="color:#bf5656"><label for="Title">Primary Insurance</label></h5>
+                    <div class="row">
+                      <div class="col-sm-8" style="margin-left:-3px">
+                        <select class="custom-select d-block w-100" formControlName="Insurance_Provider" id="state" required >
+                          <option value="">Unassigned</option>
+                          <option>Bluecross</option>                  
+                        </select>
+                      </div>
+                      <div class="col-sm-4">
+                        <button class="btn btn-link btn-sm" style="margin-left:-24px">Search/Add Insurer</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" style="">
+                    <label for="firstName">Plan Name</label>
+                    <input type="text" class="form-control" formControlName="Plan_Name" id="middleName" placeholder="">
+                    <div class="invalid-feedback">
+                      Valid city is required.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 mb-4" style="margin-top: 20px">
+                    <label for="firstName">Subscriber</label>
+                    <input type="text" class="form-control" formControlName="Subscriber" id="middleName" placeholder="">
+                    <div class="invalid-feedback">
+                      Valid city is required.
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4" style="margin-top:52px">
+                   <input type="text" class="form-control" formControlName="Subscriber" id="middleName" placeholder="">
+                  </div>
+                  <div class="col-md-4 mb-4" style="margin-top:52px">
+                   <input type="text" class="form-control" formControlName="Subscriber" id="middleName" placeholder="">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 mb-4">
+                    <label for="firstName">Effective Date</label>
+                    <input type="text" class="form-control" formControlName="Effective_Date" id="middleName" placeholder="">
+                    <div class="invalid-feedback">
+                      Valid city is required.
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="firstName">Relationship</label>
+                    <div class="row">
+                      <div class="col-sm-10" style="margin-left:-3px">
+                        <select class="custom-select d-block w-100" formControlName="Relationship" id="state" required >
+                          <option value="">Unassigned</option>
+                          <option>Uncle</option>  
+                          <option>Mother</option>
+                          <option>Brother</option>
+                          <option>Spouse</option>
+                          <option>Sister</option>
+                          <option>Child</option>
+                          <option>Guardian</option>
+                          <option>Employee</option>                
+                        </select>
+                      </div>
+                      <div class="col-sm-2">
+                        <button class="btn btn-link btn-sm" style="margin-left:-30px">Browse</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="firstName">Policy Number</label>
+                    <input type="text" class="form-control" formControlName="Policy_Number" id="middleName" placeholder="polocy">
+                    <div class="invalid-feedback">
+                      Valid city is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!--div class="row">
+                  <div class="col-md-4 mb-4">
+                    <label for="firstName">Sex</label>
+                    <select class="custom-select d-block w-100" formControlName="Sex" id="country" required >
+                      <option value="">Unassigned</option>
+                      <option>Male</option>
+                      <option>Female</option>
+                      <option>Others</option>
+                    </select>
+                    <div class="invalid-feedback">
+                      Please select a valid title.
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="dob">DOB</label>
+                    <input type="date" class="form-control" formControlName="DOB" id="date">
+                    <div class="invalid-feedback">
+                      Please enter a valid dob.
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4">
+                   <label for="firstName">SSN</label>
+                   <input type="text" class="form-control" id="middleName" placeholder="">
+                  </div>
+                </div-->
+
+                <div class="row">
+                  <div class="col-md-4 mb-4">
+                    <label for="firstName">Group Number</label>
+                    <input type="text" class="form-control" id="middleName" placeholder="">
+                    <div class="invalid-feedback">
+                      Valid city is required.
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="firstName">Subscriber Address</label>
+                    <input type="text" class="form-control" id="middleName" placeholder="">
+                    <div class="invalid-feedback">
+                      Valid city is required.
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4" style="margin-top: -20px">
+                    <label for="firstName">Subscriber Employer(SE)<span style="font-weight:normal;font-size:14px">(if unemployed enter Student,PT Student, or leave blank)</span></label>
+                    <input type="text" class="form-control" id="middleName" placeholder="" style="margin-top:-5px">
+                    <div class="invalid-feedback">
+                      Valid city is required.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 mb-4">
+                      <label for="state">State</label>
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                      </div>
+                      <div class="col-sm-10">
+                        <select class="custom-select d-block w-100" id="state" required>
+                          <option value="">Unassigned</option>
+                          <option>Alabama</option>
+                          <option>Alaska</option>
+                          <option>Arizona</option>
+                          <option>Arkansas</option>
+                          <option>California</option>
+                          <option>Colorado</option>
+                          <option>Connecticut</option>
+                          <option>Delaware</option>
+                          <option>District Of Columbia</option>
+                          <option>Florida</option>
+                          <option>Georgia</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Please provide a valid state.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="state" style="margin-left:1px">Country</label>
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                      </div>
+                      <div class="col-sm-10" style>
+                        <select class="custom-select d-block w-100" id="state" required >
+                          <option value="">Unassigned</option>
+                          <option>USA</option>                  
+                          <option>INDIA</option>
+                        </select>
+                      </div>
+                    </div>
+                      <div class="invalid-feedback">
+                        Please provide a valid state.
+                      </div>
+                  </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="state">City</label>
+                    <input type="text" class="form-control" id="middleName" placeholder="">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 mb-4">
+                    <label for="state">Zipcode</label>
+                    <input type="text" class="form-control" id="middleName" placeholder="">
+                  </div>            
+                  <div class="col-md-4 mb-4">
+                    <label for="firstName">SE Address</label>
+                    <input type="text" class="form-control" id="middleName" placeholder="">
+                    <div class="invalid-feedback">
+                      Valid city is required.
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="firstName">SE City</label>
+                    <input type="text" class="form-control" id="middleName" placeholder="">
+                    <div class="invalid-feedback">
+                      Valid city is required.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 mb-4">
+                    <label for="state">SE State</label>
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                      </div>
+                      <div class="col-sm-10">
+                        <select class="custom-select d-block w-100" id="state" required>
+                          <option value="">Unassigned</option>
+                          <option>Alabama</option>
+                          <option>Alaska</option>
+                          <option>Arizona</option>
+                          <option>Arkansas</option>
+                          <option>California</option>
+                          <option>Colorado</option>
+                          <option>Connecticut</option>
+                          <option>Delaware</option>
+                          <option>District Of Columbia</option>
+                          <option>Florida</option>
+                          <option>Georgia</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Please provide a valid state.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="state" style="margin-left:1px">SE Country</label>
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                      </div>
+                      <div class="col-sm-10" style>
+                        <select class="custom-select d-block w-100" id="state" required >
+                          <option value="">Unassigned</option>
+                          <option>USA</option>                  
+                          <option>INDIA</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="invalid-feedback">
+                      Please provide a valid state.
+                    </div>
+                  </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="state">SE Zipcode</label>
+                    <input type="text" class="form-control" id="middleName" placeholder="">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 mb-4">
+                   <label for="state">Subscriber Phone</label>
+                   <input type="text" class="form-control" id="middleName" placeholder="">
+                  </div>
+                  <div class="col-md-4 mb-4">
+                   <label for="state">CoPay</label>
+                   <input type="text" class="form-control" id="middleName" formControlName="CoPay" placeholder="">
+                  </div>
+                  <div class="col-md-4 mb-4">
+                    <label for="state">Accept Assignment</label>
+                    <select class="custom-select d-block w-100" id="state" formControlName="Accept_Assignment" required >
+                      <option value="">Unassigned</option>
+                      <option>Yes</option>                  
+                      <option>No</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!--secondary insurer -->
+            <div [formGroupName]="1">
+              <div class="row " style="margin-top:20px">
+                <div class="col-md-6">
+                 <h5 style="color:#bf5656"><label for="Title">Secondary Insurance</label></h5>
+                  <div class="row">
+                    <div class="col-sm-8" style="margin-left:-3px">
+                      <select class="custom-select d-block w-100" id="state" formControlName="Insurance_Provider" required >
+                        <option value="">Unassigned</option>
+                        <option>Bluecross</option>                  
+                      </select>
+                    </div>
+                    <div class="col-sm-4">
+                      <button class="btn btn-link btn-sm" style="margin-left:-24px">Search/Add Insurer</button>
+                    </div>
+                  </div>
+                </div>  
+
+                <div class="col-md-4" style="">
+                  <label for="firstName">Plan Name</label>
+
+                  <input type="text" class="form-control" id="middleName" formControlName="Plan_Name" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4" style="margin-top: 20px">
+                  <label for="firstName">Subscriber</label>
+                  <input type="text" class="form-control" id="middleName" formControlName="Subscriber" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4" style="margin-top:52px">
+                 <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+                <div class="col-md-4 mb-4" style="margin-top:52px">
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Effective Date</label>
+                  <input type="text" class="form-control" id="middleName" formControlName="Effective_Date" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Relationship</label>
+                  <div class="row">
+                    <div class="col-sm-10" style="margin-left:-3px">
+                      <select class="custom-select d-block w-100" id="state" formControlName="Relationship" required >
+                        <option value="">Unassigned</option>
+                        <option>Uncle</option>  
+                        <option>Mother</option>
+                        <option>Brother</option>
+                        <option>Spouse</option>
+                        <option>Sister</option>
+                        <option>Child</option>
+                        <option>Guardian</option>
+                        <option>Employee</option>                
+                      </select>
+                    </div>
+                    <div class="col-sm-2">
+                      <button class="btn btn-link btn-sm" style="margin-left:-30px">Browse</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Policy Number</label>
+                  <input type="text" class="form-control" id="middleName" formControlName="Policy_Number" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+              </div>
+             <!-- <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Sex</label>
+                  <select class="custom-select d-block w-100" id="country" required >
+                    <option value="">Unassigned</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Others</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select a valid title.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="dob">DOB</label>
+                  <input type="date" class="form-control" id="date">
+                  <div class="invalid-feedback">
+                    Please enter a valid dob.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                 <label for="firstName">S.S.</label>
+                 <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+              </div>-->
+
+              <div class="row">
+                <div class="col-md-4 mb-4" style="">
+                  <label for="firstName">Group Number</label>
+                  <input type="text" class="form-control" id="middleName" formControlName="Group_Number" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Subscriber Address</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4" style="margin-top: -20px">
+                  <label for="firstName">Subscriber Employer(SE)<span style="font-weight:normal;font-size:14px">(if unemployed enter Student,PT Student, or leave blank)</span></label>
+                  <input type="text" class="form-control" id="middleName" formControlName="Subscriber_Employer" placeholder="" style="margin-top:-5px">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                    <label for="state">State</label>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                    </div>
+                    <div class="col-sm-10">
+                      <select class="custom-select d-block w-100" id="state" required>
+                        <option value="">Unassigned</option>
+                        <option>Alabama</option>
+                        <option>Alaska</option>
+                        <option>Arizona</option>
+                        <option>Arkansas</option>
+                        <option>California</option>
+                        <option>Colorado</option>
+                        <option>Connecticut</option>
+                        <option>Delaware</option>
+                        <option>District Of Columbia</option>
+                        <option>Florida</option>
+                        <option>Georgia</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Please provide a valid state.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="state" style="margin-left:1px">Country</label>
+                  <div class="row">
+                    <div class="col-sm-2"><button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button></div>
+                    <div class="col-sm-10" style>
+                      <select class="custom-select d-block w-100" id="state" required >
+                        <option value="">Unassigned</option>
+                        <option>USA</option>                  
+                        <option>INDIA</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="invalid-feedback">
+                    Please provide a valid state.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="state">City</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="state">Zipcode</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">SE Address</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">SE City</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="state">SE State</label>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                    </div>
+                    <div class="col-sm-10">
+                      <select class="custom-select d-block w-100" id="state" required>
+                        <option value="">Unassigned</option>
+                        <option>Alabama</option>
+                        <option>Alaska</option>
+                        <option>Arizona</option>
+                        <option>Arkansas</option>
+                        <option>California</option>
+                        <option>Colorado</option>
+                        <option>Connecticut</option>
+                        <option>Delaware</option>
+                        <option>District Of Columbia</option>
+                        <option>Florida</option>
+                        <option>Georgia</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Please provide a valid state.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="state" style="margin-left:1px">SE Country</label>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                    </div>
+                    <div class="col-sm-10" style>
+                      <select class="custom-select d-block w-100" id="state" required >
+                        <option value="">Unassigned</option>
+                        <option>USA</option>                  
+                        <option>INDIA</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="invalid-feedback">
+                    Please provide a valid state.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="state">SE Zipcode</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                 <label for="state">Subscriber Phone</label>
+                 <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+                <div class="col-md-4 mb-4">
+                 <label for="state">CoPay</label>
+                 <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+                <div class="col-md-4 mb-4">
+                   <label for="state">Accept Assignment</label>
+                   <select class="custom-select d-block w-100" id="state" required >
+                    <option value="">Unassigned</option>
+                    <option>Yes</option>                  
+                    <option>No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!--Tertiary insurance-->
+            <div [formGroupName]="2">
+              <div class="row " style="margin-top:20px">
+                <div class="col-md-6">
+                 <h5 style="color:#bf5656"><label for="Title">Tertiary Insurance</label></h5>
+                  <div class="row">
+                    <div class="col-sm-8" style="margin-left:-3px">
+                      <select class="custom-select d-block w-100" id="state" required >
+                        <option value="">Unassigned</option>
+                        <option>Bluecross</option>                  
+                      </select>
+                    </div>
+                    <div class="col-sm-4">
+                      <button class="btn btn-link btn-sm" style="margin-left:-24px">Search/Add Insurer</button>
+                    </div>
+                  </div>
+                </div>
+              </div>   
+
+              <div class="row">
+                <div class="col-md-4 mb-4" style="margin-top: 20px">
+                  <label for="firstName">Subscriber</label>
+
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4" style="margin-top:52px">
+                 <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+                <div class="col-md-4 mb-4" style="margin-top:52px">
+                 <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Effective Date</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Relationship</label>
+                  <div class="row">
+
+                    <div class="col-sm-10" style="margin-left:-3px">
+                      <select class="custom-select d-block w-100" id="state" required >
+                        <option value="">Unassigned</option>
+                        <option>Uncle</option>  
+                        <option>Mother</option>
+                        <option>Brother</option>
+                        <option>Spouse</option>
+                        <option>Sister</option>
+                        <option>Child</option>
+                        <option>Guardian</option>
+                        <option>Employee</option>                
+                      </select>
+                    </div>
+                    <div class="col-sm-2">
+                      <button class="btn btn-link btn-sm" style="margin-left:-30px">Browse</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Policy Number</label>
+
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Sex</label>
+                  <select class="custom-select d-block w-100" id="country" required >
+                    <option value="">Unassigned</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Others</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select a valid title.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="dob">DOB</label>
+                  <input type="date" class="form-control" id="date">
+                  <div class="invalid-feedback">
+                    Please enter a valid dob.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                 <label for="firstName">S.S.</label>
+                 <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 mb-4" style="">
+                  <label for="firstName">Group Number</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">Subscriber Address</label>
+
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4" style="margin-top: -20px">
+                  <label for="firstName">Subscriber Employer(SE)<span style="font-weight:normal;font-size:14px">(if unemployed enter Student,PT Student, or leave blank)</span></label>
+
+                  <input type="text" class="form-control" id="middleName" placeholder="" style="margin-top:-5px">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="state">State</label>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                    </div>
+                    <div class="col-sm-10">
+                      <select class="custom-select d-block w-100" id="state" required>
+                        <option value="">Unassigned</option>
+                        <option>Alabama</option>
+                        <option>Alaska</option>
+                        <option>Arizona</option>
+                        <option>Arkansas</option>
+                        <option>California</option>
+                        <option>Colorado</option>
+                        <option>Connecticut</option>
+                        <option>Delaware</option>
+                        <option>District Of Columbia</option>
+                        <option>Florida</option>
+                        <option>Georgia</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Please provide a valid state.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="state" style="margin-left:1px">Country</label>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                    </div>
+                    <div class="col-sm-10" style>
+                      <select class="custom-select d-block w-100" id="state" required >
+                        <option value="">Unassigned</option>
+                        <option>USA</option>                  
+                        <option>INDIA</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="invalid-feedback">
+                    Please provide a valid state.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="state">City</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="state">Zipcode</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">SE Address</label>
+
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="firstName">SE City</label>
+
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                  <div class="invalid-feedback">
+                    Valid city is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <label for="state">SE State</label>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button>
+                    </div>
+                    <div class="col-sm-10">
+                      <select class="custom-select d-block w-100" id="state" required>
+
+                        <option value="">Unassigned</option>
+                        <option>Alabama</option>
+                        <option>Alaska</option>
+                        <option>Arizona</option>
+                        <option>Arkansas</option>
+                        <option>California</option>
+                        <option>Colorado</option>
+                        <option>Connecticut</option>
+                        <option>Delaware</option>
+                        <option>District Of Columbia</option>
+                        <option>Florida</option>
+                        <option>Georgia</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Please provide a valid state.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="state" style="margin-left:1px">SE Country</label>
+                  <div class="row">
+                    <div class="col-sm-2"><button class="btn btn-primary btn-sm" style="margin-left:5px">Add</button></div>
+                    <div class="col-sm-10" style>
+                      <select class="custom-select d-block w-100" id="state" required >
+                        <option value="">Unassigned</option>
+                        <option>USA</option>                  
+                        <option>INDIA</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="invalid-feedback">
+                    Please provide a valid state.
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="state">SE Zipcode</label>
+                  <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                 <label for="state">Subscriber Phone</label>
+                 <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+                <div class="col-md-4 mb-4">
+                 <label for="state">CoPay</label>
+                 <input type="text" class="form-control" id="middleName" placeholder="">
+                </div>
+                <div class="col-md-4 mb-4">
+                   <label for="state">Accept Assignment</label>
+                   <select class="custom-select d-block w-100" id="state" required >
+                    <option value="">Unassigned</option>
+                    <option>Yes</option>                  
+                    <option>No</option>
+                   </select>
+                </div>
+              </div>
+            </div> <!-- tertiary insurer div tag closed here -->
+          </div>
+      </div>
+      </div>
+    </div>
+    <div class="col-md-3" style="margin-top:2%">
+      <input type="submit" name="submit" class="btn btn-outline-primary btn-md col-md-4   ">
+    </div>
+  </div>
+</div>
+
+</div>
+    <br>
+   <!-- <div class="col-md-3" style="margin-left: 112px">
+    <input type="submit" name="submit" class="btn btn-outline-primary btn-md col-md-4   ">
+  </div> -->
+
+</form>
+</div>
+
+
+
